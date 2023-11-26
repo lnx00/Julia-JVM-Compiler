@@ -1,6 +1,15 @@
 grammar Julia;
 
 /* Parser */
+start: (function | statements)+ EOF;
+
+function: FUNCTION_T IDENTIFIER parameters statements return_stmt? END_T;
+parameters: LPAREN (IDENTIFIER DCOLON type (COMMA IDENTIFIER DCOLON type)*)? RPAREN;
+type: INTEGER_T | FLOAT64_T | BOOL_T | STRING_T;
+
+statements: statement+;
+statement: FALSE_T;
+return_stmt: RETURN_T;
 
 /* Lexer */
 
@@ -17,6 +26,10 @@ ELSE_T: 'else';
 WHILE_T: 'while';
 TRUE_T: 'true';
 FALSE_T: 'false';
+INTEGER_T: 'Integer';
+FLOAT64_T: 'Float64';
+BOOL_T: 'Bool';
+STRING_T: 'String';
 
 // Brackets and punctuation
 LBRACE: '{';
@@ -66,3 +79,4 @@ BOOL_L: TRUE_T | FALSE_T;
 COMMENT: '#' ~[\r\n]* -> skip;
 COMMENT_BLOCK: '#=' .*? '=#' -> skip;
 WS: [ \t\r\n]+ -> skip;
+NL: [\r\n]+ -> skip;
