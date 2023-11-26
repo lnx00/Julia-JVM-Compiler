@@ -1,6 +1,6 @@
 ﻿namespace Compiler;
 
-public class Visitor : JuliaBaseVisitor<object>
+public class Visitor : JuliaBaseVisitor<object?>
 {
     
 }
