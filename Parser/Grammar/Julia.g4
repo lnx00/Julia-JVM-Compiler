@@ -9,19 +9,32 @@ parameters: LPAREN (IDENTIFIER DCOLON type (COMMA IDENTIFIER DCOLON type)*)? RPA
 return_type: DCOLON type;
 
 // Control flow
-if: IF_T expression statement* (ELSE_T statement*)? END_T;
-while: WHILE_T expression statement* END_T;
-block: BEGIN_T statement* END_T;
+if: IF_T expression statement* (ELSE_T statement*)? END_T; // if x then y else z
+while: WHILE_T expression statement* END_T; // while x y
+block: BEGIN_T statement* END_T; // begin x end
 
 // Statements
 statement: declaration | assignment | call | return | if | while | block;
-declaration: IDENTIFIER DCOLON type EQ expression;
-assignment: IDENTIFIER EQ expression;
-call: IDENTIFIER LPAREN (expression (COMMA expression)*)? RPAREN;
-return: RETURN_T expression?;
+declaration: IDENTIFIER DCOLON type EQ expression; // x::T = y
+assignment: IDENTIFIER EQ expression; // x = y
+call: IDENTIFIER LPAREN (expression (COMMA expression)*)? RPAREN; // f(x, y)
+return: RETURN_T expression; // return x
 
 // Expressions
-expression: INTCONST | FLTCONST | BOOLCONST | STRCONST | IDENTIFIER;
+expression: expression (STAR | SLASH | PERCENT) expression // x * y, x / y, x % y
+    | expression (PLUS | MINUS) expression // x + y, x - y
+    | expression (EQEQ | LT | GT | LTE | GTE | NEQ) expression // x == y, x < y, x > y, x <= y, x >= y, x != y
+    | expression (AND | OR) expression // x && y, x || y
+    | NOT expression // !x
+    | LPAREN expression RPAREN // (x)
+    | call // f(x, y)
+    | IDENTIFIER
+    | INTCONST
+    | FLTCONST
+    | STRCONST
+    | BOOLCONST;
+    
+// Helper
 type: INTEGER_T | FLOAT64_T | BOOL_T | STRING_T;
 
 /* Lexer */
