@@ -1,20 +1,26 @@
 grammar Julia;
 
 /* Parser */
-start: (function | statements)+ EOF;
+start: (function | statement)* EOF;
 
-function: FUNCTION_T IDENTIFIER parameters statements return_stmt? END_T;
+function: FUNCTION_T IDENTIFIER parameters statement* END_T;
 parameters: LPAREN (IDENTIFIER DCOLON type (COMMA IDENTIFIER DCOLON type)*)? RPAREN;
-type: INTEGER_T | FLOAT64_T | BOOL_T | STRING_T;
+while: WHILE_T expression statement* END_T;
 
-statements: statement+;
-statement: FALSE_T;
-return_stmt: RETURN_T;
+statement: declaration | assignment | call | return | while;
+declaration: IDENTIFIER DCOLON type EQ expression;
+assignment: IDENTIFIER EQ expression;
+call: IDENTIFIER LPAREN (expression (COMMA expression)*)? RPAREN;
+return: RETURN_T;
+
+expression: INTCONST | FLTCONST | BOOLCONST | STRCONST | IDENTIFIER;
+type: INTEGER_T | FLOAT64_T | BOOL_T | STRING_T;
 
 /* Lexer */
 
 fragment Letter: [a-zA-Z];
-fragment LetterOrDigit: [a-zA-Z0-9];
+fragment Digit: [0-9];
+fragment LetterOrDigit: Letter | Digit;
 
 // Tokens
 FUNCTION_T: 'function';
@@ -70,10 +76,10 @@ EQ: '=';
 IDENTIFIER: Letter LetterOrDigit*;
 
 // Literals
-INT_L: MINUS? [0-9]+;
-FLOAT_L: MINUS? [0-9]+ DOT [0-9]+;
-STRING_L: '"' .*? '"';
-BOOL_L: TRUE_T | FALSE_T;
+INTCONST: MINUS? [0-9]+;
+FLTCONST: MINUS? [0-9]+ DOT [0-9]+;
+STRCONST: '"' .*? '"';
+BOOLCONST: TRUE_T | FALSE_T;
 
 // Comments and whitespace
 COMMENT: '#' ~[\r\n]* -> skip;
