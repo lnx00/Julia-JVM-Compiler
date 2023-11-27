@@ -3,16 +3,24 @@ grammar Julia;
 /* Parser */
 start: (function | statement)* EOF;
 
-function: FUNCTION_T IDENTIFIER parameters statement* END_T;
+// Functions
+function: FUNCTION_T IDENTIFIER parameters return_type? statement* END_T;
 parameters: LPAREN (IDENTIFIER DCOLON type (COMMA IDENTIFIER DCOLON type)*)? RPAREN;
-while: WHILE_T expression statement* END_T;
+return_type: DCOLON type;
 
-statement: declaration | assignment | call | return | while;
+// Control flow
+if: IF_T expression statement* (ELSE_T statement*)? END_T;
+while: WHILE_T expression statement* END_T;
+block: BEGIN_T statement* END_T;
+
+// Statements
+statement: declaration | assignment | call | return | if | while | block;
 declaration: IDENTIFIER DCOLON type EQ expression;
 assignment: IDENTIFIER EQ expression;
 call: IDENTIFIER LPAREN (expression (COMMA expression)*)? RPAREN;
-return: RETURN_T;
+return: RETURN_T expression?;
 
+// Expressions
 expression: INTCONST | FLTCONST | BOOLCONST | STRCONST | IDENTIFIER;
 type: INTEGER_T | FLOAT64_T | BOOL_T | STRING_T;
 
