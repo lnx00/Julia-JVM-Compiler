@@ -32,27 +32,93 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface IJuliaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="JuliaParser.chat"/>.
+	/// Visit a parse tree produced by <see cref="JuliaParser.start"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitChat([NotNull] JuliaParser.ChatContext context);
+	Result VisitStart([NotNull] JuliaParser.StartContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="JuliaParser.line"/>.
+	/// Visit a parse tree produced by <see cref="JuliaParser.function"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitLine([NotNull] JuliaParser.LineContext context);
+	Result VisitFunction([NotNull] JuliaParser.FunctionContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="JuliaParser.name"/>.
+	/// Visit a parse tree produced by <see cref="JuliaParser.parameters"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitName([NotNull] JuliaParser.NameContext context);
+	Result VisitParameters([NotNull] JuliaParser.ParametersContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="JuliaParser.opinion"/>.
+	/// Visit a parse tree produced by <see cref="JuliaParser.return_type"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitOpinion([NotNull] JuliaParser.OpinionContext context);
+	Result VisitReturn_type([NotNull] JuliaParser.Return_typeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.if"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIf([NotNull] JuliaParser.IfContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.while"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWhile([NotNull] JuliaParser.WhileContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBlock([NotNull] JuliaParser.BlockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStatement([NotNull] JuliaParser.StatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.declaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDeclaration([NotNull] JuliaParser.DeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.assignment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAssignment([NotNull] JuliaParser.AssignmentContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.call"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCall([NotNull] JuliaParser.CallContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.return"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitReturn([NotNull] JuliaParser.ReturnContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExpression([NotNull] JuliaParser.ExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.const"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitConst([NotNull] JuliaParser.ConstContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.type"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitType([NotNull] JuliaParser.TypeContext context);
 }

@@ -36,53 +36,185 @@ using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 [System.CLSCompliant(false)]
 public partial class JuliaBaseListener : IJuliaListener {
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="JuliaParser.chat"/>.
+	/// Enter a parse tree produced by <see cref="JuliaParser.start"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterChat([NotNull] JuliaParser.ChatContext context) { }
+	public virtual void EnterStart([NotNull] JuliaParser.StartContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="JuliaParser.chat"/>.
+	/// Exit a parse tree produced by <see cref="JuliaParser.start"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitChat([NotNull] JuliaParser.ChatContext context) { }
+	public virtual void ExitStart([NotNull] JuliaParser.StartContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="JuliaParser.line"/>.
+	/// Enter a parse tree produced by <see cref="JuliaParser.function"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterLine([NotNull] JuliaParser.LineContext context) { }
+	public virtual void EnterFunction([NotNull] JuliaParser.FunctionContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="JuliaParser.line"/>.
+	/// Exit a parse tree produced by <see cref="JuliaParser.function"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitLine([NotNull] JuliaParser.LineContext context) { }
+	public virtual void ExitFunction([NotNull] JuliaParser.FunctionContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="JuliaParser.name"/>.
+	/// Enter a parse tree produced by <see cref="JuliaParser.parameters"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterName([NotNull] JuliaParser.NameContext context) { }
+	public virtual void EnterParameters([NotNull] JuliaParser.ParametersContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="JuliaParser.name"/>.
+	/// Exit a parse tree produced by <see cref="JuliaParser.parameters"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitName([NotNull] JuliaParser.NameContext context) { }
+	public virtual void ExitParameters([NotNull] JuliaParser.ParametersContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="JuliaParser.opinion"/>.
+	/// Enter a parse tree produced by <see cref="JuliaParser.return_type"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterOpinion([NotNull] JuliaParser.OpinionContext context) { }
+	public virtual void EnterReturn_type([NotNull] JuliaParser.Return_typeContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="JuliaParser.opinion"/>.
+	/// Exit a parse tree produced by <see cref="JuliaParser.return_type"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitOpinion([NotNull] JuliaParser.OpinionContext context) { }
+	public virtual void ExitReturn_type([NotNull] JuliaParser.Return_typeContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.if"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIf([NotNull] JuliaParser.IfContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.if"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIf([NotNull] JuliaParser.IfContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.while"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterWhile([NotNull] JuliaParser.WhileContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.while"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitWhile([NotNull] JuliaParser.WhileContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.block"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBlock([NotNull] JuliaParser.BlockContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.block"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBlock([NotNull] JuliaParser.BlockContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterStatement([NotNull] JuliaParser.StatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitStatement([NotNull] JuliaParser.StatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.declaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterDeclaration([NotNull] JuliaParser.DeclarationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.declaration"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitDeclaration([NotNull] JuliaParser.DeclarationContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.assignment"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAssignment([NotNull] JuliaParser.AssignmentContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.assignment"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAssignment([NotNull] JuliaParser.AssignmentContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.call"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCall([NotNull] JuliaParser.CallContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.call"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCall([NotNull] JuliaParser.CallContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.return"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterReturn([NotNull] JuliaParser.ReturnContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.return"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitReturn([NotNull] JuliaParser.ReturnContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterExpression([NotNull] JuliaParser.ExpressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitExpression([NotNull] JuliaParser.ExpressionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.const"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterConst([NotNull] JuliaParser.ConstContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.const"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitConst([NotNull] JuliaParser.ConstContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.type"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterType([NotNull] JuliaParser.TypeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.type"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitType([NotNull] JuliaParser.TypeContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>
