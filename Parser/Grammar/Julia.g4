@@ -28,14 +28,12 @@ expression: expression (STAR | SLASH | PERCENT) expression // x * y, x / y, x % 
     | NOT expression // !x
     | LPAREN expression RPAREN // (x)
     | call // f(x, y)
-    | IDENTIFIER
-    | INTCONST
-    | FLTCONST
-    | STRCONST
-    | BOOLCONST;
+    | const
+    | IDENTIFIER;
     
 // Helper
-type: INTEGER_T | FLOAT64_T | BOOL_T | STRING_T;
+const: INTCONST | FLTCONST | STRCONST | BOOLCONST;
+type: INTEGER_T | FLOAT64_T | STRING_T | BOOL_T;
 
 /* Lexer */
 
