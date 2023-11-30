@@ -1,5 +1,6 @@
 ﻿using Antlr4.Runtime;
 using Compiler.Parser.ErrorHandling;
+using Compiler.Parser.Visitor;
 
 namespace Compiler.Parser;
 
@@ -14,16 +15,18 @@ public class Parser
     
     public void Parse()
     {
-        AntlrInputStream inputStream = new AntlrInputStream(_code);
-        JuliaLexer juliaLexer = new JuliaLexer(inputStream);
-        CommonTokenStream commonTokenStream = new CommonTokenStream(juliaLexer);
-        JuliaParser juliaParser = new JuliaParser(commonTokenStream);
+        // Initialize lexer, parser and visitor
+        var inputStream = new AntlrInputStream(_code);
+        var juliaLexer = new JuliaLexer(inputStream);
+        var commonTokenStream = new CommonTokenStream(juliaLexer);
+        var juliaParser = new JuliaParser(commonTokenStream);
         
         // Handle errors
         juliaParser.AddErrorListener(new ErrorListener());
-
+        
+        // Visit start rule
         var startContext = juliaParser.start();
-        Visitor.Visitor visitor = new();
-        visitor.Visit(startContext);
+        var juliaVisitor = new JuliaVisitor();
+        juliaVisitor.Visit(startContext);
     }
 }

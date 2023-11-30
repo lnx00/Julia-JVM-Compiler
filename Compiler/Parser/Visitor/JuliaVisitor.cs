@@ -1,6 +1,6 @@
 ﻿namespace Compiler.Parser.Visitor;
 
-public class Visitor : JuliaBaseVisitor<object?>
+public class JuliaVisitor : JuliaBaseVisitor<object?>
 {
     private readonly Dictionary<string, object?> _variables = new();
     
