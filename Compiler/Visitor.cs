@@ -33,4 +33,30 @@ public class Visitor : JuliaBaseVisitor<object?>
         //return base.VisitAssignment(context);
         return null;
     }
+
+    public override object? VisitConst(JuliaParser.ConstContext context)
+    {
+        if (context.INTCONST() != null)
+        {
+            return int.Parse(context.INTCONST().GetText());
+        }
+        
+        if (context.FLTCONST() != null)
+        {
+            return float.Parse(context.FLTCONST().GetText());
+        }
+        
+        if (context.STRCONST() != null)
+        {
+            return context.STRCONST().GetText();
+        }
+        
+        if (context.BOOLCONST() != null)
+        {
+            return bool.Parse(context.BOOLCONST().GetText());
+        }
+        
+        //return base.VisitConst(context);
+        throw new Exception("Unknown constant type");
+    }
 }
