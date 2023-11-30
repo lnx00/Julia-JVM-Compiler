@@ -1,4 +1,4 @@
-﻿namespace Compiler;
+﻿namespace Compiler.Parser.Visitor;
 
 public class Visitor : JuliaBaseVisitor<object?>
 {

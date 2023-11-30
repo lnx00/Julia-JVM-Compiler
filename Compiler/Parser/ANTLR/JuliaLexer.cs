@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:/Users/LNX/Documents/Rider/Coba-Projekt/Parser/Grammar/Julia.g4 by ANTLR 4.13.1
+// Generated from C:/Users/LNX/Documents/Rider/Coba-Projekt/Compiler/Parser/Grammar/Julia.g4 by ANTLR 4.13.1
 
 // Unreachable code detected
 #pragma warning disable 0162
