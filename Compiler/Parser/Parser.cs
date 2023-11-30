@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using Compiler.Parser.ErrorHandling;
 
 namespace Compiler.Parser;
 
@@ -17,6 +18,9 @@ public class Parser
         JuliaLexer juliaLexer = new JuliaLexer(inputStream);
         CommonTokenStream commonTokenStream = new CommonTokenStream(juliaLexer);
         JuliaParser juliaParser = new JuliaParser(commonTokenStream);
+        
+        // Handle errors
+        juliaParser.AddErrorListener(new ErrorListener());
 
         var startContext = juliaParser.start();
         Visitor.Visitor visitor = new();
