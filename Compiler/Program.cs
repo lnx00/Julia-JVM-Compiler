@@ -13,7 +13,7 @@ try
 {
     parser.Parse();
 }
-catch (SyntaxErrorException e)
+catch (ParserException e)
 {
     Console.WriteLine($"Syntax error at line {e.Line}, position {e.Position}: {e.Message}");
 }
