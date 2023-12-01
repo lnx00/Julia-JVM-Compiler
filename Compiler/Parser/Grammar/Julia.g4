@@ -21,16 +21,23 @@ call: IDENTIFIER LPAREN (expression (COMMA expression)*)? RPAREN; // f(x, y)
 return: RETURN_T expression; // return x
 
 // Expressions
-expression: expression (STAR | SLASH | PERCENT) expression // x * y, x / y, x % y
-    | expression (PLUS | MINUS) expression // x + y, x - y
-    | expression (EQEQ | LT | GT | LTE | GTE | NEQ) expression // x == y, x < y, x > y, x <= y, x >= y, x != y
-    | expression (AND | OR) expression // x && y, x || y
-    | NOT expression // !x
-    | LPAREN expression RPAREN // (x)
-    | call // f(x, y)
-    | const
-    | IDENTIFIER;
-    
+expression: expression multOp expression # MultExpr
+    | expression addOp expression # AddExpr
+    | expression compOp expression # CompExpr
+    | expression boolOp expression # BoolExpr
+    | NOT expression # NotExpr
+    | LPAREN expression RPAREN # ParenExpr
+    | call # CallExpr
+    | const # ConstExpr
+    | IDENTIFIER # VarExpr
+    ;
+
+// Operators
+multOp: STAR | SLASH | PERCENT;
+addOp: PLUS | MINUS;
+compOp: EQEQ | LT | GT | LTE | GTE | NEQ;
+boolOp: AND | OR;
+
 // Helper
 const: INTCONST | FLTCONST | STRCONST | BOOLCONST;
 type: INTEGER_T | FLOAT64_T | STRING_T | BOOL_T;

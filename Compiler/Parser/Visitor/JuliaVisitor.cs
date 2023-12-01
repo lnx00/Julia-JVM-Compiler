@@ -54,4 +54,31 @@ public class JuliaVisitor : JuliaBaseVisitor<object?>
         return TypeManager.GetDataType(context.GetText());
         //return base.VisitType(context);
     }
+
+    public override object? VisitAddExpr(JuliaParser.AddExprContext context)
+    {
+        var op = context.addOp().GetText();
+        var left = Visit(context.expression(0));
+        var right = Visit(context.expression(1));
+
+        return op switch
+        {
+            "+" => left switch
+            {
+                int leftInt when right is int rightInt => leftInt + rightInt,
+                float leftFloat when right is float rightFloat => leftFloat + rightFloat,
+                string leftString when right is string rightString => leftString + rightString,
+                _ => throw new Exception("Invalid types for operator +")
+            },
+            
+            "-" => left switch
+            {
+                int leftInt when right is int rightInt => leftInt - rightInt,
+                float leftFloat when right is float rightFloat => leftFloat - rightFloat,
+                _ => throw new Exception("Invalid types for operator -")
+            },
+            
+            _ => null
+        };
+    }
 }

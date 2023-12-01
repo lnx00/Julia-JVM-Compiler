@@ -134,4 +134,31 @@ public class ParserTests
         Assert.Equal(1, exception.Line);
         Assert.Equal(4, exception.Position);
     }
+    
+    [Fact]
+    public void SimpleIntegerAddition_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::Integer = 1 + 2";
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+
+    [Fact]
+    public void IntegerFloatAddition_ThrowsError()
+    {
+        // Arange
+        var script = "x::Integer = 1 + 2.0";
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<Exception>(() => parser.Parse());
+    }
 }

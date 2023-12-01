@@ -47,11 +47,12 @@ public partial class JuliaParser : Parser {
 		RULE_start = 0, RULE_function = 1, RULE_parameters = 2, RULE_return_type = 3, 
 		RULE_if = 4, RULE_while = 5, RULE_block = 6, RULE_statement = 7, RULE_declaration = 8, 
 		RULE_assignment = 9, RULE_call = 10, RULE_return = 11, RULE_expression = 12, 
-		RULE_const = 13, RULE_type = 14;
+		RULE_multOp = 13, RULE_addOp = 14, RULE_compOp = 15, RULE_boolOp = 16, 
+		RULE_const = 17, RULE_type = 18;
 	public static readonly string[] ruleNames = {
 		"start", "function", "parameters", "return_type", "if", "while", "block", 
 		"statement", "declaration", "assignment", "call", "return", "expression", 
-		"const", "type"
+		"multOp", "addOp", "compOp", "boolOp", "const", "type"
 	};
 
 	private static readonly string[] _LiteralNames = {
@@ -147,17 +148,17 @@ public partial class JuliaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 34;
+			State = 42;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 4398046511278L) != 0)) {
 				{
-				State = 32;
+				State = 40;
 				ErrorHandler.Sync(this);
 				switch (TokenStream.LA(1)) {
 				case FUNCTION_T:
 					{
-					State = 30;
+					State = 38;
 					function();
 					}
 					break;
@@ -167,7 +168,7 @@ public partial class JuliaParser : Parser {
 				case WHILE_T:
 				case IDENTIFIER:
 					{
-					State = 31;
+					State = 39;
 					statement();
 					}
 					break;
@@ -175,11 +176,11 @@ public partial class JuliaParser : Parser {
 					throw new NoViableAltException(this);
 				}
 				}
-				State = 36;
+				State = 44;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 37;
+			State = 45;
 			Match(Eof);
 			}
 		}
@@ -241,37 +242,37 @@ public partial class JuliaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 39;
+			State = 47;
 			Match(FUNCTION_T);
-			State = 40;
+			State = 48;
 			Match(IDENTIFIER);
-			State = 41;
+			State = 49;
 			parameters();
-			State = 43;
+			State = 51;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==DCOLON) {
 				{
-				State = 42;
+				State = 50;
 				return_type();
 				}
 			}
 
-			State = 48;
+			State = 56;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 4398046511276L) != 0)) {
 				{
 				{
-				State = 45;
+				State = 53;
 				statement();
 				}
 				}
-				State = 50;
+				State = 58;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 51;
+			State = 59;
 			Match(END_T);
 			}
 		}
@@ -338,43 +339,43 @@ public partial class JuliaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 53;
+			State = 61;
 			Match(LPAREN);
-			State = 66;
+			State = 74;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==IDENTIFIER) {
 				{
-				State = 54;
+				State = 62;
 				Match(IDENTIFIER);
-				State = 55;
-				Match(DCOLON);
-				State = 56;
-				type();
 				State = 63;
+				Match(DCOLON);
+				State = 64;
+				type();
+				State = 71;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					State = 57;
+					State = 65;
 					Match(COMMA);
-					State = 58;
+					State = 66;
 					Match(IDENTIFIER);
-					State = 59;
+					State = 67;
 					Match(DCOLON);
-					State = 60;
+					State = 68;
 					type();
 					}
 					}
-					State = 65;
+					State = 73;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
 				}
 			}
 
-			State = 68;
+			State = 76;
 			Match(RPAREN);
 			}
 		}
@@ -424,9 +425,9 @@ public partial class JuliaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 70;
+			State = 78;
 			Match(DCOLON);
-			State = 71;
+			State = 79;
 			type();
 			}
 		}
@@ -485,49 +486,49 @@ public partial class JuliaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 73;
+			State = 81;
 			Match(IF_T);
-			State = 74;
+			State = 82;
 			expression(0);
-			State = 78;
+			State = 86;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 4398046511276L) != 0)) {
 				{
 				{
-				State = 75;
+				State = 83;
 				statement();
 				}
 				}
-				State = 80;
+				State = 88;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 88;
+			State = 96;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==ELSE_T) {
 				{
-				State = 81;
+				State = 89;
 				Match(ELSE_T);
-				State = 85;
+				State = 93;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 4398046511276L) != 0)) {
 					{
 					{
-					State = 82;
+					State = 90;
 					statement();
 					}
 					}
-					State = 87;
+					State = 95;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
 				}
 			}
 
-			State = 90;
+			State = 98;
 			Match(END_T);
 			}
 		}
@@ -585,25 +586,25 @@ public partial class JuliaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 92;
+			State = 100;
 			Match(WHILE_T);
-			State = 93;
+			State = 101;
 			expression(0);
-			State = 97;
+			State = 105;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 4398046511276L) != 0)) {
 				{
 				{
-				State = 94;
+				State = 102;
 				statement();
 				}
 				}
-				State = 99;
+				State = 107;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 100;
+			State = 108;
 			Match(END_T);
 			}
 		}
@@ -658,23 +659,23 @@ public partial class JuliaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 102;
+			State = 110;
 			Match(BEGIN_T);
-			State = 106;
+			State = 114;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 4398046511276L) != 0)) {
 				{
 				{
-				State = 103;
+				State = 111;
 				statement();
 				}
 				}
-				State = 108;
+				State = 116;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 109;
+			State = 117;
 			Match(END_T);
 			}
 		}
@@ -739,55 +740,55 @@ public partial class JuliaParser : Parser {
 		StatementContext _localctx = new StatementContext(Context, State);
 		EnterRule(_localctx, 14, RULE_statement);
 		try {
-			State = 118;
+			State = 126;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,11,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 111;
+				State = 119;
 				declaration();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 112;
+				State = 120;
 				assignment();
 				}
 				break;
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 113;
+				State = 121;
 				call();
 				}
 				break;
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 114;
+				State = 122;
 				@return();
 				}
 				break;
 			case 5:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 115;
+				State = 123;
 				@if();
 				}
 				break;
 			case 6:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 116;
+				State = 124;
 				@while();
 				}
 				break;
 			case 7:
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 117;
+				State = 125;
 				block();
 				}
 				break;
@@ -844,15 +845,15 @@ public partial class JuliaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 120;
+			State = 128;
 			Match(IDENTIFIER);
-			State = 121;
+			State = 129;
 			Match(DCOLON);
-			State = 122;
+			State = 130;
 			type();
-			State = 123;
+			State = 131;
 			Match(EQ);
-			State = 124;
+			State = 132;
 			expression(0);
 			}
 		}
@@ -903,11 +904,11 @@ public partial class JuliaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 126;
+			State = 134;
 			Match(IDENTIFIER);
-			State = 127;
+			State = 135;
 			Match(EQ);
-			State = 128;
+			State = 136;
 			expression(0);
 			}
 		}
@@ -967,37 +968,37 @@ public partial class JuliaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 130;
+			State = 138;
 			Match(IDENTIFIER);
-			State = 131;
+			State = 139;
 			Match(LPAREN);
-			State = 140;
+			State = 148;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 8589934608384L) != 0)) {
 				{
-				State = 132;
+				State = 140;
 				expression(0);
-				State = 137;
+				State = 145;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					State = 133;
+					State = 141;
 					Match(COMMA);
-					State = 134;
+					State = 142;
 					expression(0);
 					}
 					}
-					State = 139;
+					State = 147;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
 				}
 			}
 
-			State = 142;
+			State = 150;
 			Match(RPAREN);
 			}
 		}
@@ -1047,9 +1048,9 @@ public partial class JuliaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 144;
+			State = 152;
 			Match(RETURN_T);
-			State = 145;
+			State = 153;
 			expression(0);
 			}
 		}
@@ -1065,54 +1066,237 @@ public partial class JuliaParser : Parser {
 	}
 
 	public partial class ExpressionContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NOT() { return GetToken(JuliaParser.NOT, 0); }
+		public ExpressionContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_expression; } }
+	 
+		public ExpressionContext() { }
+		public virtual void CopyFrom(ExpressionContext context) {
+			base.CopyFrom(context);
+		}
+	}
+	public partial class BoolExprContext : ExpressionContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
 			return GetRuleContexts<ExpressionContext>();
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
 			return GetRuleContext<ExpressionContext>(i);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LPAREN() { return GetToken(JuliaParser.LPAREN, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RPAREN() { return GetToken(JuliaParser.RPAREN, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public CallContext call() {
-			return GetRuleContext<CallContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public BoolOpContext boolOp() {
+			return GetRuleContext<BoolOpContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ConstContext @const() {
-			return GetRuleContext<ConstContext>(0);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IDENTIFIER() { return GetToken(JuliaParser.IDENTIFIER, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode STAR() { return GetToken(JuliaParser.STAR, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SLASH() { return GetToken(JuliaParser.SLASH, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PERCENT() { return GetToken(JuliaParser.PERCENT, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PLUS() { return GetToken(JuliaParser.PLUS, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MINUS() { return GetToken(JuliaParser.MINUS, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode EQEQ() { return GetToken(JuliaParser.EQEQ, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LT() { return GetToken(JuliaParser.LT, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode GT() { return GetToken(JuliaParser.GT, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LTE() { return GetToken(JuliaParser.LTE, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode GTE() { return GetToken(JuliaParser.GTE, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NEQ() { return GetToken(JuliaParser.NEQ, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode AND() { return GetToken(JuliaParser.AND, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OR() { return GetToken(JuliaParser.OR, 0); }
-		public ExpressionContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_expression; } }
+		public BoolExprContext(ExpressionContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			IJuliaListener typedListener = listener as IJuliaListener;
-			if (typedListener != null) typedListener.EnterExpression(this);
+			if (typedListener != null) typedListener.EnterBoolExpr(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			IJuliaListener typedListener = listener as IJuliaListener;
-			if (typedListener != null) typedListener.ExitExpression(this);
+			if (typedListener != null) typedListener.ExitBoolExpr(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IJuliaVisitor<TResult> typedVisitor = visitor as IJuliaVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitExpression(this);
+			if (typedVisitor != null) return typedVisitor.VisitBoolExpr(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class ConstExprContext : ExpressionContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ConstContext @const() {
+			return GetRuleContext<ConstContext>(0);
+		}
+		public ConstExprContext(ExpressionContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.EnterConstExpr(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.ExitConstExpr(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJuliaVisitor<TResult> typedVisitor = visitor as IJuliaVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitConstExpr(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class MultExprContext : ExpressionContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
+			return GetRuleContexts<ExpressionContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
+			return GetRuleContext<ExpressionContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public MultOpContext multOp() {
+			return GetRuleContext<MultOpContext>(0);
+		}
+		public MultExprContext(ExpressionContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.EnterMultExpr(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.ExitMultExpr(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJuliaVisitor<TResult> typedVisitor = visitor as IJuliaVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitMultExpr(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class VarExprContext : ExpressionContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IDENTIFIER() { return GetToken(JuliaParser.IDENTIFIER, 0); }
+		public VarExprContext(ExpressionContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.EnterVarExpr(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.ExitVarExpr(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJuliaVisitor<TResult> typedVisitor = visitor as IJuliaVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitVarExpr(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class CallExprContext : ExpressionContext {
+		[System.Diagnostics.DebuggerNonUserCode] public CallContext call() {
+			return GetRuleContext<CallContext>(0);
+		}
+		public CallExprContext(ExpressionContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.EnterCallExpr(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.ExitCallExpr(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJuliaVisitor<TResult> typedVisitor = visitor as IJuliaVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitCallExpr(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class AddExprContext : ExpressionContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
+			return GetRuleContexts<ExpressionContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
+			return GetRuleContext<ExpressionContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public AddOpContext addOp() {
+			return GetRuleContext<AddOpContext>(0);
+		}
+		public AddExprContext(ExpressionContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.EnterAddExpr(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.ExitAddExpr(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJuliaVisitor<TResult> typedVisitor = visitor as IJuliaVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitAddExpr(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class CompExprContext : ExpressionContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
+			return GetRuleContexts<ExpressionContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
+			return GetRuleContext<ExpressionContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public CompOpContext compOp() {
+			return GetRuleContext<CompOpContext>(0);
+		}
+		public CompExprContext(ExpressionContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.EnterCompExpr(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.ExitCompExpr(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJuliaVisitor<TResult> typedVisitor = visitor as IJuliaVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitCompExpr(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class NotExprContext : ExpressionContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NOT() { return GetToken(JuliaParser.NOT, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
+			return GetRuleContext<ExpressionContext>(0);
+		}
+		public NotExprContext(ExpressionContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.EnterNotExpr(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.ExitNotExpr(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJuliaVisitor<TResult> typedVisitor = visitor as IJuliaVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitNotExpr(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class ParenExprContext : ExpressionContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LPAREN() { return GetToken(JuliaParser.LPAREN, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
+			return GetRuleContext<ExpressionContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RPAREN() { return GetToken(JuliaParser.RPAREN, 0); }
+		public ParenExprContext(ExpressionContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.EnterParenExpr(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.ExitParenExpr(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJuliaVisitor<TResult> typedVisitor = visitor as IJuliaVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitParenExpr(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -1129,53 +1313,68 @@ public partial class JuliaParser : Parser {
 		ExpressionContext _prevctx = _localctx;
 		int _startState = 24;
 		EnterRecursionRule(_localctx, 24, RULE_expression, _p);
-		int _la;
 		try {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 157;
+			State = 165;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,14,Context) ) {
 			case 1:
 				{
-				State = 148;
+				_localctx = new NotExprContext(_localctx);
+				Context = _localctx;
+				_prevctx = _localctx;
+
+				State = 156;
 				Match(NOT);
-				State = 149;
+				State = 157;
 				expression(5);
 				}
 				break;
 			case 2:
 				{
-				State = 150;
+				_localctx = new ParenExprContext(_localctx);
+				Context = _localctx;
+				_prevctx = _localctx;
+				State = 158;
 				Match(LPAREN);
-				State = 151;
+				State = 159;
 				expression(0);
-				State = 152;
+				State = 160;
 				Match(RPAREN);
 				}
 				break;
 			case 3:
 				{
-				State = 154;
+				_localctx = new CallExprContext(_localctx);
+				Context = _localctx;
+				_prevctx = _localctx;
+				State = 162;
 				call();
 				}
 				break;
 			case 4:
 				{
-				State = 155;
+				_localctx = new ConstExprContext(_localctx);
+				Context = _localctx;
+				_prevctx = _localctx;
+				State = 163;
 				@const();
 				}
 				break;
 			case 5:
 				{
-				State = 156;
+				_localctx = new VarExprContext(_localctx);
+				Context = _localctx;
+				_prevctx = _localctx;
+				State = 164;
 				Match(IDENTIFIER);
 				}
 				break;
 			}
 			Context.Stop = TokenStream.LT(-1);
-			State = 173;
+			State = 185;
 			ErrorHandler.Sync(this);
 			_alt = Interpreter.AdaptivePredict(TokenStream,16,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
@@ -1184,89 +1383,61 @@ public partial class JuliaParser : Parser {
 						TriggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					State = 171;
+					State = 183;
 					ErrorHandler.Sync(this);
 					switch ( Interpreter.AdaptivePredict(TokenStream,15,Context) ) {
 					case 1:
 						{
-						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx = new MultExprContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
-						State = 159;
+						State = 167;
 						if (!(Precpred(Context, 9))) throw new FailedPredicateException(this, "Precpred(Context, 9)");
-						State = 160;
-						_la = TokenStream.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 234881024L) != 0)) ) {
-						ErrorHandler.RecoverInline(this);
-						}
-						else {
-							ErrorHandler.ReportMatch(this);
-						    Consume();
-						}
-						State = 161;
+						State = 168;
+						multOp();
+						State = 169;
 						expression(10);
 						}
 						break;
 					case 2:
 						{
-						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx = new AddExprContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
-						State = 162;
+						State = 171;
 						if (!(Precpred(Context, 8))) throw new FailedPredicateException(this, "Precpred(Context, 8)");
-						State = 163;
-						_la = TokenStream.LA(1);
-						if ( !(_la==PLUS || _la==MINUS) ) {
-						ErrorHandler.RecoverInline(this);
-						}
-						else {
-							ErrorHandler.ReportMatch(this);
-						    Consume();
-						}
-						State = 164;
+						State = 172;
+						addOp();
+						State = 173;
 						expression(9);
 						}
 						break;
 					case 3:
 						{
-						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx = new CompExprContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
-						State = 165;
+						State = 175;
 						if (!(Precpred(Context, 7))) throw new FailedPredicateException(this, "Precpred(Context, 7)");
-						State = 166;
-						_la = TokenStream.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 16911433728L) != 0)) ) {
-						ErrorHandler.RecoverInline(this);
-						}
-						else {
-							ErrorHandler.ReportMatch(this);
-						    Consume();
-						}
-						State = 167;
+						State = 176;
+						compOp();
+						State = 177;
 						expression(8);
 						}
 						break;
 					case 4:
 						{
-						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx = new BoolExprContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
-						State = 168;
+						State = 179;
 						if (!(Precpred(Context, 6))) throw new FailedPredicateException(this, "Precpred(Context, 6)");
-						State = 169;
-						_la = TokenStream.LA(1);
-						if ( !(_la==AND || _la==OR) ) {
-						ErrorHandler.RecoverInline(this);
-						}
-						else {
-							ErrorHandler.ReportMatch(this);
-						    Consume();
-						}
-						State = 170;
+						State = 180;
+						boolOp();
+						State = 181;
 						expression(7);
 						}
 						break;
 					}
 					} 
 				}
-				State = 175;
+				State = 187;
 				ErrorHandler.Sync(this);
 				_alt = Interpreter.AdaptivePredict(TokenStream,16,Context);
 			}
@@ -1279,6 +1450,235 @@ public partial class JuliaParser : Parser {
 		}
 		finally {
 			UnrollRecursionContexts(_parentctx);
+		}
+		return _localctx;
+	}
+
+	public partial class MultOpContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode STAR() { return GetToken(JuliaParser.STAR, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SLASH() { return GetToken(JuliaParser.SLASH, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PERCENT() { return GetToken(JuliaParser.PERCENT, 0); }
+		public MultOpContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_multOp; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.EnterMultOp(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.ExitMultOp(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJuliaVisitor<TResult> typedVisitor = visitor as IJuliaVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitMultOp(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public MultOpContext multOp() {
+		MultOpContext _localctx = new MultOpContext(Context, State);
+		EnterRule(_localctx, 26, RULE_multOp);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 188;
+			_la = TokenStream.LA(1);
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 234881024L) != 0)) ) {
+			ErrorHandler.RecoverInline(this);
+			}
+			else {
+				ErrorHandler.ReportMatch(this);
+			    Consume();
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class AddOpContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PLUS() { return GetToken(JuliaParser.PLUS, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MINUS() { return GetToken(JuliaParser.MINUS, 0); }
+		public AddOpContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_addOp; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.EnterAddOp(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.ExitAddOp(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJuliaVisitor<TResult> typedVisitor = visitor as IJuliaVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitAddOp(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public AddOpContext addOp() {
+		AddOpContext _localctx = new AddOpContext(Context, State);
+		EnterRule(_localctx, 28, RULE_addOp);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 190;
+			_la = TokenStream.LA(1);
+			if ( !(_la==PLUS || _la==MINUS) ) {
+			ErrorHandler.RecoverInline(this);
+			}
+			else {
+				ErrorHandler.ReportMatch(this);
+			    Consume();
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class CompOpContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode EQEQ() { return GetToken(JuliaParser.EQEQ, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LT() { return GetToken(JuliaParser.LT, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode GT() { return GetToken(JuliaParser.GT, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LTE() { return GetToken(JuliaParser.LTE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode GTE() { return GetToken(JuliaParser.GTE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NEQ() { return GetToken(JuliaParser.NEQ, 0); }
+		public CompOpContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_compOp; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.EnterCompOp(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.ExitCompOp(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJuliaVisitor<TResult> typedVisitor = visitor as IJuliaVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitCompOp(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public CompOpContext compOp() {
+		CompOpContext _localctx = new CompOpContext(Context, State);
+		EnterRule(_localctx, 30, RULE_compOp);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 192;
+			_la = TokenStream.LA(1);
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 16911433728L) != 0)) ) {
+			ErrorHandler.RecoverInline(this);
+			}
+			else {
+				ErrorHandler.ReportMatch(this);
+			    Consume();
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class BoolOpContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode AND() { return GetToken(JuliaParser.AND, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OR() { return GetToken(JuliaParser.OR, 0); }
+		public BoolOpContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_boolOp; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.EnterBoolOp(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IJuliaListener typedListener = listener as IJuliaListener;
+			if (typedListener != null) typedListener.ExitBoolOp(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IJuliaVisitor<TResult> typedVisitor = visitor as IJuliaVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitBoolOp(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public BoolOpContext boolOp() {
+		BoolOpContext _localctx = new BoolOpContext(Context, State);
+		EnterRule(_localctx, 32, RULE_boolOp);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 194;
+			_la = TokenStream.LA(1);
+			if ( !(_la==AND || _la==OR) ) {
+			ErrorHandler.RecoverInline(this);
+			}
+			else {
+				ErrorHandler.ReportMatch(this);
+			    Consume();
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
 		}
 		return _localctx;
 	}
@@ -1314,12 +1714,12 @@ public partial class JuliaParser : Parser {
 	[RuleVersion(0)]
 	public ConstContext @const() {
 		ConstContext _localctx = new ConstContext(Context, State);
-		EnterRule(_localctx, 26, RULE_const);
+		EnterRule(_localctx, 34, RULE_const);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 176;
+			State = 196;
 			_la = TokenStream.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 4123168604160L) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
@@ -1372,12 +1772,12 @@ public partial class JuliaParser : Parser {
 	[RuleVersion(0)]
 	public TypeContext type() {
 		TypeContext _localctx = new TypeContext(Context, State);
-		EnterRule(_localctx, 28, RULE_type);
+		EnterRule(_localctx, 36, RULE_type);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 178;
+			State = 198;
 			_la = TokenStream.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 3840L) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
@@ -1416,63 +1816,69 @@ public partial class JuliaParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,46,181,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,46,201,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,14,
-		1,0,1,0,5,0,33,8,0,10,0,12,0,36,9,0,1,0,1,0,1,1,1,1,1,1,1,1,3,1,44,8,1,
-		1,1,5,1,47,8,1,10,1,12,1,50,9,1,1,1,1,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,
-		2,5,2,62,8,2,10,2,12,2,65,9,2,3,2,67,8,2,1,2,1,2,1,3,1,3,1,3,1,4,1,4,1,
-		4,5,4,77,8,4,10,4,12,4,80,9,4,1,4,1,4,5,4,84,8,4,10,4,12,4,87,9,4,3,4,
-		89,8,4,1,4,1,4,1,5,1,5,1,5,5,5,96,8,5,10,5,12,5,99,9,5,1,5,1,5,1,6,1,6,
-		5,6,105,8,6,10,6,12,6,108,9,6,1,6,1,6,1,7,1,7,1,7,1,7,1,7,1,7,1,7,3,7,
-		119,8,7,1,8,1,8,1,8,1,8,1,8,1,8,1,9,1,9,1,9,1,9,1,10,1,10,1,10,1,10,1,
-		10,5,10,136,8,10,10,10,12,10,139,9,10,3,10,141,8,10,1,10,1,10,1,11,1,11,
-		1,11,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,3,12,158,8,12,1,
-		12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,5,12,172,8,12,
-		10,12,12,12,175,9,12,1,13,1,13,1,14,1,14,1,14,0,1,24,15,0,2,4,6,8,10,12,
-		14,16,18,20,22,24,26,28,0,6,1,0,25,27,1,0,23,24,1,0,28,33,1,0,34,35,1,
-		0,38,41,1,0,8,11,192,0,34,1,0,0,0,2,39,1,0,0,0,4,53,1,0,0,0,6,70,1,0,0,
-		0,8,73,1,0,0,0,10,92,1,0,0,0,12,102,1,0,0,0,14,118,1,0,0,0,16,120,1,0,
-		0,0,18,126,1,0,0,0,20,130,1,0,0,0,22,144,1,0,0,0,24,157,1,0,0,0,26,176,
-		1,0,0,0,28,178,1,0,0,0,30,33,3,2,1,0,31,33,3,14,7,0,32,30,1,0,0,0,32,31,
-		1,0,0,0,33,36,1,0,0,0,34,32,1,0,0,0,34,35,1,0,0,0,35,37,1,0,0,0,36,34,
-		1,0,0,0,37,38,5,0,0,1,38,1,1,0,0,0,39,40,5,1,0,0,40,41,5,42,0,0,41,43,
-		3,4,2,0,42,44,3,6,3,0,43,42,1,0,0,0,43,44,1,0,0,0,44,48,1,0,0,0,45,47,
-		3,14,7,0,46,45,1,0,0,0,47,50,1,0,0,0,48,46,1,0,0,0,48,49,1,0,0,0,49,51,
-		1,0,0,0,50,48,1,0,0,0,51,52,5,4,0,0,52,3,1,0,0,0,53,66,5,14,0,0,54,55,
-		5,42,0,0,55,56,5,18,0,0,56,63,3,28,14,0,57,58,5,19,0,0,58,59,5,42,0,0,
-		59,60,5,18,0,0,60,62,3,28,14,0,61,57,1,0,0,0,62,65,1,0,0,0,63,61,1,0,0,
-		0,63,64,1,0,0,0,64,67,1,0,0,0,65,63,1,0,0,0,66,54,1,0,0,0,66,67,1,0,0,
-		0,67,68,1,0,0,0,68,69,5,15,0,0,69,5,1,0,0,0,70,71,5,18,0,0,71,72,3,28,
-		14,0,72,7,1,0,0,0,73,74,5,5,0,0,74,78,3,24,12,0,75,77,3,14,7,0,76,75,1,
-		0,0,0,77,80,1,0,0,0,78,76,1,0,0,0,78,79,1,0,0,0,79,88,1,0,0,0,80,78,1,
-		0,0,0,81,85,5,6,0,0,82,84,3,14,7,0,83,82,1,0,0,0,84,87,1,0,0,0,85,83,1,
-		0,0,0,85,86,1,0,0,0,86,89,1,0,0,0,87,85,1,0,0,0,88,81,1,0,0,0,88,89,1,
-		0,0,0,89,90,1,0,0,0,90,91,5,4,0,0,91,9,1,0,0,0,92,93,5,7,0,0,93,97,3,24,
-		12,0,94,96,3,14,7,0,95,94,1,0,0,0,96,99,1,0,0,0,97,95,1,0,0,0,97,98,1,
-		0,0,0,98,100,1,0,0,0,99,97,1,0,0,0,100,101,5,4,0,0,101,11,1,0,0,0,102,
-		106,5,3,0,0,103,105,3,14,7,0,104,103,1,0,0,0,105,108,1,0,0,0,106,104,1,
-		0,0,0,106,107,1,0,0,0,107,109,1,0,0,0,108,106,1,0,0,0,109,110,5,4,0,0,
-		110,13,1,0,0,0,111,119,3,16,8,0,112,119,3,18,9,0,113,119,3,20,10,0,114,
-		119,3,22,11,0,115,119,3,8,4,0,116,119,3,10,5,0,117,119,3,12,6,0,118,111,
-		1,0,0,0,118,112,1,0,0,0,118,113,1,0,0,0,118,114,1,0,0,0,118,115,1,0,0,
-		0,118,116,1,0,0,0,118,117,1,0,0,0,119,15,1,0,0,0,120,121,5,42,0,0,121,
-		122,5,18,0,0,122,123,3,28,14,0,123,124,5,37,0,0,124,125,3,24,12,0,125,
-		17,1,0,0,0,126,127,5,42,0,0,127,128,5,37,0,0,128,129,3,24,12,0,129,19,
-		1,0,0,0,130,131,5,42,0,0,131,140,5,14,0,0,132,137,3,24,12,0,133,134,5,
-		19,0,0,134,136,3,24,12,0,135,133,1,0,0,0,136,139,1,0,0,0,137,135,1,0,0,
-		0,137,138,1,0,0,0,138,141,1,0,0,0,139,137,1,0,0,0,140,132,1,0,0,0,140,
-		141,1,0,0,0,141,142,1,0,0,0,142,143,5,15,0,0,143,21,1,0,0,0,144,145,5,
-		2,0,0,145,146,3,24,12,0,146,23,1,0,0,0,147,148,6,12,-1,0,148,149,5,36,
-		0,0,149,158,3,24,12,5,150,151,5,14,0,0,151,152,3,24,12,0,152,153,5,15,
-		0,0,153,158,1,0,0,0,154,158,3,20,10,0,155,158,3,26,13,0,156,158,5,42,0,
-		0,157,147,1,0,0,0,157,150,1,0,0,0,157,154,1,0,0,0,157,155,1,0,0,0,157,
-		156,1,0,0,0,158,173,1,0,0,0,159,160,10,9,0,0,160,161,7,0,0,0,161,172,3,
-		24,12,10,162,163,10,8,0,0,163,164,7,1,0,0,164,172,3,24,12,9,165,166,10,
-		7,0,0,166,167,7,2,0,0,167,172,3,24,12,8,168,169,10,6,0,0,169,170,7,3,0,
-		0,170,172,3,24,12,7,171,159,1,0,0,0,171,162,1,0,0,0,171,165,1,0,0,0,171,
-		168,1,0,0,0,172,175,1,0,0,0,173,171,1,0,0,0,173,174,1,0,0,0,174,25,1,0,
-		0,0,175,173,1,0,0,0,176,177,7,4,0,0,177,27,1,0,0,0,178,179,7,5,0,0,179,
-		29,1,0,0,0,17,32,34,43,48,63,66,78,85,88,97,106,118,137,140,157,171,173
+		2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,1,0,1,0,5,0,41,8,0,10,0,12,0,44,
+		9,0,1,0,1,0,1,1,1,1,1,1,1,1,3,1,52,8,1,1,1,5,1,55,8,1,10,1,12,1,58,9,1,
+		1,1,1,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,5,2,70,8,2,10,2,12,2,73,9,2,3,
+		2,75,8,2,1,2,1,2,1,3,1,3,1,3,1,4,1,4,1,4,5,4,85,8,4,10,4,12,4,88,9,4,1,
+		4,1,4,5,4,92,8,4,10,4,12,4,95,9,4,3,4,97,8,4,1,4,1,4,1,5,1,5,1,5,5,5,104,
+		8,5,10,5,12,5,107,9,5,1,5,1,5,1,6,1,6,5,6,113,8,6,10,6,12,6,116,9,6,1,
+		6,1,6,1,7,1,7,1,7,1,7,1,7,1,7,1,7,3,7,127,8,7,1,8,1,8,1,8,1,8,1,8,1,8,
+		1,9,1,9,1,9,1,9,1,10,1,10,1,10,1,10,1,10,5,10,144,8,10,10,10,12,10,147,
+		9,10,3,10,149,8,10,1,10,1,10,1,11,1,11,1,11,1,12,1,12,1,12,1,12,1,12,1,
+		12,1,12,1,12,1,12,1,12,3,12,166,8,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,
+		1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,5,12,184,8,12,10,12,12,12,
+		187,9,12,1,13,1,13,1,14,1,14,1,15,1,15,1,16,1,16,1,17,1,17,1,18,1,18,1,
+		18,0,1,24,19,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,0,6,1,
+		0,25,27,1,0,23,24,1,0,28,33,1,0,34,35,1,0,38,41,1,0,8,11,208,0,42,1,0,
+		0,0,2,47,1,0,0,0,4,61,1,0,0,0,6,78,1,0,0,0,8,81,1,0,0,0,10,100,1,0,0,0,
+		12,110,1,0,0,0,14,126,1,0,0,0,16,128,1,0,0,0,18,134,1,0,0,0,20,138,1,0,
+		0,0,22,152,1,0,0,0,24,165,1,0,0,0,26,188,1,0,0,0,28,190,1,0,0,0,30,192,
+		1,0,0,0,32,194,1,0,0,0,34,196,1,0,0,0,36,198,1,0,0,0,38,41,3,2,1,0,39,
+		41,3,14,7,0,40,38,1,0,0,0,40,39,1,0,0,0,41,44,1,0,0,0,42,40,1,0,0,0,42,
+		43,1,0,0,0,43,45,1,0,0,0,44,42,1,0,0,0,45,46,5,0,0,1,46,1,1,0,0,0,47,48,
+		5,1,0,0,48,49,5,42,0,0,49,51,3,4,2,0,50,52,3,6,3,0,51,50,1,0,0,0,51,52,
+		1,0,0,0,52,56,1,0,0,0,53,55,3,14,7,0,54,53,1,0,0,0,55,58,1,0,0,0,56,54,
+		1,0,0,0,56,57,1,0,0,0,57,59,1,0,0,0,58,56,1,0,0,0,59,60,5,4,0,0,60,3,1,
+		0,0,0,61,74,5,14,0,0,62,63,5,42,0,0,63,64,5,18,0,0,64,71,3,36,18,0,65,
+		66,5,19,0,0,66,67,5,42,0,0,67,68,5,18,0,0,68,70,3,36,18,0,69,65,1,0,0,
+		0,70,73,1,0,0,0,71,69,1,0,0,0,71,72,1,0,0,0,72,75,1,0,0,0,73,71,1,0,0,
+		0,74,62,1,0,0,0,74,75,1,0,0,0,75,76,1,0,0,0,76,77,5,15,0,0,77,5,1,0,0,
+		0,78,79,5,18,0,0,79,80,3,36,18,0,80,7,1,0,0,0,81,82,5,5,0,0,82,86,3,24,
+		12,0,83,85,3,14,7,0,84,83,1,0,0,0,85,88,1,0,0,0,86,84,1,0,0,0,86,87,1,
+		0,0,0,87,96,1,0,0,0,88,86,1,0,0,0,89,93,5,6,0,0,90,92,3,14,7,0,91,90,1,
+		0,0,0,92,95,1,0,0,0,93,91,1,0,0,0,93,94,1,0,0,0,94,97,1,0,0,0,95,93,1,
+		0,0,0,96,89,1,0,0,0,96,97,1,0,0,0,97,98,1,0,0,0,98,99,5,4,0,0,99,9,1,0,
+		0,0,100,101,5,7,0,0,101,105,3,24,12,0,102,104,3,14,7,0,103,102,1,0,0,0,
+		104,107,1,0,0,0,105,103,1,0,0,0,105,106,1,0,0,0,106,108,1,0,0,0,107,105,
+		1,0,0,0,108,109,5,4,0,0,109,11,1,0,0,0,110,114,5,3,0,0,111,113,3,14,7,
+		0,112,111,1,0,0,0,113,116,1,0,0,0,114,112,1,0,0,0,114,115,1,0,0,0,115,
+		117,1,0,0,0,116,114,1,0,0,0,117,118,5,4,0,0,118,13,1,0,0,0,119,127,3,16,
+		8,0,120,127,3,18,9,0,121,127,3,20,10,0,122,127,3,22,11,0,123,127,3,8,4,
+		0,124,127,3,10,5,0,125,127,3,12,6,0,126,119,1,0,0,0,126,120,1,0,0,0,126,
+		121,1,0,0,0,126,122,1,0,0,0,126,123,1,0,0,0,126,124,1,0,0,0,126,125,1,
+		0,0,0,127,15,1,0,0,0,128,129,5,42,0,0,129,130,5,18,0,0,130,131,3,36,18,
+		0,131,132,5,37,0,0,132,133,3,24,12,0,133,17,1,0,0,0,134,135,5,42,0,0,135,
+		136,5,37,0,0,136,137,3,24,12,0,137,19,1,0,0,0,138,139,5,42,0,0,139,148,
+		5,14,0,0,140,145,3,24,12,0,141,142,5,19,0,0,142,144,3,24,12,0,143,141,
+		1,0,0,0,144,147,1,0,0,0,145,143,1,0,0,0,145,146,1,0,0,0,146,149,1,0,0,
+		0,147,145,1,0,0,0,148,140,1,0,0,0,148,149,1,0,0,0,149,150,1,0,0,0,150,
+		151,5,15,0,0,151,21,1,0,0,0,152,153,5,2,0,0,153,154,3,24,12,0,154,23,1,
+		0,0,0,155,156,6,12,-1,0,156,157,5,36,0,0,157,166,3,24,12,5,158,159,5,14,
+		0,0,159,160,3,24,12,0,160,161,5,15,0,0,161,166,1,0,0,0,162,166,3,20,10,
+		0,163,166,3,34,17,0,164,166,5,42,0,0,165,155,1,0,0,0,165,158,1,0,0,0,165,
+		162,1,0,0,0,165,163,1,0,0,0,165,164,1,0,0,0,166,185,1,0,0,0,167,168,10,
+		9,0,0,168,169,3,26,13,0,169,170,3,24,12,10,170,184,1,0,0,0,171,172,10,
+		8,0,0,172,173,3,28,14,0,173,174,3,24,12,9,174,184,1,0,0,0,175,176,10,7,
+		0,0,176,177,3,30,15,0,177,178,3,24,12,8,178,184,1,0,0,0,179,180,10,6,0,
+		0,180,181,3,32,16,0,181,182,3,24,12,7,182,184,1,0,0,0,183,167,1,0,0,0,
+		183,171,1,0,0,0,183,175,1,0,0,0,183,179,1,0,0,0,184,187,1,0,0,0,185,183,
+		1,0,0,0,185,186,1,0,0,0,186,25,1,0,0,0,187,185,1,0,0,0,188,189,7,0,0,0,
+		189,27,1,0,0,0,190,191,7,1,0,0,191,29,1,0,0,0,192,193,7,2,0,0,193,31,1,
+		0,0,0,194,195,7,3,0,0,195,33,1,0,0,0,196,197,7,4,0,0,197,35,1,0,0,0,198,
+		199,7,5,0,0,199,37,1,0,0,0,17,40,42,51,56,71,74,86,93,96,105,114,126,145,
+		148,165,183,185
 	};
 
 	public static readonly ATN _ATN =

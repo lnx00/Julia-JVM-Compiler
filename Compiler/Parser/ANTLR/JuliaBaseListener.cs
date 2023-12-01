@@ -180,17 +180,179 @@ public partial class JuliaBaseListener : IJuliaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitReturn([NotNull] JuliaParser.ReturnContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="JuliaParser.expression"/>.
+	/// Enter a parse tree produced by the <c>BoolExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterExpression([NotNull] JuliaParser.ExpressionContext context) { }
+	public virtual void EnterBoolExpr([NotNull] JuliaParser.BoolExprContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="JuliaParser.expression"/>.
+	/// Exit a parse tree produced by the <c>BoolExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitExpression([NotNull] JuliaParser.ExpressionContext context) { }
+	public virtual void ExitBoolExpr([NotNull] JuliaParser.BoolExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>ConstExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterConstExpr([NotNull] JuliaParser.ConstExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ConstExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitConstExpr([NotNull] JuliaParser.ConstExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>MultExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMultExpr([NotNull] JuliaParser.MultExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>MultExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMultExpr([NotNull] JuliaParser.MultExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>VarExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterVarExpr([NotNull] JuliaParser.VarExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>VarExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitVarExpr([NotNull] JuliaParser.VarExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>CallExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCallExpr([NotNull] JuliaParser.CallExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>CallExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCallExpr([NotNull] JuliaParser.CallExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>AddExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAddExpr([NotNull] JuliaParser.AddExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>AddExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAddExpr([NotNull] JuliaParser.AddExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>CompExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCompExpr([NotNull] JuliaParser.CompExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>CompExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCompExpr([NotNull] JuliaParser.CompExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>NotExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNotExpr([NotNull] JuliaParser.NotExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>NotExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNotExpr([NotNull] JuliaParser.NotExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>ParenExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterParenExpr([NotNull] JuliaParser.ParenExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ParenExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitParenExpr([NotNull] JuliaParser.ParenExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.multOp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMultOp([NotNull] JuliaParser.MultOpContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.multOp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMultOp([NotNull] JuliaParser.MultOpContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.addOp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAddOp([NotNull] JuliaParser.AddOpContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.addOp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAddOp([NotNull] JuliaParser.AddOpContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.compOp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCompOp([NotNull] JuliaParser.CompOpContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.compOp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCompOp([NotNull] JuliaParser.CompOpContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.boolOp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBoolOp([NotNull] JuliaParser.BoolOpContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.boolOp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBoolOp([NotNull] JuliaParser.BoolOpContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="JuliaParser.const"/>.
 	/// <para>The default implementation does nothing.</para>

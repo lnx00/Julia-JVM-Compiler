@@ -104,11 +104,92 @@ public interface IJuliaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitReturn([NotNull] JuliaParser.ReturnContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="JuliaParser.expression"/>.
+	/// Visit a parse tree produced by the <c>BoolExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitExpression([NotNull] JuliaParser.ExpressionContext context);
+	Result VisitBoolExpr([NotNull] JuliaParser.BoolExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>ConstExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitConstExpr([NotNull] JuliaParser.ConstExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>MultExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMultExpr([NotNull] JuliaParser.MultExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>VarExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVarExpr([NotNull] JuliaParser.VarExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>CallExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCallExpr([NotNull] JuliaParser.CallExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>AddExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAddExpr([NotNull] JuliaParser.AddExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>CompExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCompExpr([NotNull] JuliaParser.CompExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>NotExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNotExpr([NotNull] JuliaParser.NotExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>ParenExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParenExpr([NotNull] JuliaParser.ParenExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.multOp"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMultOp([NotNull] JuliaParser.MultOpContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.addOp"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAddOp([NotNull] JuliaParser.AddOpContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.compOp"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCompOp([NotNull] JuliaParser.CompOpContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.boolOp"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBoolOp([NotNull] JuliaParser.BoolOpContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="JuliaParser.const"/>.
 	/// </summary>
