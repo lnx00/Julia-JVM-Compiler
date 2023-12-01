@@ -3,10 +3,10 @@ using Compiler.Parser.ErrorHandling;
 
 namespace Tests;
 
-public class UnitTest1
+public class ParserTests
 {
     [Fact]
-    public void Test_IntegerDeclaration()
+    public void IntegerDeclaration_DoesNotThrow()
     {
         // Arange
         var script = "x::Integer = 1";
@@ -20,7 +20,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public void Test_IntegerAssignment()
+    public void IntegerAssignment_DoesNotThrow()
     {
         // Arange
         var script = """
@@ -37,7 +37,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public void Test_MissingDeclarationType()
+    public void MissingDeclarationType_ThrowsSyntaxError()
     {
         // Arange
         var script = "x:: = 1";
