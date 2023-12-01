@@ -18,6 +18,90 @@ public class ParserTests
         // Assert
         Assert.True(true);
     }
+    
+    [Fact]
+    public void NegativeIntegerDeclaration_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::Integer = -1";
+
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void FloatDeclaration_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::Float64 = 1.0";
+
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void NegativeFloatDeclaration_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::Float64 = -1.0";
+
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void StringDeclaration_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::String = \"Hello, World!\"";
+
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void DangerousStringDeclaration_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::String = \"if true while 1 + 2 * 3.0 else else() end\"";
+
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void BoolDeclaration_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::Bool = true";
+
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+
+        // Assert
+        Assert.True(true);
+    }
 
     [Fact]
     public void IntegerAssignment_DoesNotThrow()

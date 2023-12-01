@@ -49,8 +49,8 @@ END_T: 'end';
 IF_T: 'if';
 ELSE_T: 'else';
 WHILE_T: 'while';
-TRUE_T: 'true';
-FALSE_T: 'false';
+//TRUE_T: 'true';
+//FALSE_T: 'false';
 INTEGER_T: 'Integer';
 FLOAT64_T: 'Float64';
 BOOL_T: 'Bool';
@@ -92,13 +92,14 @@ NOT: '!';
 // Assignment operators
 EQ: '=';
 
-IDENTIFIER: Letter LetterOrDigit*;
-
 // Literals
 INTCONST: MINUS? [0-9]+;
 FLTCONST: MINUS? [0-9]+ DOT [0-9]+;
 STRCONST: '"' .*? '"';
-BOOLCONST: TRUE_T | FALSE_T;
+BOOLCONST: 'true' | 'false';
+
+// Identifiers
+IDENTIFIER: Letter LetterOrDigit*;
 
 // Comments and whitespace
 COMMENT: '#' ~[\r\n]* -> skip;

@@ -1,9 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using Compiler.Parser;
+﻿using Compiler.Parser;
 using Compiler.Parser.ErrorHandling;
-
-Console.WriteLine("Hello, World!");
 
 var input = File.ReadAllText("input.jl");
 

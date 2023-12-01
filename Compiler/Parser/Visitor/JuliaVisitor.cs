@@ -1,16 +1,14 @@
-﻿namespace Compiler.Parser.Visitor;
+﻿using Compiler.Core.Common;
+
+namespace Compiler.Parser.Visitor;
 
 public class JuliaVisitor : JuliaBaseVisitor<object?>
 {
-    private readonly Dictionary<string, object?> _variables = new();
-    
     public override object? VisitDeclaration(JuliaParser.DeclarationContext context)
     {
         string varName = context.IDENTIFIER().GetText();
-        var typeName = context.type().GetText();
-        object? value = Visit(context.expression());
-        
-        _variables.Add(varName, value);
+        var typeName = Visit(context.type()) as TypeManager.DataType? ?? throw new Exception("Unknown type");
+        var value = Visit(context.expression());
 
         //return base.VisitDeclaration(context);
         return null;
@@ -20,15 +18,6 @@ public class JuliaVisitor : JuliaBaseVisitor<object?>
     {
         string varName = context.IDENTIFIER().GetText();
         object? value = Visit(context.expression());
-
-        if (_variables.ContainsKey(varName))
-        {
-            _variables[varName] = value;
-        }
-        else
-        {
-            throw new Exception($"Variable {varName} does not exist");
-        }
         
         //return base.VisitAssignment(context);
         return null;
@@ -58,5 +47,11 @@ public class JuliaVisitor : JuliaBaseVisitor<object?>
         
         //return base.VisitConst(context);
         throw new Exception("Unknown constant type");
+    }
+
+    public override object? VisitType(JuliaParser.TypeContext context)
+    {
+        return TypeManager.GetDataType(context.GetText());
+        //return base.VisitType(context);
     }
 }
