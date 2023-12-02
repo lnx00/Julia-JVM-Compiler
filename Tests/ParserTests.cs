@@ -264,4 +264,18 @@ public class ParserTests
         // Assert
         Assert.Throws<Exception>(() => parser.Parse());
     }
+    
+    [Fact]
+    public void ComplexIntegerMath_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::Integer = 1 + (2 * (3 - 4) / 5) % ((6))";
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
 }

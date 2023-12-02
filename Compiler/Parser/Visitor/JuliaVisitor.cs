@@ -5,7 +5,7 @@ namespace Compiler.Parser.Visitor;
 
 public class JuliaVisitor : JuliaBaseVisitor<INode?>
 {
-    private Dictionary<string, TypeManager.DataType> _variables = new();
+    private readonly Dictionary<string, TypeManager.DataType> _variables = new();
     
     public override INode? VisitDeclaration(JuliaParser.DeclarationContext context)
     {
@@ -46,7 +46,6 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
     {
         if (context.INTCONST() != null)
         {
-            //return int.Parse(context.INTCONST().GetText());
             int value = int.Parse(context.INTCONST().GetText());
             return new IntegerConstNode(value);
         }
@@ -79,6 +78,12 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         return base.VisitType(context);
     }*/
 
+    public override INode? VisitParenExpr(JuliaParser.ParenExprContext context)
+    {
+        return Visit(context.expression());
+        //return base.VisitParenExpr(context);
+    }
+
     public override INode? VisitAddExpr(JuliaParser.AddExprContext context)
     {
         var op = context.addOp().GetText();
@@ -104,5 +109,38 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             
             _ => throw new Exception("Unknown operator: " + op)
         };
+    }
+
+    public override INode? VisitMultExpr(JuliaParser.MultExprContext context)
+    {
+        var op = context.multOp().GetText();
+        var left = Visit(context.expression(0));
+        var right = Visit(context.expression(1));
+        
+        return op switch
+        {
+            "*" => left switch
+            {
+                IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value * rightInt.Value),
+                FloatConstNode leftFloat when right is FloatConstNode rightFloat => new FloatConstNode(leftFloat.Value * rightFloat.Value),
+                _ => throw new Exception("Invalid types for operator *")
+            },
+            
+            "/" => left switch
+            {
+                IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value / rightInt.Value),
+                FloatConstNode leftFloat when right is FloatConstNode rightFloat => new FloatConstNode(leftFloat.Value / rightFloat.Value),
+                _ => throw new Exception("Invalid types for operator /")
+            },
+            
+            "%" => left switch
+            {
+                IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value % rightInt.Value),
+                _ => throw new Exception("Invalid types for operator %")
+            },
+            
+            _ => throw new Exception("Unknown operator: " + op)
+        };
+        //return base.VisitMultExpr(context);
     }
 }
