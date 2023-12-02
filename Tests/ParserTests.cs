@@ -278,4 +278,32 @@ public class ParserTests
         // Assert
         Assert.True(true);
     }
+    
+    [Fact]
+    public void ComplexFloatMath_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::Float64 = 1.0 + (2.0 * (3.0 - 4.0) / ((5.0)))";
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void ComplexStringMath_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::String = \"Hello, \" + (\"World!\" + \"Goodbye!\")";
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
 }
