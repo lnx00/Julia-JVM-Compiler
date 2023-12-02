@@ -193,7 +193,7 @@ public class ParserTests
     public void StringConcatenation_DoesNotThrow()
     {
         // Arange
-        var script = "x::String = \"Hello, \" + \"World!\"";
+        var script = "x::String = \"Hello, \" * \"World!\"";
         
         // Act
         var parser = new Parser(script);
@@ -207,7 +207,7 @@ public class ParserTests
     public void StringIntegerConcatenation_ThrowsError()
     {
         // Arange
-        var script = "x::String = \"Hello\" + 1";
+        var script = "x::String = \"Hello\" * 1";
         
         // Act
         var parser = new Parser(script);
@@ -297,7 +297,7 @@ public class ParserTests
     public void ComplexStringMath_DoesNotThrow()
     {
         // Arange
-        var script = "x::String = \"Hello, \" + (\"World!\" + \"Goodbye!\")";
+        var script = "x::String = \"Hello, \" * \"World!\" * \"Goodbye!\"";
         
         // Act
         var parser = new Parser(script);

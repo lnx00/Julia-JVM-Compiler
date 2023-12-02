@@ -96,7 +96,6 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             {
                 IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value + rightInt.Value),
                 FloatConstNode leftFloat when right is FloatConstNode rightFloat => new FloatConstNode(leftFloat.Value + rightFloat.Value),
-                StringConstNode leftString when right is StringConstNode rightString => new StringConstNode(leftString.Value + rightString.Value),
                 _ => throw new Exception("Invalid types for operator +")
             },
             
@@ -123,6 +122,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             {
                 IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value * rightInt.Value),
                 FloatConstNode leftFloat when right is FloatConstNode rightFloat => new FloatConstNode(leftFloat.Value * rightFloat.Value),
+                StringConstNode leftString when right is StringConstNode rightString => new StringConstNode(leftString.Value + rightString.Value),
                 _ => throw new Exception("Invalid types for operator *")
             },
             
