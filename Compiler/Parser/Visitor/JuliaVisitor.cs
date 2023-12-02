@@ -5,6 +5,8 @@ namespace Compiler.Parser.Visitor;
 
 public class JuliaVisitor : JuliaBaseVisitor<INode?>
 {
+    private Dictionary<string, TypeManager.DataType> _variables = new();
+    
     public override INode? VisitDeclaration(JuliaParser.DeclarationContext context)
     {
         var varName = context.IDENTIFIER().GetText();
@@ -18,6 +20,8 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             throw new Exception("Cannot initialize variable of type " + typeName + " with value of type " + value.Type);
         }
 
+        _variables.Add(varName, type);
+
         //return base.VisitDeclaration(context);
         return null;
     }
@@ -27,7 +31,12 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         var varName = context.IDENTIFIER().GetText();
         var value = Visit(context.expression()) as ExpressionNode ?? throw new InvalidOperationException();
         
-        // TODO: Check for type compatibility
+        // Check for type compatibility
+        var type = _variables[varName];
+        if (type != value.Type)
+        {
+            throw new Exception("Cannot assign variable of type " + type + " with value of type " + value.Type);
+        }
         
         //return base.VisitAssignment(context);
         return null;

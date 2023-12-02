@@ -161,4 +161,107 @@ public class ParserTests
         // Assert
         Assert.Throws<Exception>(() => parser.Parse());
     }
+    
+    [Fact]
+    public void SimpleIntegerSubtraction_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::Integer = 1 - 2";
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void IntegerFloatSubtraction_ThrowsError()
+    {
+        // Arange
+        var script = "x::Integer = 1 - 2.0";
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<Exception>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void StringConcatenation_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::String = \"Hello, \" + \"World!\"";
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void StringIntegerConcatenation_ThrowsError()
+    {
+        // Arange
+        var script = "x::String = \"Hello\" + 1";
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<Exception>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void StringAssignment_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     x::String = "Hello, World!"
+                     x = "Goodbye, World!"
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void IntegerAssignmentToFloatVariable_ThrowsError()
+    {
+        // Arange
+        var script = """
+                     x::Float64 = 1.0
+                     x = 1
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<Exception>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void StringAssignmentToIntegerVariable_ThrowsError()
+    {
+        // Arange
+        var script = """
+                     x::Integer = 1
+                     x = "Hello, World!"
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<Exception>(() => parser.Parse());
+    }
 }
