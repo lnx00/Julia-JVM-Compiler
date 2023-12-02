@@ -1,61 +1,76 @@
-﻿using Compiler.Core.Common;
+﻿using Compiler.Core.AST;
+using Compiler.Core.Common;
 
 namespace Compiler.Parser.Visitor;
 
-public class JuliaVisitor : JuliaBaseVisitor<object?>
+public class JuliaVisitor : JuliaBaseVisitor<INode?>
 {
-    public override object? VisitDeclaration(JuliaParser.DeclarationContext context)
+    public override INode? VisitDeclaration(JuliaParser.DeclarationContext context)
     {
-        string varName = context.IDENTIFIER().GetText();
-        var typeName = Visit(context.type()) as TypeManager.DataType? ?? throw new Exception("Unknown type");
-        var value = Visit(context.expression());
+        var varName = context.IDENTIFIER().GetText();
+        var typeName = context.type().GetText();
+        var value = Visit(context.expression()) as ExpressionNode ?? throw new InvalidOperationException();
+        
+        // Check for type compatibility
+        var type = TypeManager.GetDataType(typeName);
+        if (type != value.Type)
+        {
+            throw new Exception("Cannot initialize variable of type " + typeName + " with value of type " + value.Type);
+        }
 
         //return base.VisitDeclaration(context);
         return null;
     }
 
-    public override object? VisitAssignment(JuliaParser.AssignmentContext context)
+    public override INode? VisitAssignment(JuliaParser.AssignmentContext context)
     {
-        string varName = context.IDENTIFIER().GetText();
-        object? value = Visit(context.expression());
+        var varName = context.IDENTIFIER().GetText();
+        var value = Visit(context.expression()) as ExpressionNode ?? throw new InvalidOperationException();
+        
+        // TODO: Check for type compatibility
         
         //return base.VisitAssignment(context);
         return null;
     }
 
-    public override object? VisitConst(JuliaParser.ConstContext context)
+    public override INode? VisitConst(JuliaParser.ConstContext context)
     {
         if (context.INTCONST() != null)
         {
-            return int.Parse(context.INTCONST().GetText());
+            //return int.Parse(context.INTCONST().GetText());
+            int value = int.Parse(context.INTCONST().GetText());
+            return new IntegerConstNode(value);
         }
         
         if (context.FLTCONST() != null)
         {
-            return float.Parse(context.FLTCONST().GetText());
+            float value = float.Parse(context.FLTCONST().GetText());
+            return new FloatConstNode(value);
         }
         
         if (context.STRCONST() != null)
         {
-            return context.STRCONST().GetText();
+            string value = context.STRCONST().GetText();
+            return new StringConstNode(value);
         }
         
         if (context.BOOLCONST() != null)
         {
-            return bool.Parse(context.BOOLCONST().GetText());
+            bool value = bool.Parse(context.BOOLCONST().GetText());
+            return new BoolConstNode(value);
         }
         
         //return base.VisitConst(context);
         throw new Exception("Unknown constant type");
     }
 
-    public override object? VisitType(JuliaParser.TypeContext context)
+    /*public override INode? VisitType(JuliaParser.TypeContext context)
     {
-        return TypeManager.GetDataType(context.GetText());
-        //return base.VisitType(context);
-    }
+        //return TypeManager.GetDataType(context.GetText());
+        return base.VisitType(context);
+    }*/
 
-    public override object? VisitAddExpr(JuliaParser.AddExprContext context)
+    public override INode? VisitAddExpr(JuliaParser.AddExprContext context)
     {
         var op = context.addOp().GetText();
         var left = Visit(context.expression(0));
@@ -65,20 +80,20 @@ public class JuliaVisitor : JuliaBaseVisitor<object?>
         {
             "+" => left switch
             {
-                int leftInt when right is int rightInt => leftInt + rightInt,
-                float leftFloat when right is float rightFloat => leftFloat + rightFloat,
-                string leftString when right is string rightString => leftString + rightString,
+                IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value + rightInt.Value),
+                FloatConstNode leftFloat when right is FloatConstNode rightFloat => new FloatConstNode(leftFloat.Value + rightFloat.Value),
+                StringConstNode leftString when right is StringConstNode rightString => new StringConstNode(leftString.Value + rightString.Value),
                 _ => throw new Exception("Invalid types for operator +")
             },
             
             "-" => left switch
             {
-                int leftInt when right is int rightInt => leftInt - rightInt,
-                float leftFloat when right is float rightFloat => leftFloat - rightFloat,
+                IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value - rightInt.Value),
+                FloatConstNode leftFloat when right is FloatConstNode rightFloat => new FloatConstNode(leftFloat.Value - rightFloat.Value),
                 _ => throw new Exception("Invalid types for operator -")
             },
             
-            _ => null
+            _ => throw new Exception("Unknown operator: " + op)
         };
     }
 }
