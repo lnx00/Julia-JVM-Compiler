@@ -150,7 +150,7 @@ public class ParserTests
     }
 
     [Fact]
-    public void IntegerFloatAddition_ThrowsError()
+    public void IntegerFloatAddition_ThrowsTypeMismatch()
     {
         // Arange
         var script = "x::Integer = 1 + 2.0";
@@ -159,7 +159,7 @@ public class ParserTests
         var parser = new Parser(script);
         
         // Assert
-        Assert.Throws<Exception>(() => parser.Parse());
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
     }
     
     [Fact]
@@ -177,7 +177,7 @@ public class ParserTests
     }
     
     [Fact]
-    public void IntegerFloatSubtraction_ThrowsError()
+    public void IntegerFloatSubtraction_ThrowsTypeMismatch()
     {
         // Arange
         var script = "x::Integer = 1 - 2.0";
@@ -186,7 +186,7 @@ public class ParserTests
         var parser = new Parser(script);
         
         // Assert
-        Assert.Throws<Exception>(() => parser.Parse());
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
     }
     
     [Fact]
@@ -204,7 +204,7 @@ public class ParserTests
     }
     
     [Fact]
-    public void StringIntegerConcatenation_ThrowsError()
+    public void StringIntegerConcatenation_ThrowsTypeMismatch()
     {
         // Arange
         var script = "x::String = \"Hello\" * 1";
@@ -213,7 +213,7 @@ public class ParserTests
         var parser = new Parser(script);
         
         // Assert
-        Assert.Throws<Exception>(() => parser.Parse());
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
     }
     
     [Fact]

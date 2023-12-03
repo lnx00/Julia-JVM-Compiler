@@ -1,5 +1,6 @@
 ﻿using Compiler.Core.AST;
 using Compiler.Core.Common;
+using Compiler.Parser.ErrorHandling;
 
 namespace Compiler.Parser.Visitor;
 
@@ -72,12 +73,6 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         throw new Exception("Unknown constant type");
     }
 
-    /*public override INode? VisitType(JuliaParser.TypeContext context)
-    {
-        //return TypeManager.GetDataType(context.GetText());
-        return base.VisitType(context);
-    }*/
-
     public override INode? VisitParenExpr(JuliaParser.ParenExprContext context)
     {
         return Visit(context.expression());
@@ -87,8 +82,8 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
     public override INode? VisitAddExpr(JuliaParser.AddExprContext context)
     {
         var op = context.addOp().GetText();
-        var left = Visit(context.expression(0));
-        var right = Visit(context.expression(1));
+        var left = Visit(context.expression(0)) as ExpressionNode ?? throw new InvalidOperationException();
+        var right = Visit(context.expression(1)) as ExpressionNode ?? throw new InvalidOperationException();
 
         return op switch
         {
@@ -96,14 +91,14 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             {
                 IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value + rightInt.Value),
                 FloatConstNode leftFloat when right is FloatConstNode rightFloat => new FloatConstNode(leftFloat.Value + rightFloat.Value),
-                _ => throw new Exception("Invalid types for operator +")
+                _ => throw TypeMismatchException.Create(left.Type, right.Type, context)
             },
             
             "-" => left switch
             {
                 IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value - rightInt.Value),
                 FloatConstNode leftFloat when right is FloatConstNode rightFloat => new FloatConstNode(leftFloat.Value - rightFloat.Value),
-                _ => throw new Exception("Invalid types for operator -")
+                _ => throw TypeMismatchException.Create(left.Type, right.Type, context)
             },
             
             _ => throw new Exception("Unknown operator: " + op)
@@ -113,8 +108,8 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
     public override INode? VisitMultExpr(JuliaParser.MultExprContext context)
     {
         var op = context.multOp().GetText();
-        var left = Visit(context.expression(0));
-        var right = Visit(context.expression(1));
+        var left = Visit(context.expression(0)) as ExpressionNode ?? throw new InvalidOperationException();
+        var right = Visit(context.expression(1)) as ExpressionNode ?? throw new InvalidOperationException();
         
         return op switch
         {
@@ -123,20 +118,20 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
                 IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value * rightInt.Value),
                 FloatConstNode leftFloat when right is FloatConstNode rightFloat => new FloatConstNode(leftFloat.Value * rightFloat.Value),
                 StringConstNode leftString when right is StringConstNode rightString => new StringConstNode(leftString.Value + rightString.Value),
-                _ => throw new Exception("Invalid types for operator *")
+                _ => throw TypeMismatchException.Create(left.Type, right.Type, context)
             },
             
             "/" => left switch
             {
                 IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value / rightInt.Value),
                 FloatConstNode leftFloat when right is FloatConstNode rightFloat => new FloatConstNode(leftFloat.Value / rightFloat.Value),
-                _ => throw new Exception("Invalid types for operator /")
+                _ => throw TypeMismatchException.Create(left.Type, right.Type, context)
             },
             
             "%" => left switch
             {
                 IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value % rightInt.Value),
-                _ => throw new Exception("Invalid types for operator %")
+                _ => throw TypeMismatchException.Create(left.Type, right.Type, context)
             },
             
             _ => throw new Exception("Unknown operator: " + op)

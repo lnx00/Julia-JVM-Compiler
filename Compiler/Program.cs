@@ -11,7 +11,7 @@ try
 }
 catch (ParserException e)
 {
-    Console.WriteLine($"Syntax error at line {e.Line}, position {e.Position}: {e.Message}");
+    Console.WriteLine($"Error at line {e.Line}, position {e.Position}: {e.Message}");
 }
 catch (Exception e)
 {
