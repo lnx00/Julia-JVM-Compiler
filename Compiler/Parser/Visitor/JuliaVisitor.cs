@@ -99,7 +99,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         var left = Visit(context.expression(0)) as ExpressionNode ?? throw new InvalidOperationException();
         var right = Visit(context.expression(1)) as ExpressionNode ?? throw new InvalidOperationException();
 
-        var type = TypeManager.GetCommonType(left.Type, right.Type) ?? throw TypeMismatchException.Create(left.Type, right.Type, context);
+        var type = TypeManager.GetCommonNumericType(left.Type, right.Type) ?? throw TypeMismatchException.Create(left.Type, right.Type, context);
         
         return op switch
         {
@@ -115,7 +115,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         var left = Visit(context.expression(0)) as ExpressionNode ?? throw new InvalidOperationException();
         var right = Visit(context.expression(1)) as ExpressionNode ?? throw new InvalidOperationException();
         
-        var type = TypeManager.GetCommonType(left.Type, right.Type) ?? throw TypeMismatchException.Create(left.Type, right.Type, context);
+        var type = TypeManager.GetCommonNumericType(left.Type, right.Type) ?? throw TypeMismatchException.Create(left.Type, right.Type, context);
 
         return op switch
         {

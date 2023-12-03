@@ -21,7 +21,17 @@ public static class TypeManager
             _ => throw new ArgumentException($"Unknown type: {type}")
         };
     }
-
+    
+    public static bool IsNumeric(DataType? type)
+    {
+        return type switch
+        {
+            DataType.Integer => true,
+            DataType.Float64 => true,
+            _ => false
+        };
+    }
+    
     public static DataType? GetCommonType(DataType leftType, DataType rightType)
     {
         return (leftType, rightType) switch
@@ -31,5 +41,11 @@ public static class TypeManager
             (DataType.String, DataType.String) => DataType.String,
             _ => null
         };
+    }
+    
+    public static DataType? GetCommonNumericType(DataType leftType, DataType rightType)
+    {
+        DataType? type = GetCommonType(leftType, rightType);
+        return !IsNumeric(type) ? null : type;
     }
 }
