@@ -440,4 +440,47 @@ public class ParserTests
         // Assert
         Assert.True(true);
     }
+    
+    [Fact]
+    public void ComplexWhileLoop_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     x::Bool = true
+                     while true && (true && !x)
+                         x = false
+                         while false || false
+                             x = true
+                         end
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void WrongComplexWhileLoop_ThowsTypeMismatch()
+    {
+        // Arange
+        var script = """
+                     x::Bool = true
+                     while true && (true && !x)
+                         x = false
+                         while false || (x && !1 || true)
+                             x = true
+                         end
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }
 }

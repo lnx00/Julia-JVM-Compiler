@@ -132,12 +132,17 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         var left = Visit(context.expression(0)) as ExpressionNode ?? throw new InvalidOperationException();
         var right = Visit(context.expression(1)) as ExpressionNode ?? throw new InvalidOperationException();
 
-        if (left.Type == TypeManager.DataType.Bool && right.Type == TypeManager.DataType.Bool)
+        // Are both sides bools?
+        if (left.Type != TypeManager.DataType.Bool || right.Type != TypeManager.DataType.Bool)
         {
-            return new BoolExpressionNode();
+            throw TypeMismatchException.Create(left.Type, right.Type, context);
         }
         
-        throw TypeMismatchException.Create(left.Type, right.Type, context);
-        //return base.VisitBoolExpr(context);
+        return op switch
+        {
+            "&&" => new BoolExpressionNode(left, right, BoolExpressionNode.Operation.And, TypeManager.DataType.Bool),
+            "||" => new BoolExpressionNode(left, right, BoolExpressionNode.Operation.Or, TypeManager.DataType.Bool),
+            _ => throw new Exception("Unknown operator: " + op)
+        };
     }
 }
