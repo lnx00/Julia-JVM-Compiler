@@ -306,4 +306,71 @@ public class ParserTests
         // Assert
         Assert.True(true);
     }
+
+    [Fact]
+    public void ComplexBoolMath_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::Bool = true && false || (false && false || ((true)))";
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void ComplexBoolMathWithParentheses_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::Bool = (true && false) || (false && false) || ((true))";
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void BoolIntegerMath_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = "x::Bool = true && 1";
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void BoolFloatMath_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = "x::Bool = true + 1.0";
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void BoolStringMath_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = "x::Bool = true + \"Hello, World!\" || false";
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }
 }

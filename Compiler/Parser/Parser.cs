@@ -15,18 +15,23 @@ public class Parser
     
     public void Parse()
     {
-        // Initialize lexer, parser and visitor
+        var errorListener = new ErrorListener();
+        
+        // Initialize lexer
         var inputStream = new AntlrInputStream(_code);
         var juliaLexer = new JuliaLexer(inputStream);
+        juliaLexer.RemoveErrorListeners();
+        
+        // Initialize parser
         var commonTokenStream = new CommonTokenStream(juliaLexer);
         var juliaParser = new JuliaParser(commonTokenStream);
+        juliaParser.RemoveErrorListeners();
+        juliaParser.AddErrorListener(errorListener);
         
-        // Handle errors
-        juliaParser.AddErrorListener(new ErrorListener());
-        
-        // Visit start rule
+        // Initialize visitor
         var startContext = juliaParser.start();
         var juliaVisitor = new JuliaVisitor();
+        
         juliaVisitor.Visit(startContext);
     }
 }

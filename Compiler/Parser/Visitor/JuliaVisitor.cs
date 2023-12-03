@@ -138,4 +138,19 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         };
         //return base.VisitMultExpr(context);
     }
+
+    public override INode? VisitBoolExpr(JuliaParser.BoolExprContext context)
+    {
+        var op = context.boolOp().GetText();
+        var left = Visit(context.expression(0)) as ExpressionNode ?? throw new InvalidOperationException();
+        var right = Visit(context.expression(1)) as ExpressionNode ?? throw new InvalidOperationException();
+
+        if (left.Type == TypeManager.DataType.Bool && right.Type == TypeManager.DataType.Bool)
+        {
+            return new BoolExpressionNode();
+        }
+        
+        throw TypeMismatchException.Create(left.Type, right.Type, context);
+        //return base.VisitBoolExpr(context);
+    }
 }

@@ -75,6 +75,9 @@ COMMA: ',';
 SEMICOLON: ';';
 COLON: ':';
 DOT: '.';
+EQ: '=';
+AMP: '&';
+PIPE: '|';
 
 // Arithmetic operators
 PLUS: '+';
@@ -83,21 +86,18 @@ STAR: '*';
 SLASH: '/';
 PERCENT: '%';
 
-// Comparison operators
-EQEQ: '==';
-LT: '<';
-GT: '>';
-LTE: '<=';
-GTE: '>=';
-NEQ: '!=';
-
 // Boolean operators
-AND: '&&';
-OR: '||';
+AND: AMP AMP;
+OR: PIPE PIPE;
 NOT: '!';
 
-// Assignment operators
-EQ: '=';
+// Comparison operators
+EQEQ: EQ EQ;
+LT: '<';
+GT: '>';
+LTE: LT EQ;
+GTE: GT EQ;
+NEQ: NOT EQ;
 
 // Literals
 INTCONST: MINUS? [0-9]+;
