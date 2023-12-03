@@ -79,6 +79,20 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         //return base.VisitParenExpr(context);
     }
 
+    public override INode? VisitVarExpr(JuliaParser.VarExprContext context)
+    {
+        var varName = context.IDENTIFIER().GetText();
+        
+        // Check if variable exists
+        if (!_variables.ContainsKey(varName))
+        {
+            throw new Exception("Unknown variable: " + varName);
+        }
+        
+        return new IdentifierNode(varName, _variables[varName]);
+        //return base.VisitVarExpr(context);
+    }
+
     public override INode? VisitAddExpr(JuliaParser.AddExprContext context)
     {
         var op = context.addOp().GetText();
@@ -87,22 +101,29 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
 
         return op switch
         {
+            "+" => new AddExpressionNode(left, right),
+            "-" => new AddExpressionNode(left, right),
+            _ => throw new Exception("Unknown operator: " + op)
+        };
+
+        /*return op switch
+        {
             "+" => left switch
             {
                 IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value + rightInt.Value),
                 FloatConstNode leftFloat when right is FloatConstNode rightFloat => new FloatConstNode(leftFloat.Value + rightFloat.Value),
                 _ => throw TypeMismatchException.Create(left.Type, right.Type, context)
             },
-            
+
             "-" => left switch
             {
                 IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value - rightInt.Value),
                 FloatConstNode leftFloat when right is FloatConstNode rightFloat => new FloatConstNode(leftFloat.Value - rightFloat.Value),
                 _ => throw TypeMismatchException.Create(left.Type, right.Type, context)
             },
-            
+
             _ => throw new Exception("Unknown operator: " + op)
-        };
+        };*/
     }
 
     public override INode? VisitMultExpr(JuliaParser.MultExprContext context)

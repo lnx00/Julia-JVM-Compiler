@@ -373,4 +373,58 @@ public class ParserTests
         // Assert
         Assert.Throws<TypeMismatchException>(() => parser.Parse());
     }
+    
+    [Fact]
+    public void BoolAssignment_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     x::Bool = true && false
+                     x = false || true
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void IntegerVariableAssignment_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     x::Integer = 1
+                     y::Integer = x
+                     y = y + 1
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void WhileLoop_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     x::Integer = 0
+                     while true && true
+                         x = 1 + 2
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
 }
