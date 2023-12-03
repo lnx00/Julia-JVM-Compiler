@@ -22,14 +22,14 @@ public static class TypeManager
         };
     }
 
-    public static DataType GetAddExpressionType(DataType leftExpressionType, DataType rightExpressionType)
+    public static DataType? GetCommonType(DataType leftType, DataType rightType)
     {
-        return (leftExpressionType, rightExpressionType) switch
+        return (leftType, rightType) switch
         {
             (DataType.Integer, DataType.Integer) => DataType.Integer,
             (DataType.Float64, DataType.Float64) => DataType.Float64,
             (DataType.String, DataType.String) => DataType.String,
-            _ => throw new ArgumentException($"Invalid types for add expression: {leftExpressionType} and {rightExpressionType}")
+            _ => null
         };
     }
 }

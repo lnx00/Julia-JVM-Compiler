@@ -2,12 +2,13 @@
 
 namespace Compiler.Core.AST;
 
-public class AddExpressionNode : ExpressionNode
+public class MultExpressionNode : ExpressionNode
 {
     public enum Operation
     {
-        Add,
-        Subtract
+        Mult,
+        Div,
+        Mod
     }
     
     public override TypeManager.DataType Type { get; }
@@ -15,7 +16,7 @@ public class AddExpressionNode : ExpressionNode
     public ExpressionNode RightExpression { get; }
     public Operation OperationType { get; }
 
-    public AddExpressionNode(ExpressionNode leftExpression, ExpressionNode rightExpression, Operation op, TypeManager.DataType type)
+    public MultExpressionNode(ExpressionNode leftExpression, ExpressionNode rightExpression, Operation op, TypeManager.DataType type)
     {
         LeftExpression = leftExpression;
         RightExpression = rightExpression;

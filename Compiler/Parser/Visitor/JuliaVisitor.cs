@@ -99,31 +99,14 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         var left = Visit(context.expression(0)) as ExpressionNode ?? throw new InvalidOperationException();
         var right = Visit(context.expression(1)) as ExpressionNode ?? throw new InvalidOperationException();
 
+        var type = TypeManager.GetCommonType(left.Type, right.Type) ?? throw TypeMismatchException.Create(left.Type, right.Type, context);
+        
         return op switch
         {
-            "+" => new AddExpressionNode(left, right),
-            "-" => new AddExpressionNode(left, right),
+            "+" => new AddExpressionNode(left, right, AddExpressionNode.Operation.Add, type),
+            "-" => new AddExpressionNode(left, right, AddExpressionNode.Operation.Subtract, type),
             _ => throw new Exception("Unknown operator: " + op)
         };
-
-        /*return op switch
-        {
-            "+" => left switch
-            {
-                IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value + rightInt.Value),
-                FloatConstNode leftFloat when right is FloatConstNode rightFloat => new FloatConstNode(leftFloat.Value + rightFloat.Value),
-                _ => throw TypeMismatchException.Create(left.Type, right.Type, context)
-            },
-
-            "-" => left switch
-            {
-                IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value - rightInt.Value),
-                FloatConstNode leftFloat when right is FloatConstNode rightFloat => new FloatConstNode(leftFloat.Value - rightFloat.Value),
-                _ => throw TypeMismatchException.Create(left.Type, right.Type, context)
-            },
-
-            _ => throw new Exception("Unknown operator: " + op)
-        };*/
     }
 
     public override INode? VisitMultExpr(JuliaParser.MultExprContext context)
@@ -132,32 +115,15 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         var left = Visit(context.expression(0)) as ExpressionNode ?? throw new InvalidOperationException();
         var right = Visit(context.expression(1)) as ExpressionNode ?? throw new InvalidOperationException();
         
+        var type = TypeManager.GetCommonType(left.Type, right.Type) ?? throw TypeMismatchException.Create(left.Type, right.Type, context);
+
         return op switch
         {
-            "*" => left switch
-            {
-                IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value * rightInt.Value),
-                FloatConstNode leftFloat when right is FloatConstNode rightFloat => new FloatConstNode(leftFloat.Value * rightFloat.Value),
-                StringConstNode leftString when right is StringConstNode rightString => new StringConstNode(leftString.Value + rightString.Value),
-                _ => throw TypeMismatchException.Create(left.Type, right.Type, context)
-            },
-            
-            "/" => left switch
-            {
-                IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value / rightInt.Value),
-                FloatConstNode leftFloat when right is FloatConstNode rightFloat => new FloatConstNode(leftFloat.Value / rightFloat.Value),
-                _ => throw TypeMismatchException.Create(left.Type, right.Type, context)
-            },
-            
-            "%" => left switch
-            {
-                IntegerConstNode leftInt when right is IntegerConstNode rightInt => new IntegerConstNode(leftInt.Value % rightInt.Value),
-                _ => throw TypeMismatchException.Create(left.Type, right.Type, context)
-            },
-            
+            "*" => new MultExpressionNode(left, right, MultExpressionNode.Operation.Mult, type),
+            "/" => new MultExpressionNode(left, right, MultExpressionNode.Operation.Div, type),
+            "%" => new MultExpressionNode(left, right, MultExpressionNode.Operation.Mod, type),
             _ => throw new Exception("Unknown operator: " + op)
         };
-        //return base.VisitMultExpr(context);
     }
 
     public override INode? VisitBoolExpr(JuliaParser.BoolExprContext context)
