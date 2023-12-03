@@ -483,4 +483,17 @@ public class ParserTests
         // Assert
         Assert.Throws<TypeMismatchException>(() => parser.Parse());
     }
+    
+    [Fact]
+    public void NotInteger_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = "x::Integer = !1";
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<InvalidOperatorException>(() => parser.Parse());
+    }
 }

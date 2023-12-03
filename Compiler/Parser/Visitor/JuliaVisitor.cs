@@ -23,7 +23,6 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
 
         _variables.Add(varName, type);
 
-        //return base.VisitDeclaration(context);
         return null;
     }
 
@@ -39,7 +38,6 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             throw new Exception("Cannot assign variable of type " + type + " with value of type " + value.Type);
         }
         
-        //return base.VisitAssignment(context);
         return null;
     }
 
@@ -69,14 +67,23 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             return new BoolConstNode(value);
         }
         
-        //return base.VisitConst(context);
         throw new Exception("Unknown constant type");
     }
 
     public override INode? VisitParenExpr(JuliaParser.ParenExprContext context)
     {
         return Visit(context.expression());
-        //return base.VisitParenExpr(context);
+    }
+
+    public override INode? VisitNotExpr(JuliaParser.NotExprContext context)
+    {
+        var value = Visit(context.expression()) as ExpressionNode ?? throw new InvalidOperationException();
+        if (value.Type != TypeManager.DataType.Bool)
+        {
+            throw InvalidOperatorException.Create("!", context);
+        }
+        
+        return new NotExpressionNode(value);
     }
 
     public override INode? VisitVarExpr(JuliaParser.VarExprContext context)
@@ -86,11 +93,10 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         // Check if variable exists
         if (!_variables.ContainsKey(varName))
         {
-            throw new Exception("Unknown variable: " + varName);
+            throw UndefinedVarException.Create(varName, context);
         }
         
         return new IdentifierNode(varName, _variables[varName]);
-        //return base.VisitVarExpr(context);
     }
 
     public override INode? VisitAddExpr(JuliaParser.AddExprContext context)
@@ -105,7 +111,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         {
             "+" => new AddExpressionNode(left, right, AddExpressionNode.Operation.Add, type),
             "-" => new AddExpressionNode(left, right, AddExpressionNode.Operation.Subtract, type),
-            _ => throw new Exception("Unknown operator: " + op)
+            _ => throw InvalidOperatorException.Create(op, context)
         };
     }
 
@@ -122,7 +128,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             "*" => new MultExpressionNode(left, right, MultExpressionNode.Operation.Mult, type),
             "/" => new MultExpressionNode(left, right, MultExpressionNode.Operation.Div, type),
             "%" => new MultExpressionNode(left, right, MultExpressionNode.Operation.Mod, type),
-            _ => throw new Exception("Unknown operator: " + op)
+            _ => throw InvalidOperatorException.Create(op, context)
         };
     }
 
@@ -142,7 +148,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         {
             "&&" => new BoolExpressionNode(left, right, BoolExpressionNode.Operation.And, TypeManager.DataType.Bool),
             "||" => new BoolExpressionNode(left, right, BoolExpressionNode.Operation.Or, TypeManager.DataType.Bool),
-            _ => throw new Exception("Unknown operator: " + op)
+            _ => throw InvalidOperatorException.Create(op, context)
         };
     }
 }
