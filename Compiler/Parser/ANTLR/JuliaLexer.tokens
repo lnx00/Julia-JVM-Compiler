@@ -45,7 +45,6 @@ IDENTIFIER=44
 COMMENT=45
 COMMENT_BLOCK=46
 WS=47
-NL=48
 'function'=1
 'return'=2
 'begin'=3

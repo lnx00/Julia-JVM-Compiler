@@ -112,4 +112,3 @@ IDENTIFIER: Letter LetterOrDigit*;
 COMMENT: '#' ~[\r\n]* -> skip;
 COMMENT_BLOCK: '#=' .*? '=#' -> skip;
 WS: [ \t\r\n]+ -> skip;
-NL: [\r\n]+ -> skip;

@@ -42,7 +42,7 @@ public partial class JuliaParser : Parser {
 		COLON=21, DOT=22, EQ=23, AMP=24, PIPE=25, PLUS=26, MINUS=27, STAR=28, 
 		SLASH=29, PERCENT=30, AND=31, OR=32, NOT=33, EQEQ=34, LT=35, GT=36, LTE=37, 
 		GTE=38, NEQ=39, INTCONST=40, FLTCONST=41, STRCONST=42, BOOLCONST=43, IDENTIFIER=44, 
-		COMMENT=45, COMMENT_BLOCK=46, WS=47, NL=48;
+		COMMENT=45, COMMENT_BLOCK=46, WS=47;
 	public const int
 		RULE_start = 0, RULE_function = 1, RULE_parameters = 2, RULE_if = 3, RULE_while = 4, 
 		RULE_block = 5, RULE_body = 6, RULE_statement = 7, RULE_declaration = 8, 
@@ -69,7 +69,7 @@ public partial class JuliaParser : Parser {
 		"COLON", "DOT", "EQ", "AMP", "PIPE", "PLUS", "MINUS", "STAR", "SLASH", 
 		"PERCENT", "AND", "OR", "NOT", "EQEQ", "LT", "GT", "LTE", "GTE", "NEQ", 
 		"INTCONST", "FLTCONST", "STRCONST", "BOOLCONST", "IDENTIFIER", "COMMENT", 
-		"COMMENT_BLOCK", "WS", "NL"
+		"COMMENT_BLOCK", "WS"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -1769,7 +1769,7 @@ public partial class JuliaParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,48,181,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,47,181,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,14,
 		2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,1,0,1,0,5,0,41,8,0,10,0,12,0,44,
 		9,0,1,0,1,0,1,1,1,1,1,1,1,1,1,1,3,1,53,8,1,1,1,1,1,1,1,1,2,1,2,1,2,1,2,
