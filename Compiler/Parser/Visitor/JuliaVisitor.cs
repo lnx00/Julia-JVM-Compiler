@@ -159,7 +159,9 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         var right = Visit(context.expression(1)) as ExpressionNode ?? throw new InvalidOperationException();
         
         var type = TypeManager.GetCommonType(left.Type, right.Type) ?? throw TypeMismatchException.Create(left.Type, right.Type, context);
-        if (type == TypeManager.DataType.String)
+        
+        // String and bool comparison
+        if (type is TypeManager.DataType.String or TypeManager.DataType.Bool)
         {
             return op switch
             {
@@ -168,18 +170,17 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
                 _ => throw InvalidOperatorException.Create(op, context)
             };
         }
-        else
+
+        // Numeric comparison
+        return op switch
         {
-            return op switch
-            {
-                "==" => new CompExpressionNode(left, right, CompExpressionNode.Operation.Equal),
-                "!=" => new CompExpressionNode(left, right, CompExpressionNode.Operation.NotEqual),
-                "<" => new CompExpressionNode(left, right, CompExpressionNode.Operation.LessThan),
-                "<=" => new CompExpressionNode(left, right, CompExpressionNode.Operation.LessThanOrEqual),
-                ">" => new CompExpressionNode(left, right, CompExpressionNode.Operation.GreaterThan),
-                ">=" => new CompExpressionNode(left, right, CompExpressionNode.Operation.GreaterThanOrEqual),
-                _ => throw InvalidOperatorException.Create(op, context)
-            };
-        }
+            "==" => new CompExpressionNode(left, right, CompExpressionNode.Operation.Equal),
+            "!=" => new CompExpressionNode(left, right, CompExpressionNode.Operation.NotEqual),
+            "<" => new CompExpressionNode(left, right, CompExpressionNode.Operation.LessThan),
+            "<=" => new CompExpressionNode(left, right, CompExpressionNode.Operation.LessThanOrEqual),
+            ">" => new CompExpressionNode(left, right, CompExpressionNode.Operation.GreaterThan),
+            ">=" => new CompExpressionNode(left, right, CompExpressionNode.Operation.GreaterThanOrEqual),
+            _ => throw InvalidOperatorException.Create(op, context)
+        };
     }
 }

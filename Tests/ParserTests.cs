@@ -629,4 +629,42 @@ public class ParserTests
         // Assert
         Assert.Throws<InvalidOperatorException>(() => parser.Parse());
     }
+
+    [Fact]
+    public void ComplexComparison_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     x::Integer = 10
+                     y::Float64 = 5.0
+                     z::Bool = true
+                     result::Bool = (x > 5) && ((y < 10.0) || (y > 0.0)) && (z != false)
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void IfStatement_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     x::Integer = 10
+                     if x > 5 && x < 15
+                         x = 5
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
 }

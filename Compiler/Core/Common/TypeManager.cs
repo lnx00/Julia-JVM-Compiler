@@ -39,6 +39,7 @@ public static class TypeManager
             (DataType.Integer, DataType.Integer) => DataType.Integer,
             (DataType.Float64, DataType.Float64) => DataType.Float64,
             (DataType.String, DataType.String) => DataType.String,
+            (DataType.Bool, DataType.Bool) => DataType.Bool,
             _ => null
         };
     }
