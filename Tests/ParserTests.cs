@@ -667,4 +667,74 @@ public class ParserTests
         // Assert
         Assert.True(true);
     }
+    
+    [Fact]
+    public void NestedIfStatement_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     x::Integer = 10
+                     if x > 5 && x < 15
+                         if x > 10
+                             x = 5
+                         end
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void FloatToIntegerAssignmentInNestedIfStatement_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = """
+                     x::Integer = 10
+                     if x > 5 && x < 15
+                         if x > 10
+                             x = 5.0
+                         end
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void Comments_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     # This is a comment
+                     x::Integer = 10 # This is another comment
+                     if x > 5 && x < 15
+                         if x > 10
+                             x = 5 # This is a third comment
+                             # x = 5.0
+                             x = 10
+                             #==
+                             Hello,
+                             World!
+                             x = 1.0
+                             ==#
+                         end
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
 }
