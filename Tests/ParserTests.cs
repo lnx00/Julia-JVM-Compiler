@@ -602,4 +602,31 @@ public class ParserTests
         // Assert
         Assert.Throws<TypeMismatchException>(() => parser.Parse());
     }
+    
+    [Fact]
+    public void StringComparison_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::Bool = \"a\" == \"a\" && \"a\" != \"b\"";
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void StringArithmeticComparison_ThrowsInvalidOperator()
+    {
+        // Arange
+        var script = "x::Bool = \"a\" < \"b\" || \"a\" <= \"b\" || \"a\" > \"b\" || \"a\" >= \"b\"";
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<InvalidOperatorException>(() => parser.Parse());
+    }
 }
