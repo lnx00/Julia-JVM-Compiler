@@ -18,7 +18,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         var type = TypeManager.GetDataType(typeName);
         if (type != value.Type)
         {
-            throw new Exception("Cannot initialize variable of type " + typeName + " with value of type " + value.Type);
+            throw TypeMismatchException.Create(type, value.Type, context);
         }
 
         _variables.Add(varName, type);
@@ -35,7 +35,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         var type = _variables[varName];
         if (type != value.Type)
         {
-            throw new Exception("Cannot assign variable of type " + type + " with value of type " + value.Type);
+            throw TypeMismatchException.Create(type, value.Type, context);
         }
         
         return null;

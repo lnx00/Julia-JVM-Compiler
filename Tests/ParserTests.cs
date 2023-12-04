@@ -20,6 +20,19 @@ public class ParserTests
     }
     
     [Fact]
+    public void IntegerDeclarationFromFloat_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = "x::Integer = 1.0";
+
+        // Act
+        var parser = new Parser(script);
+
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }
+    
+    [Fact]
     public void NegativeIntegerDeclaration_DoesNotThrow()
     {
         // Arange
@@ -48,6 +61,19 @@ public class ParserTests
     }
     
     [Fact]
+    public void FloatDeclarationFromString_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = "x::Float64 = \"Hello, World!\"";
+
+        // Act
+        var parser = new Parser(script);
+
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }
+    
+    [Fact]
     public void NegativeFloatDeclaration_DoesNotThrow()
     {
         // Arange
@@ -73,6 +99,19 @@ public class ParserTests
 
         // Assert
         Assert.True(true);
+    }
+    
+    [Fact]
+    public void StringDeclarationFromBool_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = "x::String = true";
+
+        // Act
+        var parser = new Parser(script);
+
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
     }
     
     [Fact]
@@ -234,7 +273,7 @@ public class ParserTests
     }
     
     [Fact]
-    public void IntegerAssignmentToFloatVariable_ThrowsError()
+    public void IntegerAssignmentToFloatVariable_ThrowsTypeMismatch()
     {
         // Arange
         var script = """
@@ -246,11 +285,11 @@ public class ParserTests
         var parser = new Parser(script);
         
         // Assert
-        Assert.Throws<Exception>(() => parser.Parse());
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
     }
     
     [Fact]
-    public void StringAssignmentToIntegerVariable_ThrowsError()
+    public void StringAssignmentToIntegerVariable_ThrowsTypeMismatch()
     {
         // Arange
         var script = """
@@ -262,7 +301,7 @@ public class ParserTests
         var parser = new Parser(script);
         
         // Assert
-        Assert.Throws<Exception>(() => parser.Parse());
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
     }
     
     [Fact]
@@ -543,6 +582,19 @@ public class ParserTests
     {
         // Arange
         var script = "x::Bool = 1 < 2.0 && 1 <= 2.0 && 1 > 2.0 && 1 >= 2.0 && 1 == 2.0 && 1 != 2.0";
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void FloatComparisonToFloatVariable_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = "x::Float64 = 1.0 < 2.0";
         
         // Act
         var parser = new Parser(script);
