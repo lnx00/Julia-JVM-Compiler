@@ -737,4 +737,115 @@ public class ParserTests
         // Assert
         Assert.True(true);
     }
+    
+    [Fact]
+    public void FunctionDeclaration_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     function helloWorld()
+                         x::Integer = 10
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+
+    [Fact]
+    public void FunctionWithParameter_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     function helloWorld(p::Integer)
+                         p = 10
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void FunctionWithMultipleParameters_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     function helloWorld(p::Integer, q::Float64, r::String, s::Bool)
+                         p = 10
+                         q = 10.0
+                         r = "Hello, World!"
+                         s = true
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void FunctionParameterTypeMismatch_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = """
+                     function helloWorld(p::Float64)
+                         p = false
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void FunctionReturnType_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     function helloWorld()::Integer
+                         x::Integer = 10
+                         return x
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void FunctionParameterAccessOutsideFunction_ThrowsUndefinedVar()
+    {
+        // Arange
+        var script = """
+                     function helloWorld(p::Integer)
+                         p = 10
+                     end
+                     p = 10
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<UndefinedVarException>(() => parser.Parse());
+    }
 }

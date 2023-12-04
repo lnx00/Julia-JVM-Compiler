@@ -120,6 +120,18 @@ public partial class JuliaBaseListener : IJuliaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBlock([NotNull] JuliaParser.BlockContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.body"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBody([NotNull] JuliaParser.BodyContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.body"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBody([NotNull] JuliaParser.BodyContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="JuliaParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

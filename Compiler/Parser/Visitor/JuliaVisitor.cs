@@ -187,4 +187,38 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             _ => throw InvalidOperatorException.Create(op, context)
         };
     }
+
+    public override INode? VisitFunction(JuliaParser.FunctionContext context)
+    {
+        _symbolTable.EnterScope();
+        
+        var funcName = context.IDENTIFIER().GetText();
+        var funcParams = Visit(context.parameters());
+        var funcBody = Visit(context.body());
+        //var returnType = TypeManager.GetDataType(context.return_type().GetText());
+
+        _symbolTable.LeaveScope();
+        return null;
+    }
+
+    public override INode? VisitParameters(JuliaParser.ParametersContext context)
+    {
+        for (int i = 0; i < context.IDENTIFIER().Length; i++)
+        {
+            var varName = context.IDENTIFIER(i).GetText();
+            var typeName = context.type(i).GetText();
+            
+            // Check if variable already exists
+            if (_symbolTable.IsDefined(varName))
+            {
+                throw new Exception($"Variable {varName} already defined");
+            }
+            
+            // Add to symbol table
+            var varType = TypeManager.GetDataType(typeName);
+            _symbolTable.AddSymbol(varName, varType);
+        }
+
+        return null;
+    }
 }

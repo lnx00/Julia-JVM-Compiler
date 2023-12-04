@@ -4,14 +4,15 @@ grammar Julia;
 start: (function | statement)* EOF;
 
 // Functions
-function: FUNCTION_T IDENTIFIER parameters return_type? statement* END_T;
+function: FUNCTION_T IDENTIFIER parameters return_type? body END_T;
 parameters: LPAREN (IDENTIFIER DCOLON type (COMMA IDENTIFIER DCOLON type)*)? RPAREN;
 return_type: DCOLON type;
 
 // Control flow
-if: IF_T expression statement* (ELSE_T statement*)? END_T; // if x then y else z
-while: WHILE_T expression statement* END_T; // while x y
-block: BEGIN_T statement* END_T; // begin x end
+if: IF_T expression body (ELSE_T body)? END_T; // if x then y else z
+while: WHILE_T expression body END_T; // while x y
+block: BEGIN_T body END_T; // begin x end
+body: statement*;
 
 // Statements
 statement: declaration | assignment | call | return | if | while | block;

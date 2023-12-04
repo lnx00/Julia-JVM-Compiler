@@ -74,6 +74,12 @@ public interface IJuliaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitBlock([NotNull] JuliaParser.BlockContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.body"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBody([NotNull] JuliaParser.BodyContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="JuliaParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

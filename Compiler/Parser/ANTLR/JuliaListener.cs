@@ -101,6 +101,16 @@ public interface IJuliaListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitBlock([NotNull] JuliaParser.BlockContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.body"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBody([NotNull] JuliaParser.BodyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.body"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBody([NotNull] JuliaParser.BodyContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="JuliaParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
