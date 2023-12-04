@@ -496,4 +496,58 @@ public class ParserTests
         // Assert
         Assert.Throws<InvalidOperatorException>(() => parser.Parse());
     }
+    
+    [Fact]
+    public void NotFloat_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = "x::Float64 = !1.0";
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<InvalidOperatorException>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void IntComparison_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::Bool = 1 < 2 && 1 <= 2 && 1 > 2 && 1 >= 2 && 1 == 2 && 1 != 2";
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void ComplexIntComparison_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::Bool = 1 < 2 && (1 <= 2 && (1 > 2 && (1 >= 2 && (1 == 2 && (1 != 2)))))";
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void IntFloatComparison_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = "x::Bool = 1 < 2.0 && 1 <= 2.0 && 1 > 2.0 && 1 >= 2.0 && 1 == 2.0 && 1 != 2.0";
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }
 }

@@ -151,4 +151,24 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             _ => throw InvalidOperatorException.Create(op, context)
         };
     }
+
+    public override INode? VisitCompExpr(JuliaParser.CompExprContext context)
+    {
+        var op = context.compOp().GetText();
+        var left = Visit(context.expression(0)) as ExpressionNode ?? throw new InvalidOperationException();
+        var right = Visit(context.expression(1)) as ExpressionNode ?? throw new InvalidOperationException();
+        
+        var type = TypeManager.GetCommonNumericType(left.Type, right.Type) ?? throw TypeMismatchException.Create(left.Type, right.Type, context);
+        
+        return op switch
+        {
+            "==" => new CompExpressionNode(left, right, CompExpressionNode.Operation.Equal),
+            "!=" => new CompExpressionNode(left, right, CompExpressionNode.Operation.NotEqual),
+            "<" => new CompExpressionNode(left, right, CompExpressionNode.Operation.LessThan),
+            "<=" => new CompExpressionNode(left, right, CompExpressionNode.Operation.LessThanOrEqual),
+            ">" => new CompExpressionNode(left, right, CompExpressionNode.Operation.GreaterThan),
+            ">=" => new CompExpressionNode(left, right, CompExpressionNode.Operation.GreaterThanOrEqual),
+            _ => throw InvalidOperatorException.Create(op, context)
+        };
+    }
 }
