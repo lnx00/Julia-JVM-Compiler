@@ -10,7 +10,7 @@ public static class TypeManager
         Bool
     }
     
-    public static DataType GetDataType(string type)
+    public static DataType? GetDataType(string type)
     {
         return type switch
         {
@@ -18,7 +18,7 @@ public static class TypeManager
             "Float64" => DataType.Float64,
             "String" => DataType.String,
             "Bool" => DataType.Bool,
-            _ => throw new ArgumentException($"Unknown type: {type}")
+            _ => null
         };
     }
     

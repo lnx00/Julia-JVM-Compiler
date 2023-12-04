@@ -50,12 +50,6 @@ public interface IJuliaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitParameters([NotNull] JuliaParser.ParametersContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="JuliaParser.return_type"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitReturn_type([NotNull] JuliaParser.Return_typeContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="JuliaParser.if"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

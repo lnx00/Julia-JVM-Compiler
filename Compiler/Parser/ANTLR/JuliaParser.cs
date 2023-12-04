@@ -44,15 +44,15 @@ public partial class JuliaParser : Parser {
 		GTE=38, NEQ=39, INTCONST=40, FLTCONST=41, STRCONST=42, BOOLCONST=43, IDENTIFIER=44, 
 		COMMENT=45, COMMENT_BLOCK=46, WS=47, NL=48;
 	public const int
-		RULE_start = 0, RULE_function = 1, RULE_parameters = 2, RULE_return_type = 3, 
-		RULE_if = 4, RULE_while = 5, RULE_block = 6, RULE_body = 7, RULE_statement = 8, 
-		RULE_declaration = 9, RULE_assignment = 10, RULE_call = 11, RULE_return = 12, 
-		RULE_expression = 13, RULE_multOp = 14, RULE_addOp = 15, RULE_compOp = 16, 
-		RULE_boolOp = 17, RULE_const = 18, RULE_type = 19;
+		RULE_start = 0, RULE_function = 1, RULE_parameters = 2, RULE_if = 3, RULE_while = 4, 
+		RULE_block = 5, RULE_body = 6, RULE_statement = 7, RULE_declaration = 8, 
+		RULE_assignment = 9, RULE_call = 10, RULE_return = 11, RULE_expression = 12, 
+		RULE_multOp = 13, RULE_addOp = 14, RULE_compOp = 15, RULE_boolOp = 16, 
+		RULE_const = 17, RULE_type = 18;
 	public static readonly string[] ruleNames = {
-		"start", "function", "parameters", "return_type", "if", "while", "block", 
-		"body", "statement", "declaration", "assignment", "call", "return", "expression", 
-		"multOp", "addOp", "compOp", "boolOp", "const", "type"
+		"start", "function", "parameters", "if", "while", "block", "body", "statement", 
+		"declaration", "assignment", "call", "return", "expression", "multOp", 
+		"addOp", "compOp", "boolOp", "const", "type"
 	};
 
 	private static readonly string[] _LiteralNames = {
@@ -148,17 +148,17 @@ public partial class JuliaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 44;
+			State = 42;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 17592186044590L) != 0)) {
 				{
-				State = 42;
+				State = 40;
 				ErrorHandler.Sync(this);
 				switch (TokenStream.LA(1)) {
 				case FUNCTION_T:
 					{
-					State = 40;
+					State = 38;
 					function();
 					}
 					break;
@@ -168,7 +168,7 @@ public partial class JuliaParser : Parser {
 				case WHILE_T:
 				case IDENTIFIER:
 					{
-					State = 41;
+					State = 39;
 					statement();
 					}
 					break;
@@ -176,11 +176,11 @@ public partial class JuliaParser : Parser {
 					throw new NoViableAltException(this);
 				}
 				}
-				State = 46;
+				State = 44;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 47;
+			State = 45;
 			Match(Eof);
 			}
 		}
@@ -205,8 +205,9 @@ public partial class JuliaParser : Parser {
 			return GetRuleContext<BodyContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode END_T() { return GetToken(JuliaParser.END_T, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public Return_typeContext return_type() {
-			return GetRuleContext<Return_typeContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DCOLON() { return GetToken(JuliaParser.DCOLON, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public TypeContext type() {
+			return GetRuleContext<TypeContext>(0);
 		}
 		public FunctionContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -239,25 +240,27 @@ public partial class JuliaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 49;
+			State = 47;
 			Match(FUNCTION_T);
-			State = 50;
+			State = 48;
 			Match(IDENTIFIER);
-			State = 51;
+			State = 49;
 			parameters();
-			State = 53;
+			State = 52;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==DCOLON) {
 				{
-				State = 52;
-				return_type();
+				State = 50;
+				Match(DCOLON);
+				State = 51;
+				type();
 				}
 			}
 
-			State = 55;
+			State = 54;
 			body();
-			State = 56;
+			State = 55;
 			Match(END_T);
 			}
 		}
@@ -324,96 +327,44 @@ public partial class JuliaParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 58;
+			State = 57;
 			Match(LPAREN);
-			State = 71;
+			State = 70;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==IDENTIFIER) {
 				{
-				State = 59;
+				State = 58;
 				Match(IDENTIFIER);
-				State = 60;
+				State = 59;
 				Match(DCOLON);
-				State = 61;
+				State = 60;
 				type();
-				State = 68;
+				State = 67;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					State = 62;
+					State = 61;
 					Match(COMMA);
-					State = 63;
+					State = 62;
 					Match(IDENTIFIER);
-					State = 64;
+					State = 63;
 					Match(DCOLON);
-					State = 65;
+					State = 64;
 					type();
 					}
 					}
-					State = 70;
+					State = 69;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
 				}
 			}
 
-			State = 73;
+			State = 72;
 			Match(RPAREN);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			ErrorHandler.ReportError(this, re);
-			ErrorHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
-	public partial class Return_typeContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DCOLON() { return GetToken(JuliaParser.DCOLON, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public TypeContext type() {
-			return GetRuleContext<TypeContext>(0);
-		}
-		public Return_typeContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_return_type; } }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			IJuliaListener typedListener = listener as IJuliaListener;
-			if (typedListener != null) typedListener.EnterReturn_type(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			IJuliaListener typedListener = listener as IJuliaListener;
-			if (typedListener != null) typedListener.ExitReturn_type(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IJuliaVisitor<TResult> typedVisitor = visitor as IJuliaVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitReturn_type(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public Return_typeContext return_type() {
-		Return_typeContext _localctx = new Return_typeContext(Context, State);
-		EnterRule(_localctx, 6, RULE_return_type);
-		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 75;
-			Match(DCOLON);
-			State = 76;
-			type();
 			}
 		}
 		catch (RecognitionException re) {
@@ -466,30 +417,30 @@ public partial class JuliaParser : Parser {
 	[RuleVersion(0)]
 	public IfContext @if() {
 		IfContext _localctx = new IfContext(Context, State);
-		EnterRule(_localctx, 8, RULE_if);
+		EnterRule(_localctx, 6, RULE_if);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 78;
+			State = 74;
 			Match(IF_T);
-			State = 79;
+			State = 75;
 			expression(0);
-			State = 80;
+			State = 76;
 			body();
-			State = 83;
+			State = 79;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==ELSE_T) {
 				{
-				State = 81;
+				State = 77;
 				Match(ELSE_T);
-				State = 82;
+				State = 78;
 				body();
 				}
 			}
 
-			State = 85;
+			State = 81;
 			Match(END_T);
 			}
 		}
@@ -539,17 +490,17 @@ public partial class JuliaParser : Parser {
 	[RuleVersion(0)]
 	public WhileContext @while() {
 		WhileContext _localctx = new WhileContext(Context, State);
-		EnterRule(_localctx, 10, RULE_while);
+		EnterRule(_localctx, 8, RULE_while);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 87;
+			State = 83;
 			Match(WHILE_T);
-			State = 88;
+			State = 84;
 			expression(0);
-			State = 89;
+			State = 85;
 			body();
-			State = 90;
+			State = 86;
 			Match(END_T);
 			}
 		}
@@ -596,15 +547,15 @@ public partial class JuliaParser : Parser {
 	[RuleVersion(0)]
 	public BlockContext block() {
 		BlockContext _localctx = new BlockContext(Context, State);
-		EnterRule(_localctx, 12, RULE_block);
+		EnterRule(_localctx, 10, RULE_block);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 92;
+			State = 88;
 			Match(BEGIN_T);
-			State = 93;
+			State = 89;
 			body();
-			State = 94;
+			State = 90;
 			Match(END_T);
 			}
 		}
@@ -652,22 +603,22 @@ public partial class JuliaParser : Parser {
 	[RuleVersion(0)]
 	public BodyContext body() {
 		BodyContext _localctx = new BodyContext(Context, State);
-		EnterRule(_localctx, 14, RULE_body);
+		EnterRule(_localctx, 12, RULE_body);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 99;
+			State = 95;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 17592186044588L) != 0)) {
 				{
 				{
-				State = 96;
+				State = 92;
 				statement();
 				}
 				}
-				State = 101;
+				State = 97;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -732,57 +683,57 @@ public partial class JuliaParser : Parser {
 	[RuleVersion(0)]
 	public StatementContext statement() {
 		StatementContext _localctx = new StatementContext(Context, State);
-		EnterRule(_localctx, 16, RULE_statement);
+		EnterRule(_localctx, 14, RULE_statement);
 		try {
-			State = 109;
+			State = 105;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,7,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 102;
+				State = 98;
 				declaration();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 103;
+				State = 99;
 				assignment();
 				}
 				break;
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 104;
+				State = 100;
 				call();
 				}
 				break;
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 105;
+				State = 101;
 				@return();
 				}
 				break;
 			case 5:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 106;
+				State = 102;
 				@if();
 				}
 				break;
 			case 6:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 107;
+				State = 103;
 				@while();
 				}
 				break;
 			case 7:
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 108;
+				State = 104;
 				block();
 				}
 				break;
@@ -835,19 +786,19 @@ public partial class JuliaParser : Parser {
 	[RuleVersion(0)]
 	public DeclarationContext declaration() {
 		DeclarationContext _localctx = new DeclarationContext(Context, State);
-		EnterRule(_localctx, 18, RULE_declaration);
+		EnterRule(_localctx, 16, RULE_declaration);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 111;
+			State = 107;
 			Match(IDENTIFIER);
-			State = 112;
+			State = 108;
 			Match(DCOLON);
-			State = 113;
+			State = 109;
 			type();
-			State = 114;
+			State = 110;
 			Match(EQ);
-			State = 115;
+			State = 111;
 			expression(0);
 			}
 		}
@@ -894,15 +845,15 @@ public partial class JuliaParser : Parser {
 	[RuleVersion(0)]
 	public AssignmentContext assignment() {
 		AssignmentContext _localctx = new AssignmentContext(Context, State);
-		EnterRule(_localctx, 20, RULE_assignment);
+		EnterRule(_localctx, 18, RULE_assignment);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 117;
+			State = 113;
 			Match(IDENTIFIER);
-			State = 118;
+			State = 114;
 			Match(EQ);
-			State = 119;
+			State = 115;
 			expression(0);
 			}
 		}
@@ -957,42 +908,42 @@ public partial class JuliaParser : Parser {
 	[RuleVersion(0)]
 	public CallContext call() {
 		CallContext _localctx = new CallContext(Context, State);
-		EnterRule(_localctx, 22, RULE_call);
+		EnterRule(_localctx, 20, RULE_call);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 121;
+			State = 117;
 			Match(IDENTIFIER);
-			State = 122;
+			State = 118;
 			Match(LPAREN);
-			State = 131;
+			State = 127;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 34093450412032L) != 0)) {
 				{
-				State = 123;
+				State = 119;
 				expression(0);
-				State = 128;
+				State = 124;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					State = 124;
+					State = 120;
 					Match(COMMA);
-					State = 125;
+					State = 121;
 					expression(0);
 					}
 					}
-					State = 130;
+					State = 126;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
 				}
 			}
 
-			State = 133;
+			State = 129;
 			Match(RPAREN);
 			}
 		}
@@ -1038,14 +989,22 @@ public partial class JuliaParser : Parser {
 	[RuleVersion(0)]
 	public ReturnContext @return() {
 		ReturnContext _localctx = new ReturnContext(Context, State);
-		EnterRule(_localctx, 24, RULE_return);
+		EnterRule(_localctx, 22, RULE_return);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 135;
+			State = 131;
 			Match(RETURN_T);
-			State = 136;
-			expression(0);
+			State = 133;
+			ErrorHandler.Sync(this);
+			switch ( Interpreter.AdaptivePredict(TokenStream,10,Context) ) {
+			case 1:
+				{
+				State = 132;
+				expression(0);
+				}
+				break;
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -1305,24 +1264,24 @@ public partial class JuliaParser : Parser {
 		int _parentState = State;
 		ExpressionContext _localctx = new ExpressionContext(Context, _parentState);
 		ExpressionContext _prevctx = _localctx;
-		int _startState = 26;
-		EnterRecursionRule(_localctx, 26, RULE_expression, _p);
+		int _startState = 24;
+		EnterRecursionRule(_localctx, 24, RULE_expression, _p);
 		try {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 148;
+			State = 145;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,10,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,11,Context) ) {
 			case 1:
 				{
 				_localctx = new NotExprContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
 
-				State = 139;
+				State = 136;
 				Match(NOT);
-				State = 140;
+				State = 137;
 				expression(5);
 				}
 				break;
@@ -1331,11 +1290,11 @@ public partial class JuliaParser : Parser {
 				_localctx = new ParenExprContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 141;
+				State = 138;
 				Match(LPAREN);
-				State = 142;
+				State = 139;
 				expression(0);
-				State = 143;
+				State = 140;
 				Match(RPAREN);
 				}
 				break;
@@ -1344,7 +1303,7 @@ public partial class JuliaParser : Parser {
 				_localctx = new CallExprContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 145;
+				State = 142;
 				call();
 				}
 				break;
@@ -1353,7 +1312,7 @@ public partial class JuliaParser : Parser {
 				_localctx = new ConstExprContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 146;
+				State = 143;
 				@const();
 				}
 				break;
@@ -1362,33 +1321,33 @@ public partial class JuliaParser : Parser {
 				_localctx = new VarExprContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 147;
+				State = 144;
 				Match(IDENTIFIER);
 				}
 				break;
 			}
 			Context.Stop = TokenStream.LT(-1);
-			State = 168;
+			State = 165;
 			ErrorHandler.Sync(this);
-			_alt = Interpreter.AdaptivePredict(TokenStream,12,Context);
+			_alt = Interpreter.AdaptivePredict(TokenStream,13,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( ParseListeners!=null )
 						TriggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					State = 166;
+					State = 163;
 					ErrorHandler.Sync(this);
-					switch ( Interpreter.AdaptivePredict(TokenStream,11,Context) ) {
+					switch ( Interpreter.AdaptivePredict(TokenStream,12,Context) ) {
 					case 1:
 						{
 						_localctx = new MultExprContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
-						State = 150;
+						State = 147;
 						if (!(Precpred(Context, 9))) throw new FailedPredicateException(this, "Precpred(Context, 9)");
-						State = 151;
+						State = 148;
 						multOp();
-						State = 152;
+						State = 149;
 						expression(10);
 						}
 						break;
@@ -1396,11 +1355,11 @@ public partial class JuliaParser : Parser {
 						{
 						_localctx = new AddExprContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
-						State = 154;
+						State = 151;
 						if (!(Precpred(Context, 8))) throw new FailedPredicateException(this, "Precpred(Context, 8)");
-						State = 155;
+						State = 152;
 						addOp();
-						State = 156;
+						State = 153;
 						expression(9);
 						}
 						break;
@@ -1408,11 +1367,11 @@ public partial class JuliaParser : Parser {
 						{
 						_localctx = new CompExprContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
-						State = 158;
+						State = 155;
 						if (!(Precpred(Context, 7))) throw new FailedPredicateException(this, "Precpred(Context, 7)");
-						State = 159;
+						State = 156;
 						compOp();
-						State = 160;
+						State = 157;
 						expression(8);
 						}
 						break;
@@ -1420,20 +1379,20 @@ public partial class JuliaParser : Parser {
 						{
 						_localctx = new BoolExprContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
-						State = 162;
+						State = 159;
 						if (!(Precpred(Context, 6))) throw new FailedPredicateException(this, "Precpred(Context, 6)");
-						State = 163;
+						State = 160;
 						boolOp();
-						State = 164;
+						State = 161;
 						expression(7);
 						}
 						break;
 					}
 					} 
 				}
-				State = 170;
+				State = 167;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,12,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,13,Context);
 			}
 			}
 		}
@@ -1478,12 +1437,12 @@ public partial class JuliaParser : Parser {
 	[RuleVersion(0)]
 	public MultOpContext multOp() {
 		MultOpContext _localctx = new MultOpContext(Context, State);
-		EnterRule(_localctx, 28, RULE_multOp);
+		EnterRule(_localctx, 26, RULE_multOp);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 171;
+			State = 168;
 			_la = TokenStream.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 1879048192L) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
@@ -1534,12 +1493,12 @@ public partial class JuliaParser : Parser {
 	[RuleVersion(0)]
 	public AddOpContext addOp() {
 		AddOpContext _localctx = new AddOpContext(Context, State);
-		EnterRule(_localctx, 30, RULE_addOp);
+		EnterRule(_localctx, 28, RULE_addOp);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 173;
+			State = 170;
 			_la = TokenStream.LA(1);
 			if ( !(_la==PLUS || _la==MINUS) ) {
 			ErrorHandler.RecoverInline(this);
@@ -1594,12 +1553,12 @@ public partial class JuliaParser : Parser {
 	[RuleVersion(0)]
 	public CompOpContext compOp() {
 		CompOpContext _localctx = new CompOpContext(Context, State);
-		EnterRule(_localctx, 32, RULE_compOp);
+		EnterRule(_localctx, 30, RULE_compOp);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 175;
+			State = 172;
 			_la = TokenStream.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 1082331758592L) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
@@ -1650,12 +1609,12 @@ public partial class JuliaParser : Parser {
 	[RuleVersion(0)]
 	public BoolOpContext boolOp() {
 		BoolOpContext _localctx = new BoolOpContext(Context, State);
-		EnterRule(_localctx, 34, RULE_boolOp);
+		EnterRule(_localctx, 32, RULE_boolOp);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 177;
+			State = 174;
 			_la = TokenStream.LA(1);
 			if ( !(_la==AND || _la==OR) ) {
 			ErrorHandler.RecoverInline(this);
@@ -1708,12 +1667,12 @@ public partial class JuliaParser : Parser {
 	[RuleVersion(0)]
 	public ConstContext @const() {
 		ConstContext _localctx = new ConstContext(Context, State);
-		EnterRule(_localctx, 36, RULE_const);
+		EnterRule(_localctx, 34, RULE_const);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 179;
+			State = 176;
 			_la = TokenStream.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 16492674416640L) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
@@ -1766,12 +1725,12 @@ public partial class JuliaParser : Parser {
 	[RuleVersion(0)]
 	public TypeContext type() {
 		TypeContext _localctx = new TypeContext(Context, State);
-		EnterRule(_localctx, 38, RULE_type);
+		EnterRule(_localctx, 36, RULE_type);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 181;
+			State = 178;
 			_la = TokenStream.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 3840L) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
@@ -1795,7 +1754,7 @@ public partial class JuliaParser : Parser {
 
 	public override bool Sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 13: return expression_sempred((ExpressionContext)_localctx, predIndex);
+		case 12: return expression_sempred((ExpressionContext)_localctx, predIndex);
 		}
 		return true;
 	}
@@ -1810,62 +1769,62 @@ public partial class JuliaParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,48,184,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,48,181,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,14,
-		2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,1,0,1,0,5,0,43,8,0,10,
-		0,12,0,46,9,0,1,0,1,0,1,1,1,1,1,1,1,1,3,1,54,8,1,1,1,1,1,1,1,1,2,1,2,1,
-		2,1,2,1,2,1,2,1,2,1,2,5,2,67,8,2,10,2,12,2,70,9,2,3,2,72,8,2,1,2,1,2,1,
-		3,1,3,1,3,1,4,1,4,1,4,1,4,1,4,3,4,84,8,4,1,4,1,4,1,5,1,5,1,5,1,5,1,5,1,
-		6,1,6,1,6,1,6,1,7,5,7,98,8,7,10,7,12,7,101,9,7,1,8,1,8,1,8,1,8,1,8,1,8,
-		1,8,3,8,110,8,8,1,9,1,9,1,9,1,9,1,9,1,9,1,10,1,10,1,10,1,10,1,11,1,11,
-		1,11,1,11,1,11,5,11,127,8,11,10,11,12,11,130,9,11,3,11,132,8,11,1,11,1,
-		11,1,12,1,12,1,12,1,13,1,13,1,13,1,13,1,13,1,13,1,13,1,13,1,13,1,13,3,
-		13,149,8,13,1,13,1,13,1,13,1,13,1,13,1,13,1,13,1,13,1,13,1,13,1,13,1,13,
-		1,13,1,13,1,13,1,13,5,13,167,8,13,10,13,12,13,170,9,13,1,14,1,14,1,15,
-		1,15,1,16,1,16,1,17,1,17,1,18,1,18,1,19,1,19,1,19,0,1,26,20,0,2,4,6,8,
-		10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,0,6,1,0,28,30,1,0,26,27,1,
-		0,34,39,1,0,31,32,1,0,40,43,1,0,8,11,186,0,44,1,0,0,0,2,49,1,0,0,0,4,58,
-		1,0,0,0,6,75,1,0,0,0,8,78,1,0,0,0,10,87,1,0,0,0,12,92,1,0,0,0,14,99,1,
-		0,0,0,16,109,1,0,0,0,18,111,1,0,0,0,20,117,1,0,0,0,22,121,1,0,0,0,24,135,
-		1,0,0,0,26,148,1,0,0,0,28,171,1,0,0,0,30,173,1,0,0,0,32,175,1,0,0,0,34,
-		177,1,0,0,0,36,179,1,0,0,0,38,181,1,0,0,0,40,43,3,2,1,0,41,43,3,16,8,0,
-		42,40,1,0,0,0,42,41,1,0,0,0,43,46,1,0,0,0,44,42,1,0,0,0,44,45,1,0,0,0,
-		45,47,1,0,0,0,46,44,1,0,0,0,47,48,5,0,0,1,48,1,1,0,0,0,49,50,5,1,0,0,50,
-		51,5,44,0,0,51,53,3,4,2,0,52,54,3,6,3,0,53,52,1,0,0,0,53,54,1,0,0,0,54,
-		55,1,0,0,0,55,56,3,14,7,0,56,57,5,4,0,0,57,3,1,0,0,0,58,71,5,14,0,0,59,
-		60,5,44,0,0,60,61,5,18,0,0,61,68,3,38,19,0,62,63,5,19,0,0,63,64,5,44,0,
-		0,64,65,5,18,0,0,65,67,3,38,19,0,66,62,1,0,0,0,67,70,1,0,0,0,68,66,1,0,
-		0,0,68,69,1,0,0,0,69,72,1,0,0,0,70,68,1,0,0,0,71,59,1,0,0,0,71,72,1,0,
-		0,0,72,73,1,0,0,0,73,74,5,15,0,0,74,5,1,0,0,0,75,76,5,18,0,0,76,77,3,38,
-		19,0,77,7,1,0,0,0,78,79,5,5,0,0,79,80,3,26,13,0,80,83,3,14,7,0,81,82,5,
-		6,0,0,82,84,3,14,7,0,83,81,1,0,0,0,83,84,1,0,0,0,84,85,1,0,0,0,85,86,5,
-		4,0,0,86,9,1,0,0,0,87,88,5,7,0,0,88,89,3,26,13,0,89,90,3,14,7,0,90,91,
-		5,4,0,0,91,11,1,0,0,0,92,93,5,3,0,0,93,94,3,14,7,0,94,95,5,4,0,0,95,13,
-		1,0,0,0,96,98,3,16,8,0,97,96,1,0,0,0,98,101,1,0,0,0,99,97,1,0,0,0,99,100,
-		1,0,0,0,100,15,1,0,0,0,101,99,1,0,0,0,102,110,3,18,9,0,103,110,3,20,10,
-		0,104,110,3,22,11,0,105,110,3,24,12,0,106,110,3,8,4,0,107,110,3,10,5,0,
-		108,110,3,12,6,0,109,102,1,0,0,0,109,103,1,0,0,0,109,104,1,0,0,0,109,105,
-		1,0,0,0,109,106,1,0,0,0,109,107,1,0,0,0,109,108,1,0,0,0,110,17,1,0,0,0,
-		111,112,5,44,0,0,112,113,5,18,0,0,113,114,3,38,19,0,114,115,5,23,0,0,115,
-		116,3,26,13,0,116,19,1,0,0,0,117,118,5,44,0,0,118,119,5,23,0,0,119,120,
-		3,26,13,0,120,21,1,0,0,0,121,122,5,44,0,0,122,131,5,14,0,0,123,128,3,26,
-		13,0,124,125,5,19,0,0,125,127,3,26,13,0,126,124,1,0,0,0,127,130,1,0,0,
-		0,128,126,1,0,0,0,128,129,1,0,0,0,129,132,1,0,0,0,130,128,1,0,0,0,131,
-		123,1,0,0,0,131,132,1,0,0,0,132,133,1,0,0,0,133,134,5,15,0,0,134,23,1,
-		0,0,0,135,136,5,2,0,0,136,137,3,26,13,0,137,25,1,0,0,0,138,139,6,13,-1,
-		0,139,140,5,33,0,0,140,149,3,26,13,5,141,142,5,14,0,0,142,143,3,26,13,
-		0,143,144,5,15,0,0,144,149,1,0,0,0,145,149,3,22,11,0,146,149,3,36,18,0,
-		147,149,5,44,0,0,148,138,1,0,0,0,148,141,1,0,0,0,148,145,1,0,0,0,148,146,
-		1,0,0,0,148,147,1,0,0,0,149,168,1,0,0,0,150,151,10,9,0,0,151,152,3,28,
-		14,0,152,153,3,26,13,10,153,167,1,0,0,0,154,155,10,8,0,0,155,156,3,30,
-		15,0,156,157,3,26,13,9,157,167,1,0,0,0,158,159,10,7,0,0,159,160,3,32,16,
-		0,160,161,3,26,13,8,161,167,1,0,0,0,162,163,10,6,0,0,163,164,3,34,17,0,
-		164,165,3,26,13,7,165,167,1,0,0,0,166,150,1,0,0,0,166,154,1,0,0,0,166,
-		158,1,0,0,0,166,162,1,0,0,0,167,170,1,0,0,0,168,166,1,0,0,0,168,169,1,
-		0,0,0,169,27,1,0,0,0,170,168,1,0,0,0,171,172,7,0,0,0,172,29,1,0,0,0,173,
-		174,7,1,0,0,174,31,1,0,0,0,175,176,7,2,0,0,176,33,1,0,0,0,177,178,7,3,
-		0,0,178,35,1,0,0,0,179,180,7,4,0,0,180,37,1,0,0,0,181,182,7,5,0,0,182,
-		39,1,0,0,0,13,42,44,53,68,71,83,99,109,128,131,148,166,168
+		2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,1,0,1,0,5,0,41,8,0,10,0,12,0,44,
+		9,0,1,0,1,0,1,1,1,1,1,1,1,1,1,1,3,1,53,8,1,1,1,1,1,1,1,1,2,1,2,1,2,1,2,
+		1,2,1,2,1,2,1,2,5,2,66,8,2,10,2,12,2,69,9,2,3,2,71,8,2,1,2,1,2,1,3,1,3,
+		1,3,1,3,1,3,3,3,80,8,3,1,3,1,3,1,4,1,4,1,4,1,4,1,4,1,5,1,5,1,5,1,5,1,6,
+		5,6,94,8,6,10,6,12,6,97,9,6,1,7,1,7,1,7,1,7,1,7,1,7,1,7,3,7,106,8,7,1,
+		8,1,8,1,8,1,8,1,8,1,8,1,9,1,9,1,9,1,9,1,10,1,10,1,10,1,10,1,10,5,10,123,
+		8,10,10,10,12,10,126,9,10,3,10,128,8,10,1,10,1,10,1,11,1,11,3,11,134,8,
+		11,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,3,12,146,8,12,1,12,
+		1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,1,12,
+		1,12,5,12,164,8,12,10,12,12,12,167,9,12,1,13,1,13,1,14,1,14,1,15,1,15,
+		1,16,1,16,1,17,1,17,1,18,1,18,1,18,0,1,24,19,0,2,4,6,8,10,12,14,16,18,
+		20,22,24,26,28,30,32,34,36,0,6,1,0,28,30,1,0,26,27,1,0,34,39,1,0,31,32,
+		1,0,40,43,1,0,8,11,185,0,42,1,0,0,0,2,47,1,0,0,0,4,57,1,0,0,0,6,74,1,0,
+		0,0,8,83,1,0,0,0,10,88,1,0,0,0,12,95,1,0,0,0,14,105,1,0,0,0,16,107,1,0,
+		0,0,18,113,1,0,0,0,20,117,1,0,0,0,22,131,1,0,0,0,24,145,1,0,0,0,26,168,
+		1,0,0,0,28,170,1,0,0,0,30,172,1,0,0,0,32,174,1,0,0,0,34,176,1,0,0,0,36,
+		178,1,0,0,0,38,41,3,2,1,0,39,41,3,14,7,0,40,38,1,0,0,0,40,39,1,0,0,0,41,
+		44,1,0,0,0,42,40,1,0,0,0,42,43,1,0,0,0,43,45,1,0,0,0,44,42,1,0,0,0,45,
+		46,5,0,0,1,46,1,1,0,0,0,47,48,5,1,0,0,48,49,5,44,0,0,49,52,3,4,2,0,50,
+		51,5,18,0,0,51,53,3,36,18,0,52,50,1,0,0,0,52,53,1,0,0,0,53,54,1,0,0,0,
+		54,55,3,12,6,0,55,56,5,4,0,0,56,3,1,0,0,0,57,70,5,14,0,0,58,59,5,44,0,
+		0,59,60,5,18,0,0,60,67,3,36,18,0,61,62,5,19,0,0,62,63,5,44,0,0,63,64,5,
+		18,0,0,64,66,3,36,18,0,65,61,1,0,0,0,66,69,1,0,0,0,67,65,1,0,0,0,67,68,
+		1,0,0,0,68,71,1,0,0,0,69,67,1,0,0,0,70,58,1,0,0,0,70,71,1,0,0,0,71,72,
+		1,0,0,0,72,73,5,15,0,0,73,5,1,0,0,0,74,75,5,5,0,0,75,76,3,24,12,0,76,79,
+		3,12,6,0,77,78,5,6,0,0,78,80,3,12,6,0,79,77,1,0,0,0,79,80,1,0,0,0,80,81,
+		1,0,0,0,81,82,5,4,0,0,82,7,1,0,0,0,83,84,5,7,0,0,84,85,3,24,12,0,85,86,
+		3,12,6,0,86,87,5,4,0,0,87,9,1,0,0,0,88,89,5,3,0,0,89,90,3,12,6,0,90,91,
+		5,4,0,0,91,11,1,0,0,0,92,94,3,14,7,0,93,92,1,0,0,0,94,97,1,0,0,0,95,93,
+		1,0,0,0,95,96,1,0,0,0,96,13,1,0,0,0,97,95,1,0,0,0,98,106,3,16,8,0,99,106,
+		3,18,9,0,100,106,3,20,10,0,101,106,3,22,11,0,102,106,3,6,3,0,103,106,3,
+		8,4,0,104,106,3,10,5,0,105,98,1,0,0,0,105,99,1,0,0,0,105,100,1,0,0,0,105,
+		101,1,0,0,0,105,102,1,0,0,0,105,103,1,0,0,0,105,104,1,0,0,0,106,15,1,0,
+		0,0,107,108,5,44,0,0,108,109,5,18,0,0,109,110,3,36,18,0,110,111,5,23,0,
+		0,111,112,3,24,12,0,112,17,1,0,0,0,113,114,5,44,0,0,114,115,5,23,0,0,115,
+		116,3,24,12,0,116,19,1,0,0,0,117,118,5,44,0,0,118,127,5,14,0,0,119,124,
+		3,24,12,0,120,121,5,19,0,0,121,123,3,24,12,0,122,120,1,0,0,0,123,126,1,
+		0,0,0,124,122,1,0,0,0,124,125,1,0,0,0,125,128,1,0,0,0,126,124,1,0,0,0,
+		127,119,1,0,0,0,127,128,1,0,0,0,128,129,1,0,0,0,129,130,5,15,0,0,130,21,
+		1,0,0,0,131,133,5,2,0,0,132,134,3,24,12,0,133,132,1,0,0,0,133,134,1,0,
+		0,0,134,23,1,0,0,0,135,136,6,12,-1,0,136,137,5,33,0,0,137,146,3,24,12,
+		5,138,139,5,14,0,0,139,140,3,24,12,0,140,141,5,15,0,0,141,146,1,0,0,0,
+		142,146,3,20,10,0,143,146,3,34,17,0,144,146,5,44,0,0,145,135,1,0,0,0,145,
+		138,1,0,0,0,145,142,1,0,0,0,145,143,1,0,0,0,145,144,1,0,0,0,146,165,1,
+		0,0,0,147,148,10,9,0,0,148,149,3,26,13,0,149,150,3,24,12,10,150,164,1,
+		0,0,0,151,152,10,8,0,0,152,153,3,28,14,0,153,154,3,24,12,9,154,164,1,0,
+		0,0,155,156,10,7,0,0,156,157,3,30,15,0,157,158,3,24,12,8,158,164,1,0,0,
+		0,159,160,10,6,0,0,160,161,3,32,16,0,161,162,3,24,12,7,162,164,1,0,0,0,
+		163,147,1,0,0,0,163,151,1,0,0,0,163,155,1,0,0,0,163,159,1,0,0,0,164,167,
+		1,0,0,0,165,163,1,0,0,0,165,166,1,0,0,0,166,25,1,0,0,0,167,165,1,0,0,0,
+		168,169,7,0,0,0,169,27,1,0,0,0,170,171,7,1,0,0,171,29,1,0,0,0,172,173,
+		7,2,0,0,173,31,1,0,0,0,174,175,7,3,0,0,175,33,1,0,0,0,176,177,7,4,0,0,
+		177,35,1,0,0,0,178,179,7,5,0,0,179,37,1,0,0,0,14,40,42,52,67,70,79,95,
+		105,124,127,133,145,163,165
 	};
 
 	public static readonly ATN _ATN =

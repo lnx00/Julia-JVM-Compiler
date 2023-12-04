@@ -61,16 +61,6 @@ public interface IJuliaListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitParameters([NotNull] JuliaParser.ParametersContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="JuliaParser.return_type"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterReturn_type([NotNull] JuliaParser.Return_typeContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="JuliaParser.return_type"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitReturn_type([NotNull] JuliaParser.Return_typeContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="JuliaParser.if"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

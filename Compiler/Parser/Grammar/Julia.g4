@@ -4,9 +4,8 @@ grammar Julia;
 start: (function | statement)* EOF;
 
 // Functions
-function: FUNCTION_T IDENTIFIER parameters return_type? body END_T;
+function: FUNCTION_T IDENTIFIER parameters (DCOLON type)? body END_T;
 parameters: LPAREN (IDENTIFIER DCOLON type (COMMA IDENTIFIER DCOLON type)*)? RPAREN;
-return_type: DCOLON type;
 
 // Control flow
 if: IF_T expression body (ELSE_T body)? END_T; // if x then y else z
@@ -19,7 +18,7 @@ statement: declaration | assignment | call | return | if | while | block;
 declaration: IDENTIFIER DCOLON type EQ expression; // x::T = y
 assignment: IDENTIFIER EQ expression; // x = y
 call: IDENTIFIER LPAREN (expression (COMMA expression)*)? RPAREN; // f(x, y)
-return: RETURN_T expression; // return x
+return: RETURN_T expression?; // return x
 
 // Expressions
 expression: expression multOp expression # MultExpr

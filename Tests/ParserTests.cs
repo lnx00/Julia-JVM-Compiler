@@ -848,4 +848,38 @@ public class ParserTests
         // Assert
         Assert.Throws<UndefinedVarException>(() => parser.Parse());
     }
+    
+    [Fact]
+    public void FunctionReturnTypesMismatch_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = """
+                     function helloWorld()::Integer
+                         return 10.0
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void FunctionReturnWithoutType_ThrowsSyntaxError()
+    {
+        // Arange
+        var script = """
+                     function helloWorld()
+                         return 10
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<SyntaxErrorException>(() => parser.Parse());
+    }
 }

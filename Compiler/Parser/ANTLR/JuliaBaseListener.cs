@@ -72,18 +72,6 @@ public partial class JuliaBaseListener : IJuliaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitParameters([NotNull] JuliaParser.ParametersContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="JuliaParser.return_type"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterReturn_type([NotNull] JuliaParser.Return_typeContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="JuliaParser.return_type"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitReturn_type([NotNull] JuliaParser.Return_typeContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="JuliaParser.if"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

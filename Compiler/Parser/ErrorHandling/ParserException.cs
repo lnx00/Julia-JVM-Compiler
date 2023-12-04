@@ -1,6 +1,8 @@
-﻿namespace Compiler.Parser.ErrorHandling;
+﻿using Antlr4.Runtime;
 
-public class ParserException : Exception
+namespace Compiler.Parser.ErrorHandling;
+
+public abstract class ParserException : Exception
 {
     public int Line { get; }
     public int Position { get; }

@@ -22,7 +22,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         }
         
         // Check for type compatibility
-        var varType = TypeManager.GetDataType(typeName);
+        var varType = TypeManager.GetDataType(typeName) ?? throw SyntaxErrorException.Create($"Unknown variable type {typeName}", context);
         if (varType != value.Type)
         {
             throw TypeMismatchException.Create(varType, value.Type, context);
@@ -194,8 +194,19 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         
         var funcName = context.IDENTIFIER().GetText();
         var funcParams = Visit(context.parameters());
+        
+        // TODO: Add function to symbol table
+        
+        // Hacky, but it works for now
+        if (context.type() != null)
+        {
+            var returnTypeName = context.type().GetText();
+            var returnType = TypeManager.GetDataType(returnTypeName)
+                             ?? throw SyntaxErrorException.Create($"Unknown return type {returnTypeName}", context);
+            _symbolTable.AddSymbol("#return", returnType);
+        }
+        
         var funcBody = Visit(context.body());
-        //var returnType = TypeManager.GetDataType(context.return_type().GetText());
 
         _symbolTable.LeaveScope();
         return null;
@@ -215,8 +226,28 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             }
             
             // Add to symbol table
-            var varType = TypeManager.GetDataType(typeName);
+            var varType = TypeManager.GetDataType(typeName) ?? throw SyntaxErrorException.Create($"Unknown parameter type {typeName}", context);
             _symbolTable.AddSymbol(varName, varType);
+        }
+
+        return null;
+    }
+
+    public override INode? VisitReturn(JuliaParser.ReturnContext context)
+    {
+        if (context.expression() != null)
+        {
+            var value = Visit(context.expression()) as ExpressionNode ?? throw new InvalidOperationException();
+            var returnType = _symbolTable.GetSymbol("#return")
+                             ?? throw SyntaxErrorException.Create("Function has not return type", context);
+            
+            // Check for type compatibility
+            if (returnType != value.Type)
+            {
+                throw TypeMismatchException.Create(returnType, value.Type, context);
+            }
+
+            return value;
         }
 
         return null;
