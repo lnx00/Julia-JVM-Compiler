@@ -1,27 +1,34 @@
 ﻿using Compiler.Core.AST;
 using Compiler.Core.Common;
+using Compiler.Core.SymbolTable;
 using Compiler.Parser.ErrorHandling;
 
 namespace Compiler.Parser.Visitor;
 
 public class JuliaVisitor : JuliaBaseVisitor<INode?>
 {
-    private readonly Dictionary<string, TypeManager.DataType> _variables = new();
+    private readonly SymbolTable _symbolTable = new();
     
     public override INode? VisitDeclaration(JuliaParser.DeclarationContext context)
     {
         var varName = context.IDENTIFIER().GetText();
         var typeName = context.type().GetText();
         var value = Visit(context.expression()) as ExpressionNode ?? throw new InvalidOperationException();
+
+        // Check if variable already exists
+        if (_symbolTable.IsDefined(varName))
+        {
+            throw new Exception($"Variable {varName} already defined");
+        }
         
         // Check for type compatibility
-        var type = TypeManager.GetDataType(typeName);
-        if (type != value.Type)
+        var varType = TypeManager.GetDataType(typeName);
+        if (varType != value.Type)
         {
-            throw TypeMismatchException.Create(type, value.Type, context);
+            throw TypeMismatchException.Create(varType, value.Type, context);
         }
 
-        _variables.Add(varName, type);
+        _symbolTable.AddSymbol(varName, varType);
 
         return null;
     }
@@ -32,10 +39,10 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         var value = Visit(context.expression()) as ExpressionNode ?? throw new InvalidOperationException();
         
         // Check for type compatibility
-        var type = _variables[varName];
-        if (type != value.Type)
+        var varType = _symbolTable.GetSymbol(varName) ?? throw UndefinedVarException.Create(varName, context);
+        if (varType != value.Type)
         {
-            throw TypeMismatchException.Create(type, value.Type, context);
+            throw TypeMismatchException.Create(varType, value.Type, context);
         }
         
         return null;
@@ -91,12 +98,9 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         var varName = context.IDENTIFIER().GetText();
         
         // Check if variable exists
-        if (!_variables.ContainsKey(varName))
-        {
-            throw UndefinedVarException.Create(varName, context);
-        }
+        var varType = _symbolTable.GetSymbol(varName) ?? throw UndefinedVarException.Create(varName, context);
         
-        return new IdentifierNode(varName, _variables[varName]);
+        return new IdentifierNode(varName, varType);
     }
 
     public override INode? VisitAddExpr(JuliaParser.AddExprContext context)

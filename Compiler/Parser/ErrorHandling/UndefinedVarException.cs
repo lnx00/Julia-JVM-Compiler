@@ -4,7 +4,7 @@ namespace Compiler.Parser.ErrorHandling;
 
 public class UndefinedVarException : ParserException
 {
-    protected UndefinedVarException(string message, int line, int position) : base(message, line, position)
+    private UndefinedVarException(string message, int line, int position) : base(message, line, position)
     { }
     
     public static UndefinedVarException Create(string varName, ParserRuleContext ctx)
