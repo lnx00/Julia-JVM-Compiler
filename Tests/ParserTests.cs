@@ -901,7 +901,7 @@ public class ParserTests
     }
     
     [Fact]
-    public void FunctionReturnWithoutType_ThrowsSyntaxError()
+    public void FunctionReturnWithoutType_ThrowsTypeMismatch()
     {
         // Arange
         var script = """
@@ -914,7 +914,7 @@ public class ParserTests
         var parser = new Parser(script);
         
         // Assert
-        Assert.Throws<SyntaxErrorException>(() => parser.Parse());
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
     }
     
     [Fact]
@@ -1172,4 +1172,97 @@ public class ParserTests
         // Assert
         Assert.Throws<TypeMismatchException>(() => parser.Parse());
     }
+    
+    [Fact]
+    public void FunctionCall_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     function helloWorld()
+                         x::Integer = 10
+                     end
+                     helloWorld()
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void FunctionCallWithParameter_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     function helloWorld(p::Integer)
+                         p = 10
+                     end
+                     helloWorld(10)
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void FunctionCallInExpression_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     function helloWorld()::Integer
+                         return 10
+                     end
+                     x::Integer = helloWorld()
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void FunctionCallWithoutType_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = """
+                     function helloWorld()
+                         return 10
+                     end
+                     x::Integer = helloWorld()
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }
+    
+    /*[Fact]
+    public void FunctionCallWithWrongParameterType_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = """
+                     function helloWorld(p::Integer)
+                         p = 10
+                     end
+                     helloWorld(10.0)
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }*/
 }

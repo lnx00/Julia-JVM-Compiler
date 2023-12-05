@@ -47,7 +47,7 @@ public class SymbolTable
         return symbol;
     }
     
-    public FunctionSymbol AddFunction(string name, TypeManager.DataType? type)
+    public FunctionSymbol AddFunction(string name, TypeManager.DataType type)
     {
         var symbol = new FunctionSymbol(name, type);
         _scopes.Peek().Add(name, symbol);

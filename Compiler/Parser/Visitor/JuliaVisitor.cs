@@ -203,7 +203,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         else
         {
             // No return type
-            _symbolTable.EnterFunctionScope(_symbolTable.AddFunction(funcName, null));
+            _symbolTable.EnterFunctionScope(_symbolTable.AddFunction(funcName, TypeManager.DataType.Void));
         }
         
         /* SCOPE BEGIN */
@@ -244,7 +244,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         // Evaluate the return expression
         var value = Visit(context.expression()) as ExpressionNode ?? throw new InvalidOperationException();
         var funcSymbol = _symbolTable.GetCurrentFunction() ?? throw new Exception("Return outside function");
-        var returnType = funcSymbol.Type ?? throw SyntaxErrorException.Create("Function has not return type", context);
+        var returnType = funcSymbol.Type;
             
         // Check for type compatibility
         if (returnType != value.Type)
@@ -266,6 +266,20 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
 
         _symbolTable.LeaveScope();
         return null;
+    }
+
+    public override INode? VisitCall(JuliaParser.CallContext context)
+    {
+        var funcName = context.IDENTIFIER().GetText();
+        var funcSymbol = _symbolTable.GetFunction(funcName) ?? throw UndefinedFuncException.Create(funcName, context);
+
+        // Handle function parameters
+        List<ExpressionNode> arguments = context.expression()
+            .Select(expressionContext => Visit(expressionContext) as ExpressionNode ?? throw new InvalidOperationException())
+            .ToList();
+
+        // Check if function has a return type
+        return new CallNode(funcName, arguments, funcSymbol.Type);
     }
 
     public override INode? VisitIf(JuliaParser.IfContext context)
