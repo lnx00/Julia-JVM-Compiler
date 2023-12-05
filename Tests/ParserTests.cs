@@ -1248,6 +1248,32 @@ public class ParserTests
         Assert.Throws<TypeMismatchException>(() => parser.Parse());
     }
     
+    [Fact]
+    public void CallToUndefinedFunction_ThrowsUndefinedFunction()
+    {
+        // Arange
+        var script = "helloWorld()";
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<UndefinedFuncException>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void CallToUndefinedFunctionWithParameter_ThrowsUndefinedFunction()
+    {
+        // Arange
+        var script = "helloWorld(10)";
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<UndefinedFuncException>(() => parser.Parse());
+    }
+    
     /*[Fact]
     public void FunctionCallWithWrongParameterType_ThrowsTypeMismatch()
     {
@@ -1264,5 +1290,161 @@ public class ParserTests
         
         // Assert
         Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }*/
+    
+    [Fact]
+    public void Example_Addition_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     function add(a::Integer, b::Integer)::Integer
+                         return a + b
+                     end
+                     add(1, 2)
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void Example_Factorial_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     function factorial(n::Integer)::Integer
+                         if n == 0
+                             return 1
+                         else
+                             return n * factorial(n - 1)
+                         end
+                     end
+                     factorial(5)
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void Example_Fibonacci_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     function fibonacci(n::Integer)::Integer
+                         if n == 0
+                             return 0
+                         else
+                             if n == 1
+                                 return 1
+                             else
+                                 return fibonacci(n - 1) + fibonacci(n - 2)
+                             end
+                         end
+                     end
+                     fibonacci(10)
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void Vorgabe1_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     function main()
+                        a::Integer = 1
+                        b::Integer = 1
+                        temp::Integer = 0
+                        while a < 144
+                            temp = b
+                            b = a + b
+                            a = temp
+                            println(a)
+                        end
+                     end
+                     main()
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void Vorgabe2_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     function main()
+                        # more code
+                     end
+                     
+                     # more functions...
+                     main()
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+
+    [Fact]
+    public void Vorgabe3_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     x::Integer = 0
+                     x = 42 # Kommentar bis zum Zeilenende
+                     #= das ist ein
+                     mehrzeiliger
+                     Kommentar =#
+                     """;
+
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+
+        // Assert
+        Assert.True(true);
+    }
+    
+    /*[Fact]
+    public void Vorgabe4_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     i::Integer = 5-3
+                     f::Float64 = 1.0+2.14
+                     b::Bool = true || !false
+                     s::String = "Hallo"
+                     """;
+
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+
+        // Assert
+        Assert.True(true);
     }*/
 }

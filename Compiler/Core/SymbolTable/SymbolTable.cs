@@ -11,6 +11,9 @@ public class SymbolTable
     public SymbolTable()
     {
         EnterScope();
+        
+        // Built-in functions
+        AddFunction("println", TypeManager.DataType.Void);
     }
 
     public void EnterScope()
