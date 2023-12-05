@@ -4,7 +4,6 @@ public static class TypeManager
 {
     public enum DataType
     {
-        Void,
         Integer,
         Float64,
         String,

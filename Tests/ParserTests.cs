@@ -775,6 +775,40 @@ public class ParserTests
     }
     
     [Fact]
+    public void FunctionParameterRedifinition_ThrowsError()
+    {
+        // Arange
+        var script = """
+                     function helloWorld(p::Integer)
+                         p::Integer = 10
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<Exception>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void FunctionWithMultipleSameParameters_ThrowsError()
+    {
+        // Arange
+        var script = """
+                     function helloWorld(p::Integer, p::Integer)
+                         p = 10
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<Exception>(() => parser.Parse());
+    }
+    
+    [Fact]
     public void FunctionWithMultipleParameters_DoesNotThrow()
     {
         // Arange
