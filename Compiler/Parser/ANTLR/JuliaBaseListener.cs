@@ -366,6 +366,30 @@ public partial class JuliaBaseListener : IJuliaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitConst([NotNull] JuliaParser.ConstContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.intValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIntValue([NotNull] JuliaParser.IntValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.intValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIntValue([NotNull] JuliaParser.IntValueContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.floatValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFloatValue([NotNull] JuliaParser.FloatValueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.floatValue"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFloatValue([NotNull] JuliaParser.FloatValueContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="JuliaParser.type"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

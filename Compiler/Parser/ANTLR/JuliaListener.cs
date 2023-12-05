@@ -309,6 +309,26 @@ public interface IJuliaListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitConst([NotNull] JuliaParser.ConstContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.intValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIntValue([NotNull] JuliaParser.IntValueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.intValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIntValue([NotNull] JuliaParser.IntValueContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.floatValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFloatValue([NotNull] JuliaParser.FloatValueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.floatValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFloatValue([NotNull] JuliaParser.FloatValueContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="JuliaParser.type"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

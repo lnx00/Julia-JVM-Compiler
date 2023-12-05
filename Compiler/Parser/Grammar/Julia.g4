@@ -39,7 +39,10 @@ compOp: EQEQ | LT | GT | LTE | GTE | NEQ;
 boolOp: AND | OR;
 
 // Helper
-const: INTCONST | FLTCONST | STRCONST | BOOLCONST;
+const: intValue | floatValue | STRCONST | BOOLCONST;
+intValue: MINUS? INTCONST;
+floatValue: MINUS? FLTCONST;
+
 type: INTEGER_T | FLOAT64_T | STRING_T | BOOL_T;
 
 /* Lexer */
@@ -100,8 +103,8 @@ GTE: GT EQ;
 NEQ: NOT EQ;
 
 // Literals
-INTCONST: MINUS? [0-9]+;
-FLTCONST: MINUS? [0-9]+ DOT [0-9]+;
+INTCONST: [0-9]+;
+FLTCONST: [0-9]+ DOT [0-9]+;
 STRCONST: '"' .*? '"';
 BOOLCONST: 'true' | 'false';
 

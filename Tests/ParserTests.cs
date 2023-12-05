@@ -1429,7 +1429,7 @@ public class ParserTests
         Assert.True(true);
     }
     
-    /*[Fact]
+    [Fact]
     public void Vorgabe4_DoesNotThrow()
     {
         // Arange
@@ -1446,5 +1446,5 @@ public class ParserTests
 
         // Assert
         Assert.True(true);
-    }*/
+    }
 }

@@ -50,15 +50,15 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
 
     public override INode? VisitConst(JuliaParser.ConstContext context)
     {
-        if (context.INTCONST() != null)
+        if (context.intValue() != null)
         {
-            int value = int.Parse(context.INTCONST().GetText());
+            int value = int.Parse(context.intValue().GetText());
             return new IntegerConstNode(value);
         }
         
-        if (context.FLTCONST() != null)
+        if (context.floatValue() != null)
         {
-            float value = float.Parse(context.FLTCONST().GetText());
+            float value = float.Parse(context.floatValue().GetText());
             return new FloatConstNode(value);
         }
         

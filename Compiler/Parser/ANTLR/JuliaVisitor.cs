@@ -197,6 +197,18 @@ public interface IJuliaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitConst([NotNull] JuliaParser.ConstContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.intValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIntValue([NotNull] JuliaParser.IntValueContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.floatValue"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFloatValue([NotNull] JuliaParser.FloatValueContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="JuliaParser.type"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
