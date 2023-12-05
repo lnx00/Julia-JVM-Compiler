@@ -1447,4 +1447,48 @@ public class ParserTests
         // Assert
         Assert.True(true);
     }
+    
+    [Fact]
+    public void ComplexExample_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     function factorial(n::Integer)::Integer
+                         if n == 0
+                             return 1
+                         else
+                             return n * factorial(n - 1)
+                         end
+                     end
+                     
+                     function fibonacci(n::Integer)::Integer
+                         if n == 0
+                             return 0
+                         else
+                             if n == 1
+                                 return 1
+                             else
+                                 return fibonacci(n - 1) + fibonacci(n - 2)
+                             end
+                         end
+                     end
+                     
+                     function main()
+                         x::Integer = 0
+                         x = 42
+                         println(x)
+                         println(factorial(5))
+                         println(fibonacci(10))
+                     end
+                     
+                     main()
+                     """;
+
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+
+        // Assert
+        Assert.True(true);
+    }
 }
