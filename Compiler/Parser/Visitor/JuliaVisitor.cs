@@ -264,4 +264,39 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         _symbolTable.LeaveScope();
         return null;
     }
+
+    public override INode? VisitIf(JuliaParser.IfContext context)
+    {
+        var condition = Visit(context.expression()) as ExpressionNode ?? throw new InvalidOperationException();
+        if (condition.Type != TypeManager.DataType.Bool)
+        {
+            throw TypeMismatchException.Create(TypeManager.DataType.Bool, condition.Type, context);
+        }
+        
+        // If branch
+        Visit(context.body(0));
+        
+        // Else branch
+        if (context.body().Length > 1)
+        {
+            Visit(context.body(1));
+        }
+        
+        return null;
+        //return base.VisitIf(context);
+    }
+
+    public override INode? VisitWhile(JuliaParser.WhileContext context)
+    {
+        var condition = Visit(context.expression()) as ExpressionNode ?? throw new InvalidOperationException();
+        if (condition.Type != TypeManager.DataType.Bool)
+        {
+            throw TypeMismatchException.Create(TypeManager.DataType.Bool, condition.Type, context);
+        }
+        
+        Visit(context.body());
+        
+        return null;
+        //return base.VisitWhile(context);
+    }
 }

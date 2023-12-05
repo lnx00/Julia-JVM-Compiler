@@ -1029,4 +1029,113 @@ public class ParserTests
         // Assert
         Assert.Throws<Exception>(() => parser.Parse());
     }
+    
+    [Fact]
+    public void IfWithTypeMismatch_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = """
+                     if true
+                         x::Integer = 10
+                         x = false
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void IfElseWithTypeMismatch_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = """
+                     if true
+                     else
+                        x::Integer = 10
+                         x = false
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void IfVariableAccessInElse_ThrowsUndefinedVar()
+    {
+        // Arange
+        var script = """
+                     if true
+                         x::Integer = 10
+                     else
+                         x = 10
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<UndefinedVarException>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void IfWithNonBooleanStatement_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = """
+                     if 1
+                         x::Integer = 10
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void IfElseWithNonBooleanStatement_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = """
+                     if 1
+                         x::Integer = 10
+                     else
+                         x::Integer = 5
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void WhileWithNonBooleanStatement_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = """
+                     while 1
+                         x::Integer = 10
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }
 }
