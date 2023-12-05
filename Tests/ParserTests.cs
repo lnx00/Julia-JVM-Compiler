@@ -882,4 +882,151 @@ public class ParserTests
         // Assert
         Assert.Throws<SyntaxErrorException>(() => parser.Parse());
     }
+    
+    [Fact]
+    public void IfOutOfScope_ThrowsUndefinedVar()
+    {
+        // Arange
+        var script = """
+                     if true
+                         x::Integer = 10
+                     end
+                     x = 10
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<UndefinedVarException>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void WhileOutOfScope_ThrowsUndefinedVar()
+    {
+        // Arange
+        var script = """
+                     while true
+                         x::Integer = 10
+                     end
+                     x = 10
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<UndefinedVarException>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void BlockOutOfScope_ThrowsUndefinedVar()
+    {
+        // Arange
+        var script = """
+                     begin
+                         x::Integer = 10
+                     end
+                     x = 10
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<UndefinedVarException>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void BlockVariableDeclaration_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     begin
+                         x::Integer = 10
+                         x = 10
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void BlockVariableCanBeRedeclared_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     begin
+                         x::Integer = 10
+                     end
+                     x::Integer = 5
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void BlockVariableCanBeRedeclaredWithDifferentType_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     begin
+                         x::Integer = 10
+                     end
+                     x::Float64 = 5.0
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+        
+        // Assert
+        Assert.True(true);
+    }
+
+    [Fact]
+    public void BlockVariableRedeclare_ThrowsError()
+    {
+        // Arange
+        var script = """
+                     begin
+                         x::Integer = 10
+                         x::Integer = 5
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<Exception>(() => parser.Parse());
+    }
+    
+    [Fact]
+    public void VariableRedeclareInBlock_ThrowsError()
+    {
+        // Arange
+        var script = """
+                     x::Integer = 10
+                     begin
+                         x::Integer = 5
+                     end
+                     """;
+        
+        // Act
+        var parser = new Parser(script);
+        
+        // Assert
+        Assert.Throws<Exception>(() => parser.Parse());
+    }
 }

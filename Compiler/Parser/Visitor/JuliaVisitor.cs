@@ -235,21 +235,33 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
 
     public override INode? VisitReturn(JuliaParser.ReturnContext context)
     {
-        if (context.expression() != null)
-        {
-            var value = Visit(context.expression()) as ExpressionNode ?? throw new InvalidOperationException();
-            var returnType = _symbolTable.GetSymbol("#return")
-                             ?? throw SyntaxErrorException.Create("Function has not return type", context);
+        // Is there a return expression?
+        if (context.expression() == null) return null;
+        
+        // Evaluate the return expression
+        var value = Visit(context.expression()) as ExpressionNode ?? throw new InvalidOperationException();
+        var returnType = _symbolTable.GetSymbol("#return")
+                         ?? throw SyntaxErrorException.Create("Function has not return type", context);
             
-            // Check for type compatibility
-            if (returnType != value.Type)
-            {
-                throw TypeMismatchException.Create(returnType, value.Type, context);
-            }
-
-            return value;
+        // Check for type compatibility
+        if (returnType != value.Type)
+        {
+            throw TypeMismatchException.Create(returnType, value.Type, context);
         }
 
+        return value;
+    }
+
+    public override INode? VisitBody(JuliaParser.BodyContext context)
+    {
+        _symbolTable.EnterScope();
+        
+        foreach (var statementContex in context.statement())
+        {
+            Visit(statementContex);
+        }
+
+        _symbolTable.LeaveScope();
         return null;
     }
 }
