@@ -40,8 +40,8 @@ boolOp: AND | OR;
 
 // Helper
 const: intValue | floatValue | STRCONST | BOOLCONST;
-intValue: MINUS? INTCONST;
-floatValue: MINUS? FLTCONST;
+intValue: (PLUS | MINUS)? INTCONST;
+floatValue: (PLUS | MINUS)? FLTCONST;
 
 type: INTEGER_T | FLOAT64_T | STRING_T | BOOL_T;
 

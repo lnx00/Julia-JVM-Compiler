@@ -920,7 +920,7 @@ public partial class JuliaParser : Parser {
 			State = 131;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 34093584629760L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 34093651738624L) != 0)) {
 				{
 				State = 123;
 				expression(0);
@@ -1719,6 +1719,7 @@ public partial class JuliaParser : Parser {
 
 	public partial class IntValueContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode INTCONST() { return GetToken(JuliaParser.INTCONST, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PLUS() { return GetToken(JuliaParser.PLUS, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MINUS() { return GetToken(JuliaParser.MINUS, 0); }
 		public IntValueContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1754,10 +1755,17 @@ public partial class JuliaParser : Parser {
 			State = 187;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if (_la==MINUS) {
+			if (_la==PLUS || _la==MINUS) {
 				{
 				State = 186;
-				Match(MINUS);
+				_la = TokenStream.LA(1);
+				if ( !(_la==PLUS || _la==MINUS) ) {
+				ErrorHandler.RecoverInline(this);
+				}
+				else {
+					ErrorHandler.ReportMatch(this);
+				    Consume();
+				}
 				}
 			}
 
@@ -1778,6 +1786,7 @@ public partial class JuliaParser : Parser {
 
 	public partial class FloatValueContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode FLTCONST() { return GetToken(JuliaParser.FLTCONST, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PLUS() { return GetToken(JuliaParser.PLUS, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MINUS() { return GetToken(JuliaParser.MINUS, 0); }
 		public FloatValueContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -1813,10 +1822,17 @@ public partial class JuliaParser : Parser {
 			State = 192;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if (_la==MINUS) {
+			if (_la==PLUS || _la==MINUS) {
 				{
 				State = 191;
-				Match(MINUS);
+				_la = TokenStream.LA(1);
+				if ( !(_la==PLUS || _la==MINUS) ) {
+				ErrorHandler.RecoverInline(this);
+				}
+				else {
+					ErrorHandler.ReportMatch(this);
+				    Consume();
+				}
 				}
 			}
 
@@ -1968,10 +1984,10 @@ public partial class JuliaParser : Parser {
 		7,2,0,0,177,31,1,0,0,0,178,179,7,3,0,0,179,33,1,0,0,0,180,185,3,36,18,
 		0,181,185,3,38,19,0,182,185,5,42,0,0,183,185,5,43,0,0,184,180,1,0,0,0,
 		184,181,1,0,0,0,184,182,1,0,0,0,184,183,1,0,0,0,185,35,1,0,0,0,186,188,
-		5,27,0,0,187,186,1,0,0,0,187,188,1,0,0,0,188,189,1,0,0,0,189,190,5,40,
-		0,0,190,37,1,0,0,0,191,193,5,27,0,0,192,191,1,0,0,0,192,193,1,0,0,0,193,
-		194,1,0,0,0,194,195,5,41,0,0,195,39,1,0,0,0,196,197,7,4,0,0,197,41,1,0,
-		0,0,17,44,46,56,71,74,83,99,109,128,131,137,149,167,169,184,187,192
+		7,1,0,0,187,186,1,0,0,0,187,188,1,0,0,0,188,189,1,0,0,0,189,190,5,40,0,
+		0,190,37,1,0,0,0,191,193,7,1,0,0,192,191,1,0,0,0,192,193,1,0,0,0,193,194,
+		1,0,0,0,194,195,5,41,0,0,195,39,1,0,0,0,196,197,7,4,0,0,197,41,1,0,0,0,
+		17,44,46,56,71,74,83,99,109,128,131,137,149,167,169,184,187,192
 	};
 
 	public static readonly ATN _ATN =
