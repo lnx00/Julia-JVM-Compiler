@@ -1,19 +1,48 @@
-﻿using Compiler.Parser;
-using Compiler.Parser.ErrorHandling;
-
-var input = File.ReadAllText("input.jl");
-
-Parser parser = new(input);
-
-try
+﻿// Handle command line arguments
+if (args.Length == 2)
 {
-    parser.Parse();
+    var option = args[0];
+    var file = args[1];
+    
+    if (!File.Exists(file))
+    {
+        Console.WriteLine($"File '{file}' does not exist");
+        return;
+    }
+
+    // Initialize the compiler
+    var input = File.ReadAllText(file);
+    Compiler.Compiler compiler = new(input);
+
+    switch (option)
+    {
+        case "-compile":
+        {
+            compiler.Compile();
+            break;
+        }
+        
+        case "-liveness":
+        {
+            compiler.LivenessAnalysis();
+            break;
+        }
+        
+        default:
+        {
+            Console.WriteLine($"Unknown option '{option}'");
+            break;
+        }
+    }
 }
-catch (ParserException e)
+else
 {
-    Console.WriteLine($"Error at line {e.Line}, position {e.Position}: {e.Message}");
-}
-catch (Exception e)
-{
-    Console.WriteLine($"Unknown parser error: {e.Message}");
+    Console.WriteLine("""
+                      Usage: Compiler <option> <file>
+                      
+                      Options:
+                      -compile <file> - compiles the file to assembly
+                      -liveness <file> - prints the liveness analysis of the file
+                      """);
+    return;
 }
