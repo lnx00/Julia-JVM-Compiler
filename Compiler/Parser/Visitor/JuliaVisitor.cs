@@ -25,7 +25,15 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         var varType = TypeManager.GetDataType(typeName) ?? throw SyntaxErrorException.Create($"Unknown variable type {typeName}", context);
         if (varType != value.Type)
         {
-            throw TypeMismatchException.Create(varType, value.Type, context);
+            // Check for implicit conversion
+            if (value is IntegerConstNode node && varType == TypeManager.DataType.Float64)
+            {
+                value = new FloatConstNode(node.Value);
+            }
+            else
+            {
+                throw TypeMismatchException.Create(varType, value.Type, context);
+            }
         }
 
         _symbolTable.AddVariable(varName, varType);

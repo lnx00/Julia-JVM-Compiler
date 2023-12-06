@@ -61,6 +61,20 @@ public class ParserTests
     }
     
     [Fact]
+    public void FloatDeclarationFromInteger_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::Float64 = 1";
+
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
     public void FloatDeclarationFromString_ThrowsTypeMismatch()
     {
         // Arange
@@ -1446,6 +1460,39 @@ public class ParserTests
 
         // Assert
         Assert.True(true);
+    }
+
+    [Fact]
+    public void Vorgabe5_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     function MyAdd(a::Integer, b::Integer)::Integer
+                         c::Integer = 0
+                         c = a+b
+                         return c
+                     end
+                     """;
+
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+
+        // Assert
+        Assert.True(true);
+    }
+
+    [Fact]
+    public void BoolAddition_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = "if true+false > 42 println(0) end";
+
+        // Act
+        var parser = new Parser(script);
+
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
     }
     
     [Fact]
