@@ -66,7 +66,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         
         if (context.floatValue() != null)
         {
-            float value = float.Parse(context.floatValue().GetText());
+            double value = double.Parse(context.floatValue().GetText());
             return new FloatConstNode(value);
         }
         

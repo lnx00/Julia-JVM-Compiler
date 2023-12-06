@@ -4,10 +4,10 @@ namespace Compiler.Core.AST;
 
 public class FloatConstNode : ExpressionNode
 {
-    public float Value { get; }
+    public double Value { get; }
     public override TypeManager.DataType Type { get; }
     
-    public FloatConstNode(float value)
+    public FloatConstNode(double value)
     {
         Value = value;
         Type = TypeManager.DataType.Float64;
