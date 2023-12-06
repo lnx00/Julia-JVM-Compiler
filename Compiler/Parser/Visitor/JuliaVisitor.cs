@@ -13,7 +13,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
     {
         var varName = context.IDENTIFIER().GetText();
         var typeName = context.type().GetText();
-        var value = Visit(context.expression()) as ExpressionNode ?? throw new InvalidOperationException();
+        var value = Visit(context.expression()) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
 
         // Check if variable already exists
         if (_symbolTable.IsDefined(varName))
@@ -44,7 +44,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
     public override INode? VisitAssignment(JuliaParser.AssignmentContext context)
     {
         var varName = context.IDENTIFIER().GetText();
-        var value = Visit(context.expression()) as ExpressionNode ?? throw new InvalidOperationException();
+        var value = Visit(context.expression()) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
         
         // Check for type compatibility
         var varSymbol = _symbolTable.GetVariable(varName) ?? throw UndefinedVarException.Create(varName, context);
@@ -92,7 +92,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
 
     public override INode? VisitNotExpr(JuliaParser.NotExprContext context)
     {
-        var value = Visit(context.expression()) as ExpressionNode ?? throw new InvalidOperationException();
+        var value = Visit(context.expression()) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
         if (value.Type != TypeManager.DataType.Bool)
         {
             throw InvalidOperatorException.Create("!", context);
@@ -114,8 +114,8 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
     public override INode? VisitAddExpr(JuliaParser.AddExprContext context)
     {
         var op = context.addOp().GetText();
-        var left = Visit(context.expression(0)) as ExpressionNode ?? throw new InvalidOperationException();
-        var right = Visit(context.expression(1)) as ExpressionNode ?? throw new InvalidOperationException();
+        var left = Visit(context.expression(0)) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
+        var right = Visit(context.expression(1)) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
 
         var type = TypeManager.GetCommonNumericType(left.Type, right.Type) ?? throw TypeMismatchException.Create(left.Type, right.Type, context);
         
@@ -130,8 +130,8 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
     public override INode? VisitMultExpr(JuliaParser.MultExprContext context)
     {
         var op = context.multOp().GetText();
-        var left = Visit(context.expression(0)) as ExpressionNode ?? throw new InvalidOperationException();
-        var right = Visit(context.expression(1)) as ExpressionNode ?? throw new InvalidOperationException();
+        var left = Visit(context.expression(0)) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
+        var right = Visit(context.expression(1)) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
         
         var type = TypeManager.GetCommonNumericType(left.Type, right.Type) ?? throw TypeMismatchException.Create(left.Type, right.Type, context);
 
@@ -147,8 +147,8 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
     public override INode? VisitBoolExpr(JuliaParser.BoolExprContext context)
     {
         var op = context.boolOp().GetText();
-        var left = Visit(context.expression(0)) as ExpressionNode ?? throw new InvalidOperationException();
-        var right = Visit(context.expression(1)) as ExpressionNode ?? throw new InvalidOperationException();
+        var left = Visit(context.expression(0)) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
+        var right = Visit(context.expression(1)) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
 
         // Are both sides bools?
         if (left.Type != TypeManager.DataType.Bool || right.Type != TypeManager.DataType.Bool)
@@ -167,8 +167,8 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
     public override INode? VisitCompExpr(JuliaParser.CompExprContext context)
     {
         var op = context.compOp().GetText();
-        var left = Visit(context.expression(0)) as ExpressionNode ?? throw new InvalidOperationException();
-        var right = Visit(context.expression(1)) as ExpressionNode ?? throw new InvalidOperationException();
+        var left = Visit(context.expression(0)) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
+        var right = Visit(context.expression(1)) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
         
         var type = TypeManager.GetCommonType(left.Type, right.Type) ?? throw TypeMismatchException.Create(left.Type, right.Type, context);
         
@@ -250,8 +250,8 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         if (context.expression() == null) return null;
         
         // Evaluate the return expression
-        var value = Visit(context.expression()) as ExpressionNode ?? throw new InvalidOperationException();
-        var funcSymbol = _symbolTable.GetCurrentFunction() ?? throw new Exception("Return outside function");
+        var value = Visit(context.expression()) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
+        var funcSymbol = _symbolTable.GetCurrentFunction() ?? throw SyntaxErrorException.Create("Return outside of function", context);
         var returnType = funcSymbol.Type;
             
         // Check for type compatibility
@@ -292,7 +292,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
 
     public override INode? VisitIf(JuliaParser.IfContext context)
     {
-        var condition = Visit(context.expression()) as ExpressionNode ?? throw new InvalidOperationException();
+        var condition = Visit(context.expression()) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
         if (condition.Type != TypeManager.DataType.Bool)
         {
             throw TypeMismatchException.Create(TypeManager.DataType.Bool, condition.Type, context);
@@ -313,7 +313,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
 
     public override INode? VisitWhile(JuliaParser.WhileContext context)
     {
-        var condition = Visit(context.expression()) as ExpressionNode ?? throw new InvalidOperationException();
+        var condition = Visit(context.expression()) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
         if (condition.Type != TypeManager.DataType.Bool)
         {
             throw TypeMismatchException.Create(TypeManager.DataType.Bool, condition.Type, context);

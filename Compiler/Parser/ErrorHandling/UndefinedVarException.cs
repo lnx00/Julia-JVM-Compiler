@@ -9,7 +9,7 @@ public class UndefinedVarException : ParserException
     
     public static UndefinedVarException Create(string varName, ParserRuleContext ctx)
     {
-        var msg = $"Undefined variable {varName}";
+        var msg = $"Undefined variable '{varName}'";
         return new UndefinedVarException(msg, ctx.Start.Line, ctx.Start.Column);
     }
 }

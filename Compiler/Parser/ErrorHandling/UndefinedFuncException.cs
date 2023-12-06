@@ -8,6 +8,6 @@ public class UndefinedFuncException : ParserException
     
     public static UndefinedFuncException Create(string funcName, ParserRuleContext context)
     {
-        return new UndefinedFuncException($"Undefined function {funcName}", context.Start.Line, context.Start.Column);
+        return new UndefinedFuncException($"Undefined function '{funcName}'", context.Start.Line, context.Start.Column);
     }
 }
