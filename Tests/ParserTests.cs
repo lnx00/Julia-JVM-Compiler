@@ -1594,4 +1594,49 @@ public class ParserTests
         // Assert
         Assert.True(true);
     }
+
+    [Fact]
+    private void LateFunctionDeclaration_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     function main()
+                        x::Integer = f()
+                     end
+                     
+                     function f()::Integer
+                        return 42
+                     end
+                     
+                     main()
+                     """;
+
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    private void NestedFunctionDeclaration_ThrowsSyntaxError()
+    {
+        // Arange
+        var script = """
+                     function main()
+                        function f()::Integer
+                            return 42
+                        end
+                     end
+                     
+                     main()
+                     """;
+
+        // Act
+        var parser = new Parser(script);
+
+        // Assert
+        Assert.Throws<SyntaxErrorException>(() => parser.Parse());
+    }
 }

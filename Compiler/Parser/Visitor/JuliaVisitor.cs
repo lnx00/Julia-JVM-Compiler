@@ -8,7 +8,36 @@ namespace Compiler.Parser.Visitor;
 public class JuliaVisitor : JuliaBaseVisitor<INode?>
 {
     private readonly SymbolTable _symbolTable = new();
-    
+    private bool _isPeeking = true;
+
+    public override INode? VisitStart(JuliaParser.StartContext context)
+    {
+        /* HACK: Hotfix for late function declarations */
+        
+        // Visit all functions
+        foreach (var function in context.function())
+        {
+            Visit(function);
+        }
+
+        _isPeeking = false;
+        
+        // Visit statements
+        foreach (var expression in context.statement())
+        {
+            Visit(expression);
+        }
+        
+        // Visit all functions again
+        foreach (var function in context.function())
+        {
+            Visit(function);
+        }
+
+        return null;
+        //return base.VisitStart(context);
+    }
+
     public override INode? VisitDeclaration(JuliaParser.DeclarationContext context)
     {
         var varName = context.IDENTIFIER().GetText();
@@ -206,21 +235,29 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             var returnTypeName = context.type().GetText();
             var returnType = TypeManager.GetDataType(returnTypeName)
                          ?? throw SyntaxErrorException.Create($"Unknown return type {returnTypeName}", context);
-            _symbolTable.EnterFunctionScope(_symbolTable.AddFunction(funcName, returnType));
+            
+            var funcSymbol = _isPeeking ? _symbolTable.AddFunction(funcName, returnType) : _symbolTable.GetFunction(funcName);
+            _symbolTable.EnterFunctionScope(funcSymbol ?? throw SyntaxErrorException.Create(context));
         }
         else
         {
             // No return type
-            _symbolTable.EnterFunctionScope(_symbolTable.AddFunction(funcName, TypeManager.DataType.Void));
+            var funcSymbol = _isPeeking ? _symbolTable.AddFunction(funcName, TypeManager.DataType.Void) : _symbolTable.GetFunction(funcName);
+            _symbolTable.EnterFunctionScope(funcSymbol ?? throw SyntaxErrorException.Create(context));
         }
         
         /* SCOPE BEGIN */
-        var funcParams = Visit(context.parameters());
-        var funcBody = Visit(context.body()) as BlockNode ?? throw SyntaxErrorException.Create(context);
+        if (!_isPeeking)
+        {
+            var funcParams = Visit(context.parameters());
+            var funcBody = Visit(context.body()) as BlockNode ?? throw SyntaxErrorException.Create(context);
+            _symbolTable.LeaveFunctionScope();
+            
+            return funcBody;
+        }
+        
         /* SCOPE END */
-
-        _symbolTable.LeaveFunctionScope();
-        return funcBody;
+        return null;
     }
 
     public override INode? VisitParameters(JuliaParser.ParametersContext context)
