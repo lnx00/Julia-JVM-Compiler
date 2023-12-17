@@ -1639,4 +1639,87 @@ public class ParserTests
         // Assert
         Assert.Throws<SyntaxErrorException>(() => parser.Parse());
     }
+    
+    [Fact]
+    private void ExprBoolLt_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::Bool = 1 < 2";
+
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    private void WrongCallParameter_ThrowsTypeMismatch()
+    {
+        // Arange
+        var script = """
+                     function f(a::Integer)::Integer
+                        return a
+                     end
+                     
+                     function main()
+                        x::Integer = f(1.0)
+                     end
+                     
+                     main()
+                     """;
+
+        // Act
+        var parser = new Parser(script);
+
+        // Assert
+        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+    }
+
+    [Fact]
+    private void TooFewCallParameters_ThrowsError()
+    {
+        // Arange
+        var script = """
+                     function f(a::Integer, b::Integer)::Integer
+                        return a
+                     end
+
+                     function main()
+                        x::Integer = f(1)
+                     end
+
+                     main()
+                     """;
+
+        // Act
+        var parser = new Parser(script);
+
+        // Assert
+        Assert.Throws<SyntaxErrorException>(() => parser.Parse());
+    }
+    
+    [Fact]
+    private void TooManyCallParameters_ThrowsError()
+    {
+        // Arange
+        var script = """
+                     function f(a::Integer)::Integer
+                        return a
+                     end
+
+                     function main()
+                        x::Integer = f(1, 2)
+                     end
+
+                     main()
+                     """;
+
+        // Act
+        var parser = new Parser(script);
+
+        // Assert
+        Assert.Throws<SyntaxErrorException>(() => parser.Parse());
+    }
 }

@@ -12,8 +12,9 @@ public class SymbolTable
     {
         EnterScope();
         
-        // Built-in functions
-        AddFunction("println", TypeManager.DataType.Void);
+        // Built-in functions | TODO: Move this somewhere else
+        var println = AddFunction("println", TypeManager.DataType.Void);
+        println.Parameters.Add(new VariableSymbol("value", TypeManager.DataType.Any));
     }
 
     public void EnterScope()

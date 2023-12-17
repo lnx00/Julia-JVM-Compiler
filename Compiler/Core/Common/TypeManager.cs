@@ -4,7 +4,8 @@ public static class TypeManager
 {
     public enum DataType
     {
-        Void,
+        Void, // Only used for return types
+        Any, // Only used for built-in functions
         Integer,
         Float64,
         String,

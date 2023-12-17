@@ -238,12 +238,24 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             
             var funcSymbol = _isPeeking ? _symbolTable.AddFunction(funcName, returnType) : _symbolTable.GetFunction(funcName);
             _symbolTable.EnterFunctionScope(funcSymbol ?? throw SyntaxErrorException.Create(context));
+
+            // HACK: Hotfix for parameter type checking
+            if (_isPeeking)
+            {
+                Visit(context.parameters());
+            }
         }
         else
         {
             // No return type
             var funcSymbol = _isPeeking ? _symbolTable.AddFunction(funcName, TypeManager.DataType.Void) : _symbolTable.GetFunction(funcName);
             _symbolTable.EnterFunctionScope(funcSymbol ?? throw SyntaxErrorException.Create(context));
+            
+            // HACK: Hotfix for parameter type checking
+            if (_isPeeking)
+            {
+                Visit(context.parameters());
+            }
         }
         
         /* SCOPE BEGIN */
@@ -251,12 +263,12 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         {
             var funcParams = Visit(context.parameters());
             var funcBody = Visit(context.body()) as BlockNode ?? throw SyntaxErrorException.Create(context);
-            _symbolTable.LeaveFunctionScope();
             
-            return funcBody;
+            //return funcBody;
         }
         
         /* SCOPE END */
+        _symbolTable.LeaveFunctionScope();
         return null;
     }
 
@@ -275,7 +287,12 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             
             // Add to symbol table
             var varType = TypeManager.GetDataType(typeName) ?? throw SyntaxErrorException.Create($"Unknown parameter type {typeName}", context);
-            _symbolTable.AddVariable(varName, varType);
+            var paramSymbol = _symbolTable.AddVariable(varName, varType);
+
+            if (_isPeeking)
+            {
+                _symbolTable.GetCurrentFunction()?.Parameters.Add(paramSymbol);
+            }
         }
 
         return null;
@@ -319,6 +336,23 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         List<ExpressionNode> arguments = context.expression()
             .Select(expressionContext => Visit(expressionContext) as ExpressionNode ?? throw new InvalidOperationException())
             .ToList();
+        
+        // Check if number of arguments matches
+        if (funcSymbol.Parameters.Count != arguments.Count)
+        {
+            throw SyntaxErrorException.Create("Parameter count mismatch in function call", context);
+        }
+        
+        // Check if argument types match
+        for (int i = 0; i < arguments.Count; i++)
+        {
+            var argType = arguments[i].Type;
+            var paramType = funcSymbol.Parameters[i].Type;
+            if (argType != paramType && paramType != TypeManager.DataType.Any)
+            {
+                throw TypeMismatchException.Create(paramType, argType, context);
+            }
+        }
 
         // Check if function has a return type
         return new CallNode(funcName, arguments, funcSymbol.Type);
