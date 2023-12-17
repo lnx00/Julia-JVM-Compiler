@@ -29,7 +29,7 @@ expression: expression multOp expression # MultExpr
     | LPAREN expression RPAREN # ParenExpr
     | call # CallExpr
     | const # ConstExpr
-    | IDENTIFIER # VarExpr
+    | (PLUS | MINUS)? IDENTIFIER # VarExpr
     ;
 
 // Operators

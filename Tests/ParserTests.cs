@@ -1538,4 +1538,60 @@ public class ParserTests
         // Assert
         Assert.True(true);
     }
+
+    [Fact]
+    public void AssignBoolFuncCall_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     function BoolFun()::Bool
+                         return true
+                     end
+                     
+                     function main()
+                         x::Bool = BoolFun()
+                     end
+                     
+                     main()
+                     """;
+
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    public void UnaryMinusOnConstant_DoesNotThrow()
+    {
+        // Arange
+        var script = "x::Integer = -1";
+
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    private void UnaryOperatorOnVariable_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     i::Integer = 1
+                     x::Integer = -i
+                     y::Integer = +i
+                     """;
+
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+
+        // Assert
+        Assert.True(true);
+    }
 }

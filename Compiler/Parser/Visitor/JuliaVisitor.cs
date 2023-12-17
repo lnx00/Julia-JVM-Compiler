@@ -216,11 +216,11 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         
         /* SCOPE BEGIN */
         var funcParams = Visit(context.parameters());
-        var funcBody = Visit(context.body());
+        var funcBody = Visit(context.body()) as BlockNode ?? throw SyntaxErrorException.Create(context);
         /* SCOPE END */
 
         _symbolTable.LeaveFunctionScope();
-        return null;
+        return funcBody;
     }
 
     public override INode? VisitParameters(JuliaParser.ParametersContext context)
@@ -267,13 +267,10 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
     {
         _symbolTable.EnterScope();
         
-        foreach (var statementContex in context.statement())
-        {
-            Visit(statementContex);
-        }
+        List<INode> statements = context.statement().Select(Visit).OfType<INode>().ToList();
 
         _symbolTable.LeaveScope();
-        return null;
+        return new BlockNode(statements);
     }
 
     public override INode? VisitCall(JuliaParser.CallContext context)
