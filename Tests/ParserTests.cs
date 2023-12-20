@@ -1594,6 +1594,43 @@ public class ParserTests
         // Assert
         Assert.True(true);
     }
+    
+    [Fact]
+    private void ComplexUnaryOperations_DoesNotThrow()
+    {
+        // Arange
+        var script = """
+                     a::Integer = 10
+                     b::Integer = 20
+                     c::Float64 = 30.0
+                     a = -a + +b
+                     b = -b * -(1)
+                     c = -c / +(-1.0)
+                     """;
+
+        // Act
+        var parser = new Parser(script);
+        parser.Parse();
+
+        // Assert
+        Assert.True(true);
+    }
+    
+    [Fact]
+    private void InvalidUnaryOperation_ThrowsInvalidOperator()
+    {
+        // Arange
+        var script = """
+                     a::Integer = 10
+                     a = !a
+                     """;
+
+        // Act
+        var parser = new Parser(script);
+
+        // Assert
+        Assert.Throws<InvalidOperatorException>(() => parser.Parse());
+    }
 
     [Fact]
     private void LateFunctionDeclaration_DoesNotThrow()

@@ -278,20 +278,6 @@ public partial class JuliaBaseListener : IJuliaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitCompExpr([NotNull] JuliaParser.CompExprContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>NotExpr</c>
-	/// labeled alternative in <see cref="JuliaParser.expression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNotExpr([NotNull] JuliaParser.NotExprContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>NotExpr</c>
-	/// labeled alternative in <see cref="JuliaParser.expression"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNotExpr([NotNull] JuliaParser.NotExprContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by the <c>ParenExpr</c>
 	/// labeled alternative in <see cref="JuliaParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -305,6 +291,20 @@ public partial class JuliaBaseListener : IJuliaListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitParenExpr([NotNull] JuliaParser.ParenExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>UnaryExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterUnaryExpr([NotNull] JuliaParser.UnaryExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>UnaryExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitUnaryExpr([NotNull] JuliaParser.UnaryExprContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="JuliaParser.multOp"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -353,6 +353,18 @@ public partial class JuliaBaseListener : IJuliaListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBoolOp([NotNull] JuliaParser.BoolOpContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.unaryOp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterUnaryOp([NotNull] JuliaParser.UnaryOpContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.unaryOp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitUnaryOp([NotNull] JuliaParser.UnaryOpContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="JuliaParser.const"/>.
 	/// <para>The default implementation does nothing.</para>

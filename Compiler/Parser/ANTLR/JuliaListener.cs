@@ -235,18 +235,6 @@ public interface IJuliaListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitCompExpr([NotNull] JuliaParser.CompExprContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>NotExpr</c>
-	/// labeled alternative in <see cref="JuliaParser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterNotExpr([NotNull] JuliaParser.NotExprContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>NotExpr</c>
-	/// labeled alternative in <see cref="JuliaParser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitNotExpr([NotNull] JuliaParser.NotExprContext context);
-	/// <summary>
 	/// Enter a parse tree produced by the <c>ParenExpr</c>
 	/// labeled alternative in <see cref="JuliaParser.expression"/>.
 	/// </summary>
@@ -258,6 +246,18 @@ public interface IJuliaListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitParenExpr([NotNull] JuliaParser.ParenExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>UnaryExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterUnaryExpr([NotNull] JuliaParser.UnaryExprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>UnaryExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitUnaryExpr([NotNull] JuliaParser.UnaryExprContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="JuliaParser.multOp"/>.
 	/// </summary>
@@ -298,6 +298,16 @@ public interface IJuliaListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitBoolOp([NotNull] JuliaParser.BoolOpContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="JuliaParser.unaryOp"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterUnaryOp([NotNull] JuliaParser.UnaryOpContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="JuliaParser.unaryOp"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitUnaryOp([NotNull] JuliaParser.UnaryOpContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="JuliaParser.const"/>.
 	/// </summary>

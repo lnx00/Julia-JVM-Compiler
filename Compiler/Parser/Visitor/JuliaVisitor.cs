@@ -119,15 +119,33 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         return Visit(context.expression());
     }
 
-    public override INode? VisitNotExpr(JuliaParser.NotExprContext context)
+    public override INode? VisitUnaryExpr(JuliaParser.UnaryExprContext context)
     {
         var value = Visit(context.expression()) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
-        if (value.Type != TypeManager.DataType.Bool)
+        var op = context.unaryOp().GetText();
+
+        // Numeric operations
+        if (TypeManager.IsNumeric(value.Type))
         {
-            throw InvalidOperatorException.Create("!", context);
+            return op switch
+            {
+                "-" => new UnaryExpressionNode(value, UnaryExpressionNode.Operation.Negate),
+                "+" => value,
+                _ => throw InvalidOperatorException.Create(op, context)
+            };
         }
         
-        return new NotExpressionNode(value);
+        // Boolean operations
+        if (TypeManager.IsBoolean(value.Type))
+        {
+            return op switch
+            {
+                "!" => new UnaryExpressionNode(value, UnaryExpressionNode.Operation.Not),
+                _ => throw InvalidOperatorException.Create(op, context)
+            };
+        }
+        
+        throw InvalidOperatorException.Create(op, context);
     }
 
     public override INode? VisitVarExpr(JuliaParser.VarExprContext context)

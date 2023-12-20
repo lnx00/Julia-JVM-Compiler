@@ -25,11 +25,11 @@ expression: expression multOp expression # MultExpr
     | expression addOp expression # AddExpr
     | expression compOp expression # CompExpr
     | expression boolOp expression # BoolExpr
-    | NOT expression # NotExpr
+    | unaryOp expression # UnaryExpr
     | LPAREN expression RPAREN # ParenExpr
     | call # CallExpr
     | const # ConstExpr
-    | (PLUS | MINUS)? IDENTIFIER # VarExpr
+    | IDENTIFIER # VarExpr
     ;
 
 // Operators
@@ -37,6 +37,7 @@ multOp: STAR | SLASH | PERCENT;
 addOp: PLUS | MINUS;
 compOp: EQEQ | LT | GT | LTE | GTE | NEQ;
 boolOp: AND | OR;
+unaryOp: PLUS | MINUS | NOT;
 
 // Helper
 const: intValue | floatValue | STRCONST | BOOLCONST;

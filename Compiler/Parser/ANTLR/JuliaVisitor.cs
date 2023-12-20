@@ -153,19 +153,19 @@ public interface IJuliaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitCompExpr([NotNull] JuliaParser.CompExprContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>NotExpr</c>
-	/// labeled alternative in <see cref="JuliaParser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitNotExpr([NotNull] JuliaParser.NotExprContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>ParenExpr</c>
 	/// labeled alternative in <see cref="JuliaParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitParenExpr([NotNull] JuliaParser.ParenExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>UnaryExpr</c>
+	/// labeled alternative in <see cref="JuliaParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitUnaryExpr([NotNull] JuliaParser.UnaryExprContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="JuliaParser.multOp"/>.
 	/// </summary>
@@ -190,6 +190,12 @@ public interface IJuliaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitBoolOp([NotNull] JuliaParser.BoolOpContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="JuliaParser.unaryOp"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitUnaryOp([NotNull] JuliaParser.UnaryOpContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="JuliaParser.const"/>.
 	/// </summary>

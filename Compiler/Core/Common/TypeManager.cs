@@ -34,6 +34,11 @@ public static class TypeManager
         };
     }
     
+    public static bool IsBoolean(DataType? type)
+    {
+        return type == DataType.Bool;
+    }
+    
     public static DataType? GetCommonType(DataType leftType, DataType rightType)
     {
         return (leftType, rightType) switch
