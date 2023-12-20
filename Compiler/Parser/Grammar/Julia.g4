@@ -109,7 +109,7 @@ STRCONST: '"' .*? '"';
 BOOLCONST: 'true' | 'false';
 
 // Identifiers
-IDENTIFIER: Letter LetterOrDigit*;
+IDENTIFIER: Letter (LetterOrDigit | '_')*;
 
 // Comments and whitespace
 COMMENT: '#' ~[\r\n]* -> skip;
