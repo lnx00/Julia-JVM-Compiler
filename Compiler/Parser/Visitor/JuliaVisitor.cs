@@ -10,35 +10,29 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
     private readonly SymbolTable _symbolTable = new();
     private bool _isPeeking = true;
 
-    public override INode? VisitStart(JuliaParser.StartContext context)
+    public override INode VisitStart(JuliaParser.StartContext context)
     {
         /* HACK: Hotfix for late function declarations */
         
-        // Visit all functions
+        // Peek all functions | TODO: Do this in a separate visitor
         foreach (var function in context.function())
         {
             Visit(function);
         }
 
         _isPeeking = false;
+        List<INode> statements = new();
         
-        // Visit statements
-        foreach (var expression in context.statement())
-        {
-            Visit(expression);
-        }
+        // Visit all statements
+        statements.AddRange(context.statement().Select(expression => Visit(expression) ?? throw new NotImplementedException()));
         
         // Visit all functions again
-        foreach (var function in context.function())
-        {
-            Visit(function);
-        }
+        statements.AddRange(context.function().Select(function => Visit(function) ?? throw new NotImplementedException()));
 
-        return null;
-        //return base.VisitStart(context);
+        return new BlockNode(statements);
     }
 
-    public override INode? VisitDeclaration(JuliaParser.DeclarationContext context)
+    public override INode VisitDeclaration(JuliaParser.DeclarationContext context)
     {
         var varName = context.IDENTIFIER().GetText();
         var typeName = context.type().GetText();
@@ -67,10 +61,10 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
 
         _symbolTable.AddVariable(varName, varType);
 
-        return null;
+        return new DeclarationNode(varName, varType, value);
     }
 
-    public override INode? VisitAssignment(JuliaParser.AssignmentContext context)
+    public override INode VisitAssignment(JuliaParser.AssignmentContext context)
     {
         var varName = context.IDENTIFIER().GetText();
         var value = Visit(context.expression()) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
@@ -82,10 +76,10 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             throw TypeMismatchException.Create(varSymbol.Type, value.Type, context);
         }
         
-        return null;
+        return new AssignmentNode(varName, value);
     }
 
-    public override INode? VisitConst(JuliaParser.ConstContext context)
+    public override INode VisitConst(JuliaParser.ConstContext context)
     {
         if (context.intValue() != null)
         {
@@ -114,12 +108,12 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         throw new Exception("Unknown constant type");
     }
 
-    public override INode? VisitParenExpr(JuliaParser.ParenExprContext context)
+    public override INode VisitParenExpr(JuliaParser.ParenExprContext context)
     {
-        return Visit(context.expression());
+        return Visit(context.expression()) ?? throw new NotImplementedException();
     }
 
-    public override INode? VisitUnaryExpr(JuliaParser.UnaryExprContext context)
+    public override INode VisitUnaryExpr(JuliaParser.UnaryExprContext context)
     {
         var value = Visit(context.expression()) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
         var op = context.unaryOp().GetText();
@@ -148,7 +142,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         throw InvalidOperatorException.Create(op, context);
     }
 
-    public override INode? VisitVarExpr(JuliaParser.VarExprContext context)
+    public override INode VisitVarExpr(JuliaParser.VarExprContext context)
     {
         var varName = context.IDENTIFIER().GetText();
         
@@ -158,7 +152,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         return new IdentifierNode(varName, varSymbol.Type);
     }
 
-    public override INode? VisitAddExpr(JuliaParser.AddExprContext context)
+    public override INode VisitAddExpr(JuliaParser.AddExprContext context)
     {
         var op = context.addOp().GetText();
         var left = Visit(context.expression(0)) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
@@ -174,7 +168,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         };
     }
 
-    public override INode? VisitMultExpr(JuliaParser.MultExprContext context)
+    public override INode VisitMultExpr(JuliaParser.MultExprContext context)
     {
         var op = context.multOp().GetText();
         var left = Visit(context.expression(0)) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
@@ -191,7 +185,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         };
     }
 
-    public override INode? VisitBoolExpr(JuliaParser.BoolExprContext context)
+    public override INode VisitBoolExpr(JuliaParser.BoolExprContext context)
     {
         var op = context.boolOp().GetText();
         var left = Visit(context.expression(0)) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
@@ -211,7 +205,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         };
     }
 
-    public override INode? VisitCompExpr(JuliaParser.CompExprContext context)
+    public override INode VisitCompExpr(JuliaParser.CompExprContext context)
     {
         var op = context.compOp().GetText();
         var left = Visit(context.expression(0)) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
@@ -243,51 +237,48 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         };
     }
 
-    public override INode? VisitFunction(JuliaParser.FunctionContext context)
+    public override INode VisitFunction(JuliaParser.FunctionContext context)
     {
         // Create the function symbol
         var funcName = context.IDENTIFIER().GetText();
+        var returnType = TypeManager.DataType.Void;
         if (context.type() != null)
         {
             // Retrieve the return type
             var returnTypeName = context.type().GetText();
-            var returnType = TypeManager.GetDataType(returnTypeName)
+            returnType = TypeManager.GetDataType(returnTypeName)
                          ?? throw SyntaxErrorException.Create($"Unknown return type {returnTypeName}", context);
             
             var funcSymbol = _isPeeking ? _symbolTable.AddFunction(funcName, returnType) : _symbolTable.GetFunction(funcName);
             _symbolTable.EnterFunctionScope(funcSymbol ?? throw SyntaxErrorException.Create(context));
-
-            // HACK: Hotfix for parameter type checking
-            if (_isPeeking)
-            {
-                Visit(context.parameters());
-            }
         }
         else
         {
             // No return type
             var funcSymbol = _isPeeking ? _symbolTable.AddFunction(funcName, TypeManager.DataType.Void) : _symbolTable.GetFunction(funcName);
             _symbolTable.EnterFunctionScope(funcSymbol ?? throw SyntaxErrorException.Create(context));
-            
-            // HACK: Hotfix for parameter type checking
-            if (_isPeeking)
-            {
-                Visit(context.parameters());
-            }
         }
         
-        /* SCOPE BEGIN */
-        if (!_isPeeking)
+        /* FUNCTION SCOPE BEGIN */
+        
+        // HACK: Hotfix for parameter type checking
+        if (_isPeeking)
+        {
+            Visit(context.parameters());
+            
+            // TODO - HACK
+            _symbolTable.LeaveFunctionScope();
+            return new FunctionDefinitionNode("", TypeManager.DataType.Any, new BlockNode(new List<INode>()), new List<ParameterNode>());
+        }
+        else
         {
             var funcParams = Visit(context.parameters());
             var funcBody = Visit(context.body()) as BlockNode ?? throw SyntaxErrorException.Create(context);
             
-            //return funcBody;
+            // TODO: This is not correct!!!
+            _symbolTable.LeaveFunctionScope();
+            return new FunctionDefinitionNode(funcName, returnType, funcBody, new List<ParameterNode>());
         }
-        
-        /* SCOPE END */
-        _symbolTable.LeaveFunctionScope();
-        return null;
     }
 
     public override INode? VisitParameters(JuliaParser.ParametersContext context)
@@ -316,15 +307,25 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         return null;
     }
 
-    public override INode? VisitReturn(JuliaParser.ReturnContext context)
+    public override INode VisitReturn(JuliaParser.ReturnContext context)
     {
-        // Is there a return expression?
-        if (context.expression() == null) return null;
-        
-        // Evaluate the return expression
-        var value = Visit(context.expression()) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
         var funcSymbol = _symbolTable.GetCurrentFunction() ?? throw SyntaxErrorException.Create("Return outside of function", context);
         var returnType = funcSymbol.Type;
+        
+        // Is there no return expression?
+        if (context.expression() == null)
+        {
+            // Is it a void function?
+            if (returnType != TypeManager.DataType.Void)
+            {
+                throw TypeMismatchException.Create(returnType, TypeManager.DataType.Void, context);
+            }
+            
+            return new ReturnNode(null);
+        }
+
+        // Evaluate the return expression
+        var value = Visit(context.expression()) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
             
         // Check for type compatibility
         if (returnType != value.Type)
@@ -332,10 +333,15 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             throw TypeMismatchException.Create(returnType, value.Type, context);
         }
 
-        return value;
+        return new ReturnNode(value);
     }
 
-    public override INode? VisitBody(JuliaParser.BodyContext context)
+    public override INode VisitBlock(JuliaParser.BlockContext context)
+    {
+        return Visit(context.body()) ?? throw new NotImplementedException();
+    }
+
+    public override INode VisitBody(JuliaParser.BodyContext context)
     {
         _symbolTable.EnterScope();
         
@@ -345,7 +351,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         return new BlockNode(statements);
     }
 
-    public override INode? VisitCall(JuliaParser.CallContext context)
+    public override INode VisitCall(JuliaParser.CallContext context)
     {
         var funcName = context.IDENTIFIER().GetText();
         var funcSymbol = _symbolTable.GetFunction(funcName) ?? throw UndefinedFuncException.Create(funcName, context);
@@ -376,7 +382,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         return new CallNode(funcName, arguments, funcSymbol.Type);
     }
 
-    public override INode? VisitIf(JuliaParser.IfContext context)
+    public override INode VisitIf(JuliaParser.IfContext context)
     {
         var condition = Visit(context.expression()) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
         if (condition.Type != TypeManager.DataType.Bool)
@@ -385,29 +391,28 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         }
         
         // If branch
-        Visit(context.body(0));
+        var body = Visit(context.body(0)) as BlockNode ?? throw SyntaxErrorException.Create(context);
         
         // Else branch
         if (context.body().Length > 1)
         {
-            Visit(context.body(1));
+            var elseBody = Visit(context.body(1)) as BlockNode ?? throw SyntaxErrorException.Create(context);
+            return new IfNode(condition, body, elseBody);
         }
         
-        return null;
-        //return base.VisitIf(context);
+        return new IfNode(condition, body, null);
     }
 
-    public override INode? VisitWhile(JuliaParser.WhileContext context)
+    public override INode VisitWhile(JuliaParser.WhileContext context)
     {
         var condition = Visit(context.expression()) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
         if (condition.Type != TypeManager.DataType.Bool)
         {
             throw TypeMismatchException.Create(TypeManager.DataType.Bool, condition.Type, context);
         }
+
+        var body = Visit(context.body()) as BlockNode ?? throw SyntaxErrorException.Create(context);
         
-        Visit(context.body());
-        
-        return null;
-        //return base.VisitWhile(context);
+        return new WhileNode(condition, body);
     }
 }
