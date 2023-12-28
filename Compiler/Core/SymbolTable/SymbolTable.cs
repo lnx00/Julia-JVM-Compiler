@@ -58,6 +58,13 @@ public class SymbolTable
         return symbol;
     }
     
+    public FunctionSymbol AddFunction(string name, TypeManager.DataType type, List<VariableSymbol> parameters)
+    {
+        var symbol = new FunctionSymbol(name, type, parameters);
+        _scopes.Peek().Add(name, symbol);
+        return symbol;
+    }
+    
     private ISymbol? GetSymbol(string name)
     {
         foreach (Dictionary<string, ISymbol> scope in _scopes)

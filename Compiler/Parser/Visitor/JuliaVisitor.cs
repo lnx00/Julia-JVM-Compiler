@@ -7,26 +7,21 @@ namespace Compiler.Parser.Visitor;
 
 public class JuliaVisitor : JuliaBaseVisitor<INode?>
 {
-    private readonly SymbolTable _symbolTable = new();
-    private bool _isPeeking = true;
+    private readonly SymbolTable _symbolTable;
 
+    public JuliaVisitor(SymbolTable symbolTable)
+    {
+        _symbolTable = symbolTable;
+    }
+    
     public override INode VisitStart(JuliaParser.StartContext context)
     {
-        /* HACK: Hotfix for late function declarations */
-        
-        // Peek all functions | TODO: Do this in a separate visitor
-        foreach (var function in context.function())
-        {
-            Visit(function);
-        }
-
-        _isPeeking = false;
         List<INode> statements = new();
         
         // Visit all statements
         statements.AddRange(context.statement().Select(expression => Visit(expression) ?? throw new NotImplementedException()));
         
-        // Visit all functions again
+        // Visit all functions
         statements.AddRange(context.function().Select(function => Visit(function) ?? throw new NotImplementedException()));
 
         return new BlockNode(statements);
@@ -249,36 +244,26 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             returnType = TypeManager.GetDataType(returnTypeName)
                          ?? throw SyntaxErrorException.Create($"Unknown return type {returnTypeName}", context);
             
-            var funcSymbol = _isPeeking ? _symbolTable.AddFunction(funcName, returnType) : _symbolTable.GetFunction(funcName);
+            var funcSymbol = _symbolTable.GetFunction(funcName);
             _symbolTable.EnterFunctionScope(funcSymbol ?? throw SyntaxErrorException.Create(context));
         }
         else
         {
             // No return type
-            var funcSymbol = _isPeeking ? _symbolTable.AddFunction(funcName, TypeManager.DataType.Void) : _symbolTable.GetFunction(funcName);
+            var funcSymbol = _symbolTable.GetFunction(funcName);
             _symbolTable.EnterFunctionScope(funcSymbol ?? throw SyntaxErrorException.Create(context));
         }
         
         /* FUNCTION SCOPE BEGIN */
         
-        // HACK: Hotfix for parameter type checking
-        if (_isPeeking)
-        {
-            Visit(context.parameters());
-            
-            // TODO - HACK
-            _symbolTable.LeaveFunctionScope();
-            return new FunctionDefinitionNode("", TypeManager.DataType.Any, new BlockNode(new List<INode>()), new List<ParameterNode>());
-        }
-        else
-        {
-            var funcParams = Visit(context.parameters());
-            var funcBody = Visit(context.body()) as BlockNode ?? throw SyntaxErrorException.Create(context);
-            
-            // TODO: This is not correct!!!
-            _symbolTable.LeaveFunctionScope();
-            return new FunctionDefinitionNode(funcName, returnType, funcBody, new List<ParameterNode>());
-        }
+        var funcParams = Visit(context.parameters());
+        var funcBody = Visit(context.body()) as BlockNode ?? throw SyntaxErrorException.Create(context);
+        
+        _symbolTable.LeaveFunctionScope();
+        /* FUNCTION SCOPE END */
+        
+        // TODO: This is not correct!!!
+        return new FunctionDefinitionNode(funcName, returnType, funcBody, new List<ParameterNode>());
     }
 
     public override INode? VisitParameters(JuliaParser.ParametersContext context)
@@ -296,12 +281,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             
             // Add to symbol table
             var varType = TypeManager.GetDataType(typeName) ?? throw SyntaxErrorException.Create($"Unknown parameter type {typeName}", context);
-            var paramSymbol = _symbolTable.AddVariable(varName, varType);
-
-            if (_isPeeking)
-            {
-                _symbolTable.GetCurrentFunction()?.Parameters.Add(paramSymbol);
-            }
+            _symbolTable.AddVariable(varName, varType);
         }
 
         return null;

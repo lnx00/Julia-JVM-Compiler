@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using Compiler.Core.SymbolTable;
 using Compiler.Parser.ErrorHandling;
 using Compiler.Parser.Visitor;
 
@@ -16,6 +17,7 @@ public class Parser
     public void Parse()
     {
         var errorListener = new ErrorListener();
+        var symbolTable = new SymbolTable();
         
         // Initialize lexer
         var inputStream = new AntlrInputStream(_code);
@@ -30,8 +32,11 @@ public class Parser
         
         // Initialize visitor
         var startContext = juliaParser.start();
-        var juliaVisitor = new JuliaVisitor();
         
+        var globalVisitor = new GlobalVisitor(symbolTable);
+        globalVisitor.Visit(startContext);
+        
+        var juliaVisitor = new JuliaVisitor(symbolTable);
         juliaVisitor.Visit(startContext);
     }
 }
