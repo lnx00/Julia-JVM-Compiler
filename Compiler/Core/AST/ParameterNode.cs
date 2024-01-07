@@ -4,12 +4,9 @@ namespace Compiler.Core.AST;
 
 public class ParameterNode : INode
 {
-    public string Name { get; }
-    public TypeManager.DataType Type { get; }
+    public Dictionary<string, TypeManager.DataType> Parameters { get; } = new();
 
-    public ParameterNode(string name, TypeManager.DataType type)
+    public ParameterNode()
     {
-        Name = name;
-        Type = type;
     }
 }

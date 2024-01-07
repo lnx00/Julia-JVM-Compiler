@@ -5,7 +5,7 @@ using Compiler.Parser.ErrorHandling;
 
 namespace Compiler.Parser.Visitor;
 
-public class JuliaVisitor : JuliaBaseVisitor<INode?>
+public class JuliaVisitor : JuliaBaseVisitor<INode>
 {
     private readonly SymbolTable _symbolTable;
 
@@ -255,19 +255,18 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
         }
         
         /* FUNCTION SCOPE BEGIN */
-        
-        var funcParams = Visit(context.parameters());
+        var funcParams = Visit(context.parameters()) as ParameterNode ?? throw SyntaxErrorException.Create(context);
         var funcBody = Visit(context.body()) as BlockNode ?? throw SyntaxErrorException.Create(context);
         
         _symbolTable.LeaveFunctionScope();
         /* FUNCTION SCOPE END */
         
-        // TODO: This is not correct!!!
-        return new FunctionDefinitionNode(funcName, returnType, funcBody, new List<ParameterNode>());
+        return new FunctionDefinitionNode(funcName, returnType, funcBody, funcParams);
     }
 
-    public override INode? VisitParameters(JuliaParser.ParametersContext context)
+    public override INode VisitParameters(JuliaParser.ParametersContext context)
     {
+        ParameterNode node = new();
         for (int i = 0; i < context.IDENTIFIER().Length; i++)
         {
             var varName = context.IDENTIFIER(i).GetText();
@@ -282,9 +281,10 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             // Add to symbol table
             var varType = TypeManager.GetDataType(typeName) ?? throw SyntaxErrorException.Create($"Unknown parameter type {typeName}", context);
             _symbolTable.AddVariable(varName, varType);
+            node.Parameters.Add(varName, varType);
         }
 
-        return null;
+        return node;
     }
 
     public override INode VisitReturn(JuliaParser.ReturnContext context)
@@ -325,7 +325,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
     {
         _symbolTable.EnterScope();
         
-        List<INode> statements = context.statement().Select(Visit).OfType<INode>().ToList();
+        List<INode> statements = context.statement().Select(Visit).ToList();
 
         _symbolTable.LeaveScope();
         return new BlockNode(statements);
@@ -358,7 +358,6 @@ public class JuliaVisitor : JuliaBaseVisitor<INode?>
             }
         }
 
-        // Check if function has a return type
         return new CallNode(funcName, arguments, funcSymbol.Type);
     }
 
