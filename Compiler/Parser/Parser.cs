@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using Compiler.Core.AST;
 using Compiler.Core.SymbolTable;
 using Compiler.Parser.ErrorHandling;
 using Compiler.Parser.Visitor;
@@ -14,7 +15,7 @@ public class Parser
         _code = input;
     }
     
-    public void Parse()
+    public BlockNode Parse()
     {
         var errorListener = new ErrorListener();
         var symbolTable = new SymbolTable();
@@ -37,6 +38,6 @@ public class Parser
         globalVisitor.Visit(startContext);
         
         var juliaVisitor = new JuliaVisitor(symbolTable);
-        juliaVisitor.Visit(startContext);
+        return juliaVisitor.Visit(startContext) as BlockNode ?? throw new Exception("Error parsing code");
     }
 }
