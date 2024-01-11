@@ -235,23 +235,8 @@ public class JuliaVisitor : JuliaBaseVisitor<INode>
     {
         // Create the function symbol
         var funcName = context.IDENTIFIER().GetText();
-        var returnType = TypeManager.DataType.Void;
-        if (context.type() != null)
-        {
-            // Retrieve the return type
-            var returnTypeName = context.type().GetText();
-            returnType = TypeManager.GetDataType(returnTypeName)
-                         ?? throw SyntaxErrorException.Create($"Unknown return type {returnTypeName}", context);
-            
-            var funcSymbol = _symbolTable.GetFunction(funcName)!.First(); // TODO - HACK
-            _symbolTable.EnterFunctionScope(funcSymbol ?? throw SyntaxErrorException.Create(context));
-        }
-        else
-        {
-            // No return type
-            var funcSymbol = _symbolTable.GetFunction(funcName)!.First(); // TODO - HACK
-            _symbolTable.EnterFunctionScope(funcSymbol ?? throw SyntaxErrorException.Create(context));
-        }
+        var funcSymbol = _symbolTable.GetFunction(funcName)!.First(); // TODO - HACK: This will not work with overloaded functions!!!
+        _symbolTable.EnterFunctionScope(funcSymbol ?? throw SyntaxErrorException.Create(context));
         
         /* FUNCTION SCOPE BEGIN */
         var funcParams = Visit(context.parameters()) as ParameterNode ?? throw SyntaxErrorException.Create(context);
@@ -260,7 +245,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode>
         _symbolTable.LeaveFunctionScope();
         /* FUNCTION SCOPE END */
         
-        return new FunctionDefinitionNode(funcName, returnType, funcBody, funcParams);
+        return new FunctionDefinitionNode(funcSymbol, funcBody, funcParams);
     }
 
     public override INode VisitParameters(JuliaParser.ParametersContext context)

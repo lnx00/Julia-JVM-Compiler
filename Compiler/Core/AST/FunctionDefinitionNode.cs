@@ -1,18 +1,17 @@
 ﻿using Compiler.Core.Common;
+using Compiler.Core.SymbolTable.Symbols;
 
 namespace Compiler.Core.AST;
 
 public class FunctionDefinitionNode : INode
 {
-    public string Name { get; }
-    public TypeManager.DataType Type { get; }
+    public FunctionSymbol Symbol { get; }
     public BlockNode Block { get; }
     public ParameterNode Parameters { get; }
 
-    public FunctionDefinitionNode(string name, TypeManager.DataType type, BlockNode block, ParameterNode parameters)
+    public FunctionDefinitionNode(FunctionSymbol symbol, BlockNode block, ParameterNode parameters)
     {
-        Name = name;
-        Type = type;
+        Symbol = symbol;
         Block = block;
         Parameters = parameters;
     }
