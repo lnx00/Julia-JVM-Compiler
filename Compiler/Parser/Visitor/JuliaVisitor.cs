@@ -54,9 +54,8 @@ public class JuliaVisitor : JuliaBaseVisitor<INode>
             }
         }
 
-        _symbolTable.AddVariable(varName, varType);
-
-        return new DeclarationNode(varName, varType, value);
+        var varSymbol = _symbolTable.AddVariable(varName, varType);
+        return new DeclarationNode(varSymbol, value);
     }
 
     public override INode VisitAssignment(JuliaParser.AssignmentContext context)
@@ -71,7 +70,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode>
             throw TypeMismatchException.Create(varSymbol.Type, value.Type, context);
         }
         
-        return new AssignmentNode(varName, value);
+        return new AssignmentNode(varSymbol, value);
     }
 
     public override INode VisitConst(JuliaParser.ConstContext context)
@@ -341,7 +340,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode>
             .Select(expressionContext => Visit(expressionContext) as ExpressionNode ?? throw new InvalidOperationException())
             .ToList();
         
-        // Check if the arguments match the parameters
+        // Check for a matching function overload
         foreach (var funcSymbol in funcSymbols)
         {
             if (funcSymbol.Parameters.Count != arguments.Count)
@@ -353,7 +352,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode>
 
             if (match)
             {
-                return new CallNode(funcName, arguments, funcSymbol.Type);
+                return new CallNode(funcSymbol, arguments, funcSymbol.Type);
             }
         }
         

@@ -1,13 +1,15 @@
-﻿namespace Compiler.Core.AST;
+﻿using Compiler.Core.SymbolTable.Symbols;
+
+namespace Compiler.Core.AST;
 
 public class AssignmentNode : INode
 {
-    public string Name { get; }
+    public VariableSymbol Symbol { get; }
     public ExpressionNode Value { get; }
 
-    public AssignmentNode(string name, ExpressionNode value)
+    public AssignmentNode(VariableSymbol symbol, ExpressionNode value)
     {
-        Name = name;
+        Symbol = symbol;
         Value = value;
     }
 }

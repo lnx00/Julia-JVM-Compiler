@@ -1,16 +1,17 @@
 ﻿using Compiler.Core.Common;
+using Compiler.Core.SymbolTable.Symbols;
 
 namespace Compiler.Core.AST;
 
 public class CallNode : ExpressionNode
 {
-    public string Name { get; }
+    public FunctionSymbol Symbol { get; set; }
     public override TypeManager.DataType Type { get; }
     public List<ExpressionNode> Arguments { get; }
     
-    public CallNode(string name, List<ExpressionNode> arguments, TypeManager.DataType type)
+    public CallNode(FunctionSymbol symbol, List<ExpressionNode> arguments, TypeManager.DataType type)
     {
-        Name = name;
+        Symbol = symbol;
         Arguments = arguments;
         Type = type;
     }

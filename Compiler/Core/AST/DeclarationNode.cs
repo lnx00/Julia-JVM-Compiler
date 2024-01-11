@@ -1,17 +1,16 @@
 ﻿using Compiler.Core.Common;
+using Compiler.Core.SymbolTable.Symbols;
 
 namespace Compiler.Core.AST;
 
 public class DeclarationNode : INode
 {
-    public string Name { get; }
-    public TypeManager.DataType Type { get; }
+    public VariableSymbol Symbol { get; }
     public ExpressionNode Value { get; }
 
-    public DeclarationNode(string name, TypeManager.DataType type, ExpressionNode value)
+    public DeclarationNode(VariableSymbol symbol, ExpressionNode value)
     {
-        Name = name;
-        Type = type;
+        Symbol = symbol;
         Value = value;
     }
 }

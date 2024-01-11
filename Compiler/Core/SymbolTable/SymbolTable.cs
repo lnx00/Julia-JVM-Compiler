@@ -14,10 +14,10 @@ public class SymbolTable
         EnterScope();
         
         // Built-in functions | TODO: Move this somewhere else
-        AddFunction("println", TypeManager.DataType.Void).Parameters.Add(new VariableSymbol("value", TypeManager.DataType.Integer));
-        AddFunction("println", TypeManager.DataType.Void).Parameters.Add(new VariableSymbol("value", TypeManager.DataType.Float64));
-        AddFunction("println", TypeManager.DataType.Void).Parameters.Add(new VariableSymbol("value", TypeManager.DataType.Bool));
-        AddFunction("println", TypeManager.DataType.Void).Parameters.Add(new VariableSymbol("value", TypeManager.DataType.String));
+        AddFunction("println", TypeManager.DataType.Void, new List<VariableSymbol> { new("value", TypeManager.DataType.Integer) });
+        AddFunction("println", TypeManager.DataType.Void, new List<VariableSymbol> { new("value", TypeManager.DataType.Float64) });
+        AddFunction("println", TypeManager.DataType.Void, new List<VariableSymbol> { new("value", TypeManager.DataType.String) });
+        AddFunction("println", TypeManager.DataType.Void, new List<VariableSymbol> { new("value", TypeManager.DataType.Bool) });
     }
 
     public void EnterScope()
