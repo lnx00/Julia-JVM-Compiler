@@ -3,15 +3,40 @@ using Compiler.Core.SymbolTable.Symbols;
 
 namespace Compiler.Core.SymbolTable;
 
+public class VariableScope
+{
+    public int Offset { get; private set; }
+    private readonly Dictionary<string, VariableSymbol> _variables = new();
+
+    public VariableScope(int offset)
+    {
+        Offset = offset;
+    }
+
+    public VariableSymbol AddVariable(string name, TypeManager.DataType type)
+    {
+        var symbol = new VariableSymbol(name, type);
+        _variables.Add(name, symbol);
+        Offset++;
+        return symbol;
+    }
+    
+    public VariableSymbol? GetVariable(string name)
+    {
+        return _variables.GetValueOrDefault(name);
+    }
+}
+
 public class SymbolTable
 {
-    private readonly Stack<Dictionary<string, VariableSymbol>> _variableScopes = new();
+    private readonly Stack<VariableScope> _variableScopes = new();
     private readonly Dictionary<string, List<FunctionSymbol>> _functions = new();
     private FunctionSymbol? _currentFunction;
     
     public SymbolTable()
     {
-        EnterScope();
+        // Enter global scope
+        _variableScopes.Push(new VariableScope(0));
         
         // Built-in functions | TODO: Move this somewhere else
         AddFunction("println", TypeManager.DataType.Void, new List<VariableSymbol> { new("value", TypeManager.DataType.Integer) });
@@ -20,9 +45,14 @@ public class SymbolTable
         AddFunction("println", TypeManager.DataType.Void, new List<VariableSymbol> { new("value", TypeManager.DataType.Bool) });
     }
 
+    private VariableScope GetCurrentScope()
+    {
+        return _variableScopes.Peek();
+    }
+    
     public void EnterScope()
     {
-        _variableScopes.Push(new Dictionary<string, VariableSymbol>());
+        _variableScopes.Push(new VariableScope(GetCurrentScope().Offset));
     }
     
     public void EnterFunctionScope(FunctionSymbol functionSymbol)
@@ -44,14 +74,7 @@ public class SymbolTable
     
     public VariableSymbol AddVariable(string name, TypeManager.DataType type)
     {
-        var symbol = new VariableSymbol(name, type);
-        _variableScopes.Peek().Add(name, symbol);
-        return symbol;
-    }
-    
-    public FunctionSymbol AddFunction(string name, TypeManager.DataType type)
-    {
-        return AddFunction(name, type, new List<VariableSymbol>());
+        return GetCurrentScope().AddVariable(name, type);
     }
     
     public FunctionSymbol AddFunction(string name, TypeManager.DataType type, List<VariableSymbol> parameters)
@@ -69,15 +92,7 @@ public class SymbolTable
     
     public VariableSymbol? GetVariable(string name)
     {
-        foreach (Dictionary<string, VariableSymbol> scope in _variableScopes)
-        {
-            if (scope.TryGetValue(name, out var symbol))
-            {
-                return symbol;
-            }
-        }
-
-        return null;
+        return _variableScopes.Select(scope => scope.GetVariable(name)).OfType<VariableSymbol>().FirstOrDefault();
     }
     
     public List<FunctionSymbol>? GetFunction(string name)
@@ -88,16 +103,6 @@ public class SymbolTable
     public FunctionSymbol? GetCurrentFunction()
     {
         return _currentFunction;
-    }
-    
-    public bool IsVariable(string name)
-    {
-        return GetVariable(name) != null;
-    }
-    
-    public bool IsFunction(string name)
-    {
-        return GetFunction(name) != null;
     }
     
     public bool IsDefined(string name)
