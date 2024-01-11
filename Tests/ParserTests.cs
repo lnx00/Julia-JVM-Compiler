@@ -1692,7 +1692,7 @@ public class ParserTests
     }
     
     [Fact]
-    private void WrongCallParameter_ThrowsTypeMismatch()
+    private void WrongCallParameter_ThrowsOverloadException()
     {
         // Arange
         var script = """
@@ -1711,11 +1711,11 @@ public class ParserTests
         var parser = new Parser(script);
 
         // Assert
-        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+        Assert.Throws<ParameterMismatchException>(() => parser.Parse());
     }
 
     [Fact]
-    private void TooFewCallParameters_ThrowsError()
+    private void TooFewCallParameters_ThrowsParameterMismatch()
     {
         // Arange
         var script = """
@@ -1734,11 +1734,11 @@ public class ParserTests
         var parser = new Parser(script);
 
         // Assert
-        Assert.Throws<SyntaxErrorException>(() => parser.Parse());
+        Assert.Throws<ParameterMismatchException>(() => parser.Parse());
     }
     
     [Fact]
-    private void TooManyCallParameters_ThrowsError()
+    private void TooManyCallParameters_ThrowsParameterMismatch()
     {
         // Arange
         var script = """
@@ -1757,6 +1757,6 @@ public class ParserTests
         var parser = new Parser(script);
 
         // Assert
-        Assert.Throws<SyntaxErrorException>(() => parser.Parse());
+        Assert.Throws<ParameterMismatchException>(() => parser.Parse());
     }
 }

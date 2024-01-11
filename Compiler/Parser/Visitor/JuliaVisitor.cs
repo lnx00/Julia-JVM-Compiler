@@ -244,13 +244,13 @@ public class JuliaVisitor : JuliaBaseVisitor<INode>
             returnType = TypeManager.GetDataType(returnTypeName)
                          ?? throw SyntaxErrorException.Create($"Unknown return type {returnTypeName}", context);
             
-            var funcSymbol = _symbolTable.GetFunction(funcName);
+            var funcSymbol = _symbolTable.GetFunction(funcName)!.First(); // TODO - HACK
             _symbolTable.EnterFunctionScope(funcSymbol ?? throw SyntaxErrorException.Create(context));
         }
         else
         {
             // No return type
-            var funcSymbol = _symbolTable.GetFunction(funcName);
+            var funcSymbol = _symbolTable.GetFunction(funcName)!.First(); // TODO - HACK
             _symbolTable.EnterFunctionScope(funcSymbol ?? throw SyntaxErrorException.Create(context));
         }
         
@@ -334,31 +334,30 @@ public class JuliaVisitor : JuliaBaseVisitor<INode>
     public override INode VisitCall(JuliaParser.CallContext context)
     {
         var funcName = context.IDENTIFIER().GetText();
-        var funcSymbol = _symbolTable.GetFunction(funcName) ?? throw UndefinedFuncException.Create(funcName, context);
+        var funcSymbols = _symbolTable.GetFunction(funcName) ?? throw UndefinedFuncException.Create(funcName, context);
 
         // Handle function parameters
         List<ExpressionNode> arguments = context.expression()
             .Select(expressionContext => Visit(expressionContext) as ExpressionNode ?? throw new InvalidOperationException())
             .ToList();
         
-        // Check if number of arguments matches
-        if (funcSymbol.Parameters.Count != arguments.Count)
+        // Check if the arguments match the parameters
+        foreach (var funcSymbol in funcSymbols)
         {
-            throw SyntaxErrorException.Create("Parameter count mismatch in function call", context);
-        }
-        
-        // Check if argument types match
-        for (int i = 0; i < arguments.Count; i++)
-        {
-            var argType = arguments[i].Type;
-            var paramType = funcSymbol.Parameters[i].Type;
-            if (argType != paramType && paramType != TypeManager.DataType.Any)
+            if (funcSymbol.Parameters.Count != arguments.Count)
             {
-                throw TypeMismatchException.Create(paramType, argType, context);
+                continue;
+            }
+
+            bool match = !funcSymbol.Parameters.Where((t, i) => t.Type != arguments[i].Type).Any();
+
+            if (match)
+            {
+                return new CallNode(funcName, arguments, funcSymbol.Type);
             }
         }
-
-        return new CallNode(funcName, arguments, funcSymbol.Type);
+        
+        throw ParameterMismatchException.Create(funcName, context);
     }
 
     public override INode VisitIf(JuliaParser.IfContext context)

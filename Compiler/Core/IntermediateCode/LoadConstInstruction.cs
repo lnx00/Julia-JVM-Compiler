@@ -27,9 +27,7 @@ public class LoadConstInstruction : Instruction
             case TypeManager.DataType.Bool:
                 bool boolValue = (bool) Value;
                 return $"ldc {boolValue.ToString().ToLower()}";
-
-            case TypeManager.DataType.Void:
-            case TypeManager.DataType.Any:
+            
             default:
                 throw new ArgumentOutOfRangeException();
         }

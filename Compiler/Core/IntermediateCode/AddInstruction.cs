@@ -21,10 +21,6 @@ public class AddInstruction : Instruction
             case TypeManager.DataType.Float64:
                 return "fadd";
             
-            case TypeManager.DataType.String:
-            case TypeManager.DataType.Bool:
-            case TypeManager.DataType.Void:
-            case TypeManager.DataType.Any:
             default:
                 throw new ArgumentOutOfRangeException();
         }

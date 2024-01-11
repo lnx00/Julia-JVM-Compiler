@@ -14,8 +14,10 @@ public class SymbolTable
         EnterScope();
         
         // Built-in functions | TODO: Move this somewhere else
-        var println = AddFunction("println", TypeManager.DataType.Void);
-        println.Parameters.Add(new VariableSymbol("value", TypeManager.DataType.Any));
+        AddFunction("println", TypeManager.DataType.Void).Parameters.Add(new VariableSymbol("value", TypeManager.DataType.Integer));
+        AddFunction("println", TypeManager.DataType.Void).Parameters.Add(new VariableSymbol("value", TypeManager.DataType.Float64));
+        AddFunction("println", TypeManager.DataType.Void).Parameters.Add(new VariableSymbol("value", TypeManager.DataType.Bool));
+        AddFunction("println", TypeManager.DataType.Void).Parameters.Add(new VariableSymbol("value", TypeManager.DataType.String));
     }
 
     public void EnterScope()
@@ -54,13 +56,14 @@ public class SymbolTable
     
     public FunctionSymbol AddFunction(string name, TypeManager.DataType type, List<VariableSymbol> parameters)
     {
-        if (!_functions.ContainsKey(name))
+        if (!_functions.TryGetValue(name, out List<FunctionSymbol>? value))
         {
-            _functions.Add(name, new List<FunctionSymbol>());
+            value = new List<FunctionSymbol>();
+            _functions.Add(name, value);
         }
         
         var symbol = new FunctionSymbol(name, type, parameters);
-        _functions[name].Add(symbol);
+        value.Add(symbol);
         return symbol;
     }
     
@@ -77,16 +80,9 @@ public class SymbolTable
         return null;
     }
     
-    public FunctionSymbol? GetFunction(string name)
+    public List<FunctionSymbol>? GetFunction(string name)
     {
-        // TODO: Check for function overloading
-        //return _functions.FirstOrDefault(function => string.Equals(function.Name, name));
-        if (_functions.TryGetValue(name, out var functions))
-        {
-            return functions.First();
-        }
-        
-        return null;
+        return _functions.GetValueOrDefault(name);
     }
     
     public FunctionSymbol? GetCurrentFunction()
