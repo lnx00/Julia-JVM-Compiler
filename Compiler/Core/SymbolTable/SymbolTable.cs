@@ -5,7 +5,8 @@ namespace Compiler.Core.SymbolTable;
 
 public class SymbolTable
 {
-    private readonly Stack<Dictionary<string, ISymbol>> _scopes = new();
+    private readonly Stack<Dictionary<string, VariableSymbol>> _variableScopes = new();
+    private readonly List<FunctionSymbol> _functions = new();
     private FunctionSymbol? _currentFunction = null;
     
     public SymbolTable()
@@ -19,7 +20,7 @@ public class SymbolTable
 
     public void EnterScope()
     {
-        _scopes.Push(new Dictionary<string, ISymbol>());
+        _variableScopes.Push(new Dictionary<string, VariableSymbol>());
     }
     
     public void EnterFunctionScope(FunctionSymbol functionSymbol)
@@ -30,7 +31,7 @@ public class SymbolTable
 
     public void LeaveScope()
     {
-        _scopes.Pop();
+        _variableScopes.Pop();
     }
     
     public void LeaveFunctionScope()
@@ -47,27 +48,27 @@ public class SymbolTable
     public VariableSymbol AddVariable(string name, TypeManager.DataType type)
     {
         var symbol = new VariableSymbol(name, type);
-        _scopes.Peek().Add(name, symbol);
+        _variableScopes.Peek().Add(name, symbol);
         return symbol;
     }
     
     public FunctionSymbol AddFunction(string name, TypeManager.DataType type)
     {
         var symbol = new FunctionSymbol(name, type);
-        _scopes.Peek().Add(name, symbol);
+        _functions.Add(symbol);
         return symbol;
     }
     
     public FunctionSymbol AddFunction(string name, TypeManager.DataType type, List<VariableSymbol> parameters)
     {
         var symbol = new FunctionSymbol(name, type, parameters);
-        _scopes.Peek().Add(name, symbol);
+        _functions.Add(symbol);
         return symbol;
     }
     
-    private ISymbol? GetSymbol(string name)
+    public VariableSymbol? GetVariable(string name)
     {
-        foreach (Dictionary<string, ISymbol> scope in _scopes)
+        foreach (Dictionary<string, VariableSymbol> scope in _variableScopes)
         {
             if (scope.TryGetValue(name, out var symbol))
             {
@@ -78,16 +79,10 @@ public class SymbolTable
         return null;
     }
     
-    public VariableSymbol? GetVariable(string name)
-    {
-        ISymbol? symbol = GetSymbol(name);
-        return symbol is VariableSymbol variableSymbol ? variableSymbol : null;
-    }
-    
     public FunctionSymbol? GetFunction(string name)
     {
-        ISymbol? symbol = GetSymbol(name);
-        return symbol is FunctionSymbol functionSymbol ? functionSymbol : null;
+        // TODO: Check for function overloading
+        return _functions.FirstOrDefault(function => string.Equals(function.Name, name));
     }
     
     public FunctionSymbol? GetCurrentFunction()
@@ -107,6 +102,6 @@ public class SymbolTable
     
     public bool IsDefined(string name)
     {
-        return GetSymbol(name) != null;
+        return GetVariable(name) != null || GetFunction(name) != null;
     }
 }
