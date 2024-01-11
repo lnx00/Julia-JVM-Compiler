@@ -4,7 +4,7 @@ namespace Compiler.Core.SymbolTable.Symbols;
 
 public class VariableSymbol : ISymbol
 {
-public string Name { get; }
+    public string Name { get; }
     public TypeManager.DataType Type { get; }
 
     public VariableSymbol(string name, TypeManager.DataType type)

@@ -1,37 +1,14 @@
 ﻿using Compiler.Core.Common;
+using Compiler.Core.SymbolTable.Scopes;
 using Compiler.Core.SymbolTable.Symbols;
 
 namespace Compiler.Core.SymbolTable;
 
-public class VariableScope
-{
-    public int Offset { get; private set; }
-    private readonly Dictionary<string, VariableSymbol> _variables = new();
-
-    public VariableScope(int offset)
-    {
-        Offset = offset;
-    }
-
-    public VariableSymbol AddVariable(string name, TypeManager.DataType type)
-    {
-        var symbol = new VariableSymbol(name, type);
-        _variables.Add(name, symbol);
-        Offset++;
-        return symbol;
-    }
-    
-    public VariableSymbol? GetVariable(string name)
-    {
-        return _variables.GetValueOrDefault(name);
-    }
-}
-
 public class SymbolTable
 {
     private readonly Stack<VariableScope> _variableScopes = new();
-    private readonly Dictionary<string, List<FunctionSymbol>> _functions = new();
-    private FunctionSymbol? _currentFunction;
+    private readonly FunctionScope _functions = new();
+    private FunctionSymbol? _currentFunction; // Hacky, but we only have one scope anyways...
     
     public SymbolTable()
     {
@@ -74,20 +51,16 @@ public class SymbolTable
     
     public VariableSymbol AddVariable(string name, TypeManager.DataType type)
     {
-        return GetCurrentScope().AddVariable(name, type);
+        var variableSymbol = new VariableSymbol(name, type);
+        GetCurrentScope().AddVariable(name, variableSymbol);
+        return variableSymbol;
     }
     
     public FunctionSymbol AddFunction(string name, TypeManager.DataType type, List<VariableSymbol> parameters)
     {
-        if (!_functions.TryGetValue(name, out List<FunctionSymbol>? value))
-        {
-            value = new List<FunctionSymbol>();
-            _functions.Add(name, value);
-        }
-        
-        var symbol = new FunctionSymbol(name, type, parameters);
-        value.Add(symbol);
-        return symbol;
+        var functionSymbol = new FunctionSymbol(name, type, parameters);
+        _functions.AddFunction(name, functionSymbol);
+        return functionSymbol;
     }
     
     public VariableSymbol? GetVariable(string name)
@@ -97,7 +70,7 @@ public class SymbolTable
     
     public List<FunctionSymbol>? GetFunction(string name)
     {
-        return _functions.GetValueOrDefault(name);
+        return _functions.GetFunction(name);
     }
     
     public FunctionSymbol? GetCurrentFunction()
