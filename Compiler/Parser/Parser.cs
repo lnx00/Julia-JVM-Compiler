@@ -1,5 +1,6 @@
 ﻿using Antlr4.Runtime;
 using Compiler.Core.AST;
+using Compiler.Core.StandardLibrary;
 using Compiler.Core.SymbolTable;
 using Compiler.Parser.ErrorHandling;
 using Compiler.Parser.Visitor;
@@ -19,6 +20,9 @@ public class Parser
     {
         var errorListener = new ErrorListener();
         var symbolTable = new SymbolTable();
+        
+        // Register standard library
+        PrintFunction.Register(symbolTable);
         
         // Initialize lexer
         var inputStream = new AntlrInputStream(_code);

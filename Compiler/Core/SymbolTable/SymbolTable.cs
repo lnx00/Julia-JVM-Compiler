@@ -12,14 +12,8 @@ public class SymbolTable
     
     public SymbolTable()
     {
-        // Enter global scope
+        // Enter initial global scope
         _variableScopes.Push(new VariableScope(0));
-        
-        // Built-in functions | TODO: Move this somewhere else
-        AddFunction("println", TypeManager.DataType.Void, new List<VariableSymbol> { new("value", TypeManager.DataType.Integer) });
-        AddFunction("println", TypeManager.DataType.Void, new List<VariableSymbol> { new("value", TypeManager.DataType.Float64) });
-        AddFunction("println", TypeManager.DataType.Void, new List<VariableSymbol> { new("value", TypeManager.DataType.String) });
-        AddFunction("println", TypeManager.DataType.Void, new List<VariableSymbol> { new("value", TypeManager.DataType.Bool) });
     }
 
     private VariableScope GetCurrentScope()
