@@ -6,8 +6,8 @@ public class CompilerTest
     private void Test_1()
     {
         var script = """
-                     function main()
-                     
+                     function main()::Float64
+                        return 10.0
                      end
                      """;
         

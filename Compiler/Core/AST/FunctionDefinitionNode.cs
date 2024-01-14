@@ -22,6 +22,7 @@ public class FunctionDefinitionNode : INode
         // Method prologue
         List<string> instructions = new()
         {
+            $"; Function definition for '{Symbol.Name}'",
             $".method public static {Symbol.GetMangledName()}()V",
             ".limit stack 100",
             ".limit locals 100"
@@ -32,6 +33,7 @@ public class FunctionDefinitionNode : INode
         
         // Method end
         instructions.Add(".end method");
+        instructions.Add(string.Empty);
         
         return instructions;
     }

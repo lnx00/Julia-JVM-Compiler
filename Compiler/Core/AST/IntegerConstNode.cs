@@ -15,6 +15,9 @@ public class IntegerConstNode : ExpressionNode
 
     public override List<string> Translate()
     {
-        throw new NotImplementedException();
+        return new List<string>
+        {
+            $"ldc {Value}"
+        };
     }
 }

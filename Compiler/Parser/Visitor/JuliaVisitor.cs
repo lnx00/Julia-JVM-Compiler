@@ -1,4 +1,5 @@
-﻿using Compiler.Core.AST;
+﻿using System.Globalization;
+using Compiler.Core.AST;
 using Compiler.Core.Common;
 using Compiler.Core.SymbolTable;
 using Compiler.Parser.ErrorHandling;
@@ -83,7 +84,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode>
         
         if (context.floatValue() != null)
         {
-            double value = double.Parse(context.floatValue().GetText());
+            double value = double.Parse(context.floatValue().GetText(), CultureInfo.InvariantCulture);
             return new FloatConstNode(value);
         }
         

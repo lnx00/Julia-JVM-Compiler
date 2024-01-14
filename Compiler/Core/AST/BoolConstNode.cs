@@ -15,6 +15,11 @@ public class BoolConstNode : ExpressionNode
 
     public override List<string> Translate()
     {
-        throw new NotImplementedException();
+        var value = Value ? 1 : 0;
+        
+        return new List<string>
+        {
+            $"ldc {value}"
+        };
     }
 }
