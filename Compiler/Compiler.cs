@@ -20,30 +20,25 @@ public class Compiler
         return _parser.Parse();
     }
     
-    private List<Instruction> GenerateCode(BlockNode ast)
+    private List<string> GenerateCode(BlockNode ast)
     {
         return _codeGenerator.Generate(ast);
     }
     
     public void Compile()
     {
-        try
+        var ast = Parse();
+        var code = GenerateCode(ast);
+        
+        // Print the generated code (for debugging purposes)
+        foreach (var instruction in code)
         {
-            var ast = Parse();
-            var code = GenerateCode(ast);
-        }
-        catch (ParserException e)
-        {
-            Console.Error.WriteLine($"Error at line {e.Line}, position {e.Position}: {e.Message}");
-        }
-        catch (Exception e)
-        {
-            Console.Error.WriteLine($"Unknown parser error: {e.Message}");
+            Console.WriteLine(instruction);
         }
     }
     
     public void LivenessAnalysis()
     {
-        Console.Error.WriteLine("Not implemented yet");
+        throw new NotImplementedException();
     }
 }

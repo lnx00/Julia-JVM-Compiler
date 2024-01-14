@@ -5,8 +5,8 @@ namespace Compiler.CodeGenerator;
 
 public class CodeGenerator
 {
-    public List<Instruction> Generate(BlockNode ast)
+    public List<string> Generate(BlockNode ast)
     {
-        throw new NotImplementedException();
+        return ast.Translate();
     }
 }

@@ -1,4 +1,7 @@
 ﻿// Handle command line arguments
+
+using Compiler.Parser.ErrorHandling;
+
 if (args.Length == 2)
 {
     var option = args[0];
@@ -14,25 +17,36 @@ if (args.Length == 2)
     var input = File.ReadAllText(file);
     Compiler.Compiler compiler = new(input);
 
-    switch (option)
+    try
     {
-        case "-compile":
+        switch (option)
         {
-            compiler.Compile();
-            break;
-        }
+            case "-compile":
+            {
+                compiler.Compile();
+                break;
+            }
         
-        case "-liveness":
-        {
-            compiler.LivenessAnalysis();
-            break;
-        }
+            case "-liveness":
+            {
+                compiler.LivenessAnalysis();
+                break;
+            }
         
-        default:
-        {
-            Console.WriteLine($"Unknown option '{option}'");
-            break;
+            default:
+            {
+                Console.WriteLine($"Unknown option '{option}'");
+                break;
+            }
         }
+    }
+    catch (ParserException e)
+    {
+        Console.Error.WriteLine($"Error at line {e.Line}, position {e.Position}: {e.Message}");
+    }
+    catch (Exception e)
+    {
+        Console.Error.WriteLine($"Unknown parser error: {e.Message}");
     }
 }
 else

@@ -11,6 +11,12 @@ public class BlockNode : INode
 
     public override List<string> Translate()
     {
-        throw new NotImplementedException();
+        List<string> instructions = new();
+        foreach (var statement in Statements)
+        {
+            instructions.AddRange(statement.Translate());
+        }
+        
+        return instructions;
     }
 }
