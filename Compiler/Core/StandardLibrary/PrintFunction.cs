@@ -18,7 +18,9 @@ public static class PrintFunction
     {
         return new List<Instruction>
         {
-            new CallInstruction(CallInstruction.InvocationType.Virtual, functionSymbol)
+            //new CallInstruction(CallInstruction.InvocationType.Virtual, functionSymbol)
+            new CustomInstruction("getstatic", new List<string>{ "java/lang/System/out", "Ljava/io/PrintStream;" }),
+            new CustomInstruction("invokevirtual", new List<string>{ "java/io/PrintStream/println(I)V" }),
         };
     }
 }
