@@ -12,4 +12,9 @@ public class IdentifierNode : ExpressionNode
         Name = name;
         Type = type;
     }
+
+    public override List<string> Translate()
+    {
+        throw new NotImplementedException();
+    }
 }

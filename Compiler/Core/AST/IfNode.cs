@@ -12,4 +12,9 @@ public class IfNode : INode
         Body = body;
         ElseBody = elseBody;
     }
+
+    public override List<string> Translate()
+    {
+        throw new NotImplementedException();
+    }
 }

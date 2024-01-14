@@ -20,4 +20,9 @@ public class UnaryExpressionNode : ExpressionNode
         Type = expression.Type;
         OperationType = op;
     }
+
+    public override List<string> Translate()
+    {
+        throw new NotImplementedException();
+    }
 }

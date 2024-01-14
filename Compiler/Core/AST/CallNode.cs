@@ -15,4 +15,9 @@ public class CallNode : ExpressionNode
         Arguments = arguments;
         Type = type;
     }
+
+    public override List<string> Translate()
+    {
+        throw new NotImplementedException();
+    }
 }

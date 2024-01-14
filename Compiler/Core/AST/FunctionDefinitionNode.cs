@@ -15,4 +15,9 @@ public class FunctionDefinitionNode : INode
         Block = block;
         Parameters = parameters;
     }
+
+    public override List<string> Translate()
+    {
+        throw new NotImplementedException();
+    }
 }

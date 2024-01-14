@@ -12,4 +12,9 @@ public class BoolConstNode : ExpressionNode
         Value = value;
         Type = TypeManager.DataType.Bool;
     }
+
+    public override List<string> Translate()
+    {
+        throw new NotImplementedException();
+    }
 }

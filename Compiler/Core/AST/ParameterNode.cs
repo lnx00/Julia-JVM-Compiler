@@ -9,4 +9,9 @@ public class ParameterNode : INode
     public ParameterNode()
     {
     }
+
+    public override List<string> Translate()
+    {
+        throw new NotImplementedException();
+    }
 }

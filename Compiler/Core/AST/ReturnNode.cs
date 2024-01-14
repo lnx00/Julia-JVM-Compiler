@@ -8,4 +8,9 @@ public class ReturnNode : INode
     {
         Value = value;
     }
+
+    public override List<string> Translate()
+    {
+        throw new NotImplementedException();
+    }
 }

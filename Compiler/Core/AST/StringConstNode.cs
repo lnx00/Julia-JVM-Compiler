@@ -12,4 +12,9 @@ public class StringConstNode : ExpressionNode
         Value = value;
         Type = TypeManager.DataType.String;
     }
+
+    public override List<string> Translate()
+    {
+        throw new NotImplementedException();
+    }
 }

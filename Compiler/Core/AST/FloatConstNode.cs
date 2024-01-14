@@ -12,4 +12,9 @@ public class FloatConstNode : ExpressionNode
         Value = value;
         Type = TypeManager.DataType.Float64;
     }
+
+    public override List<string> Translate()
+    {
+        throw new NotImplementedException();
+    }
 }

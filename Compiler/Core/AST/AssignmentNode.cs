@@ -12,4 +12,9 @@ public class AssignmentNode : INode
         Symbol = symbol;
         Value = value;
     }
+
+    public override List<string> Translate()
+    {
+        throw new NotImplementedException();
+    }
 }

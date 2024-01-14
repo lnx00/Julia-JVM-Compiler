@@ -25,4 +25,9 @@ public class CompExpressionNode : ExpressionNode
         RightExpression = rightExpression;
         OperationType = op;
     }
+
+    public override List<string> Translate()
+    {
+        throw new NotImplementedException();
+    }
 }

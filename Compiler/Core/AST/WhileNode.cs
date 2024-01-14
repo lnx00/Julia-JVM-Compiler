@@ -10,4 +10,9 @@ public class WhileNode : INode
         Condition = condition;
         Body = body;
     }
+
+    public override List<string> Translate()
+    {
+        throw new NotImplementedException();
+    }
 }

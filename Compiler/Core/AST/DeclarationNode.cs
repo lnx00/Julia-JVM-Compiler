@@ -13,4 +13,9 @@ public class DeclarationNode : INode
         Symbol = symbol;
         Value = value;
     }
+
+    public override List<string> Translate()
+    {
+        throw new NotImplementedException();
+    }
 }

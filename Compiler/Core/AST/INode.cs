@@ -1,6 +1,6 @@
 ﻿namespace Compiler.Core.AST;
 
-public interface INode
+public abstract class INode
 {
-    
+    public abstract List<string> Translate();
 }

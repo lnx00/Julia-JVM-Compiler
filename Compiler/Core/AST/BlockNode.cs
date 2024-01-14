@@ -8,4 +8,9 @@ public class BlockNode : INode
     {
         Statements = statements;
     }
+
+    public override List<string> Translate()
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -12,4 +12,9 @@ public class IntegerConstNode : ExpressionNode
         Value = value;
         Type = TypeManager.DataType.Integer;
     }
+
+    public override List<string> Translate()
+    {
+        throw new NotImplementedException();
+    }
 }

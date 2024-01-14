@@ -22,4 +22,9 @@ public class AddExpressionNode : ExpressionNode
         Type = type;
         OperationType = op;
     }
+
+    public override List<string> Translate()
+    {
+        throw new NotImplementedException();
+    }
 }
