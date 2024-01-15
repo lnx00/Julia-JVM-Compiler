@@ -144,7 +144,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode>
         // Check if variable exists
         var varSymbol = _symbolTable.GetVariable(varName) ?? throw UndefinedVarException.Create(varName, context);
         
-        return new IdentifierNode(varName, varSymbol.Type);
+        return new IdentifierNode(varSymbol, varSymbol.Type);
     }
 
     public override INode VisitAddExpr(JuliaParser.AddExprContext context)

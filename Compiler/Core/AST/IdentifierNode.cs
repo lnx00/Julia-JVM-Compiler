@@ -1,20 +1,21 @@
 ﻿using Compiler.Core.Common;
+using Compiler.Core.SymbolTable.Symbols;
 
 namespace Compiler.Core.AST;
 
 public class IdentifierNode : ExpressionNode
 {
-    public string Name { get; }
+    public VariableSymbol Symbol { get; }
     public override TypeManager.DataType Type { get; }
     
-    public IdentifierNode(string name, TypeManager.DataType type)
+    public IdentifierNode(VariableSymbol symbol, TypeManager.DataType type)
     {
-        Name = name;
+        Symbol = symbol;
         Type = type;
     }
 
     public override List<string> Translate()
     {
-        throw new NotImplementedException();
+        return new List<string> {$"\tiload {Symbol.Offset}"};
     }
 }
