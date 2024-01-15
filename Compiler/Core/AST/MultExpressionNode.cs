@@ -26,6 +26,65 @@ public class MultExpressionNode : ExpressionNode
 
     public override List<string> Translate()
     {
-        throw new NotImplementedException();
+        List<string> instructions = new();
+        
+        instructions.AddRange(LeftExpression.Translate());
+        instructions.AddRange(RightExpression.Translate());
+
+        switch (OperationType)
+        {
+            case Operation.Mult:
+                switch (Type)
+                {
+                    case TypeManager.DataType.Integer:
+                        instructions.Add("\timul");
+                        break;
+                    
+                    case TypeManager.DataType.Float64:
+                        instructions.Add("\tfmul");
+                        break;
+                    
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                break;
+            
+            case Operation.Div:
+                switch (Type)
+                {
+                    case TypeManager.DataType.Integer:
+                        instructions.Add("\tidiv");
+                        break;
+                    
+                    case TypeManager.DataType.Float64:
+                        instructions.Add("\tfdiv");
+                        break;
+                    
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                break;
+            
+            case Operation.Mod:
+                switch (Type)
+                {
+                    case TypeManager.DataType.Integer:
+                        instructions.Add("\tirem");
+                        break;
+                    
+                    case TypeManager.DataType.Float64:
+                        instructions.Add("\tfrem");
+                        break;
+                    
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                break;
+            
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        return instructions;
     }
 }

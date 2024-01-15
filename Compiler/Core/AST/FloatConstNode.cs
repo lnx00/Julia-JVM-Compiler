@@ -17,7 +17,7 @@ public class FloatConstNode : ExpressionNode
     {
         return new List<string>
         {
-            $"ldc {Value}"
+            $"\tldc {Value}"
         };
     }
 }

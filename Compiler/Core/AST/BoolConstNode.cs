@@ -19,7 +19,7 @@ public class BoolConstNode : ExpressionNode
         
         return new List<string>
         {
-            $"ldc {value}"
+            $"\tldc {value}"
         };
     }
 }

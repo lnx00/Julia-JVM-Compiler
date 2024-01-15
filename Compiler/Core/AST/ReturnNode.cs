@@ -18,7 +18,7 @@ public class ReturnNode : INode
         {
             return new List<string>
             {
-                "return"
+                "\treturn"
             };
         }
 
@@ -29,17 +29,21 @@ public class ReturnNode : INode
         {
             case TypeManager.DataType.Bool:
             case TypeManager.DataType.Integer:
-                instructions.Add("ireturn");
+                instructions.Add("\tireturn");
                 break;
             
             case TypeManager.DataType.Float64:
-                instructions.Add("freturn");
+                instructions.Add("\tfreturn");
                 break;
             
             case TypeManager.DataType.String:
-                instructions.Add("areturn");
+                instructions.Add("\tareturn");
                 break;
-            
+
+            case TypeManager.DataType.Void:
+                instructions.Add("\treturn");
+                break;
+                
             default:
                 throw new ArgumentOutOfRangeException();
         }
