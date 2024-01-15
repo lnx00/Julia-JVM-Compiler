@@ -56,4 +56,17 @@ public static class TypeManager
         DataType? type = GetCommonType(leftType, rightType);
         return !IsNumeric(type) ? null : type;
     }
+    
+    public static string GetJasminType(DataType type)
+    {
+        return type switch
+        {
+            DataType.Integer => "I",
+            DataType.Float64 => "F",
+            DataType.String => "Ljava/lang/String;",
+            DataType.Bool => "Z",
+            DataType.Void => "V",
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
+    }
 }

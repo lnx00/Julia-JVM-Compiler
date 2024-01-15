@@ -17,7 +17,7 @@ public class StringConstNode : ExpressionNode
     {
         return new List<string>
         {
-            $"ldc \"{Value}\""
+            $"ldc {Value}"
         };
     }
 }

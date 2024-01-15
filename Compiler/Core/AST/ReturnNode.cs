@@ -33,7 +33,7 @@ public class ReturnNode : INode
                 break;
             
             case TypeManager.DataType.Float64:
-                instructions.Add("dreturn");
+                instructions.Add("freturn");
                 break;
             
             case TypeManager.DataType.String:

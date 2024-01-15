@@ -19,11 +19,14 @@ public class FunctionDefinitionNode : INode
 
     public override List<string> Translate()
     {
+        string returnType = TypeManager.GetJasminType(Symbol.Type);
+        string parameterTypes = Parameters.Parameters.Aggregate("", (current, parameter) => current + TypeManager.GetJasminType(parameter.Value));
+
         // Method prologue
         List<string> instructions = new()
         {
             $"; Function definition for '{Symbol.Name}'",
-            $".method public static {Symbol.GetMangledName()}()V",
+            $".method public static {Symbol.GetMangledName()}({parameterTypes}){returnType}",
             ".limit stack 100",
             ".limit locals 100"
         };
