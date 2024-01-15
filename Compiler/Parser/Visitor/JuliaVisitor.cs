@@ -240,36 +240,26 @@ public class JuliaVisitor : JuliaBaseVisitor<INode>
         _symbolTable.EnterFunctionScope(funcSymbol ?? throw SyntaxErrorException.Create(context));
         
         /* FUNCTION SCOPE BEGIN */
-        var funcParams = Visit(context.parameters()) as ParameterNode ?? throw SyntaxErrorException.Create(context);
-        var funcBody = Visit(context.body()) as BlockNode ?? throw SyntaxErrorException.Create(context);
-        
-        _symbolTable.LeaveFunctionScope();
-        /* FUNCTION SCOPE END */
-        
-        return new FunctionDefinitionNode(funcSymbol, funcBody, funcParams);
-    }
-
-    public override INode VisitParameters(JuliaParser.ParametersContext context)
-    {
-        ParameterNode node = new();
-        for (int i = 0; i < context.IDENTIFIER().Length; i++)
+        // Update the function parameter symbols
+        for (int i = 0; i < funcSymbol.Parameters.Count; i++)
         {
-            var varName = context.IDENTIFIER(i).GetText();
-            var typeName = context.type(i).GetText();
+            var varName = funcSymbol.Parameters[i].Name;
+            var varType = funcSymbol.Parameters[i].Type;
             
-            // Check if variable already exists
             if (_symbolTable.IsDefined(varName))
             {
                 throw new Exception($"Variable {varName} already defined");
             }
             
-            // Add to symbol table
-            var varType = TypeManager.GetDataType(typeName) ?? throw SyntaxErrorException.Create($"Unknown parameter type {typeName}", context);
-            _symbolTable.AddVariable(varName, varType);
-            node.Parameters.Add(varName, varType);
+            funcSymbol.Parameters[i] = _symbolTable.AddVariable(varName, varType);
         }
-
-        return node;
+        
+        var funcBody = Visit(context.body()) as BlockNode ?? throw SyntaxErrorException.Create(context);
+        
+        _symbolTable.LeaveFunctionScope();
+        /* FUNCTION SCOPE END */
+        
+        return new FunctionDefinitionNode(funcSymbol, funcBody);
     }
 
     public override INode VisitReturn(JuliaParser.ReturnContext context)

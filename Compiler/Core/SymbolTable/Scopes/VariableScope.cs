@@ -13,10 +13,12 @@ public class VariableScope
         Offset = offset;
     }
 
-    public void AddVariable(string name, VariableSymbol variable)
+    public VariableSymbol AddVariable(string name, TypeManager.DataType type)
     {
-        _variables.Add(name, variable);
-        Offset++;
+        var symbol = new VariableSymbol(name, Offset++, type);
+        _variables.Add(name, symbol);
+
+        return symbol;
     }
     
     public VariableSymbol? GetVariable(string name)

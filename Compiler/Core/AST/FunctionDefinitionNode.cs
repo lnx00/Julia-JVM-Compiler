@@ -8,19 +8,19 @@ public class FunctionDefinitionNode : INode
 {
     public FunctionSymbol Symbol { get; }
     public BlockNode Block { get; }
-    public ParameterNode Parameters { get; }
+   // public ParameterNode Parameters { get; }
 
-    public FunctionDefinitionNode(FunctionSymbol symbol, BlockNode block, ParameterNode parameters)
+    public FunctionDefinitionNode(FunctionSymbol symbol, BlockNode block)
     {
         Symbol = symbol;
         Block = block;
-        Parameters = parameters;
     }
 
     public override List<string> Translate()
     {
         string returnType = TypeManager.GetJasminType(Symbol.Type);
-        string parameterTypes = Parameters.Parameters.Aggregate("", (current, parameter) => current + TypeManager.GetJasminType(parameter.Value));
+        //string parameterTypes = Symbol.Parameters.Aggregate("", (current, parameter) => current + TypeManager.GetJasminType(parameter.Value));
+        string parameterTypes = Symbol.Parameters.Aggregate(string.Empty, (current, param) => current + TypeManager.GetJasminType(param.Type));
 
         // Method prologue
         List<string> instructions = new()

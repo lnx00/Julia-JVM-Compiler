@@ -67,7 +67,7 @@ public class GlobalVisitor : JuliaBaseVisitor<object>
             
             // Add to parameter list
             var varType = TypeManager.GetDataType(typeName) ?? throw SyntaxErrorException.Create($"Unknown parameter type {typeName}", context);
-            parameters.Add(new VariableSymbol(varName, varType));
+            parameters.Add(new VariableSymbol(varName, -1, varType));
         }
         
         return parameters;

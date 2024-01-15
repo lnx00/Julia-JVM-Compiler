@@ -45,9 +45,7 @@ public class SymbolTable
     
     public VariableSymbol AddVariable(string name, TypeManager.DataType type)
     {
-        var variableSymbol = new VariableSymbol(name, type);
-        GetCurrentScope().AddVariable(name, variableSymbol);
-        return variableSymbol;
+        return GetCurrentScope().AddVariable(name, type);
     }
     
     public FunctionSymbol AddFunction(string name, TypeManager.DataType type, List<VariableSymbol> parameters)

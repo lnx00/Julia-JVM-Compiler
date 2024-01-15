@@ -8,10 +8,10 @@ public static class PrintFunction
 {
     public static void Register(SymbolTable.SymbolTable symbolTable)
     {
-        symbolTable.AddFunction("println", TypeManager.DataType.Void, new List<VariableSymbol> { new("value", TypeManager.DataType.Integer) });
-        symbolTable.AddFunction("println", TypeManager.DataType.Void, new List<VariableSymbol> { new("value", TypeManager.DataType.Float64) });
-        symbolTable.AddFunction("println", TypeManager.DataType.Void, new List<VariableSymbol> { new("value", TypeManager.DataType.String) });
-        symbolTable.AddFunction("println", TypeManager.DataType.Void, new List<VariableSymbol> { new("value", TypeManager.DataType.Bool) });
+        symbolTable.AddFunction("println", TypeManager.DataType.Void, new List<VariableSymbol> { new("value", 0, TypeManager.DataType.Integer) });
+        symbolTable.AddFunction("println", TypeManager.DataType.Void, new List<VariableSymbol> { new("value", 0, TypeManager.DataType.Float64) });
+        symbolTable.AddFunction("println", TypeManager.DataType.Void, new List<VariableSymbol> { new("value", 0, TypeManager.DataType.String) });
+        symbolTable.AddFunction("println", TypeManager.DataType.Void, new List<VariableSymbol> { new("value", 0, TypeManager.DataType.Bool) });
     }
 
     public static List<Instruction> Translate(FunctionSymbol functionSymbol)
