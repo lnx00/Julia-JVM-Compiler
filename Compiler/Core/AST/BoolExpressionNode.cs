@@ -25,6 +25,25 @@ public class BoolExpressionNode : ExpressionNode
 
     public override List<string> Translate()
     {
-        throw new NotImplementedException();
+        List<string> instructions = new();
+        
+        instructions.AddRange(LeftExpression.Translate());
+        instructions.AddRange(RightExpression.Translate());
+
+        switch (OperationType)
+        {
+            case Operation.And:
+                instructions.Add("\tiand");
+                break;
+            
+            case Operation.Or:
+                instructions.Add("\tior");
+                break;
+            
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        return instructions;
     }
 }

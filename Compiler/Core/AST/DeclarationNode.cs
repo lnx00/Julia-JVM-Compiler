@@ -16,6 +16,11 @@ public class DeclarationNode : INode
 
     public override List<string> Translate()
     {
-        throw new NotImplementedException();
+        List<string> instructions = new();
+
+        instructions.AddRange(Value.Translate());
+        instructions.Add($"\tistore {Symbol.Offset}");
+
+        return instructions;
     }
 }

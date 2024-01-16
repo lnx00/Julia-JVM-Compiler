@@ -23,6 +23,36 @@ public class UnaryExpressionNode : ExpressionNode
 
     public override List<string> Translate()
     {
-        throw new NotImplementedException();
+        List<string> instructions = new();
+        
+        instructions.AddRange(Expression.Translate());
+        switch (OperationType)
+        {
+            case Operation.Not:
+                instructions.Add("\tldc 1");
+                instructions.Add("\tixor");
+                break;
+            
+            case Operation.Negate:
+                switch (Type)
+                {
+                    case TypeManager.DataType.Integer:
+                        instructions.Add("\tineg");
+                        break;
+                    
+                    case TypeManager.DataType.Float64:
+                        instructions.Add("\tfneg");
+                        break;
+                    
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                break;
+            
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+        
+        return instructions;
     }
 }
