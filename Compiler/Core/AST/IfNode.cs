@@ -17,7 +17,7 @@ public class IfNode : INode
 
     public override List<string> Translate()
     {
-        List<string> instructions = new() { "\t; If statement" };
+        List<string> instructions = new() { "\n\t; If statement" };
 
         // Translate condition
         instructions.AddRange(Condition.Translate());
