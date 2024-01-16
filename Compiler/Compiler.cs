@@ -1,5 +1,4 @@
 ﻿using Compiler.Core.AST;
-using Compiler.Core.IntermediateCode;
 using Compiler.Parser.ErrorHandling;
 
 namespace Compiler;

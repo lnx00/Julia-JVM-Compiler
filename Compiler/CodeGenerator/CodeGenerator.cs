@@ -1,5 +1,4 @@
 ﻿using Compiler.Core.AST;
-using Compiler.Core.IntermediateCode;
 
 namespace Compiler.CodeGenerator;
 

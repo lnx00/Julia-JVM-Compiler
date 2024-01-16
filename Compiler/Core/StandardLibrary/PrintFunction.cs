@@ -1,5 +1,4 @@
 ﻿using Compiler.Core.Common;
-using Compiler.Core.IntermediateCode;
 using Compiler.Core.SymbolTable.Symbols;
 
 namespace Compiler.Core.StandardLibrary;
