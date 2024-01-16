@@ -20,15 +20,24 @@ public class CallNode : ExpressionNode
     {
         List<string> instructions = new();
         
-        // Push arguments to stack
-        foreach (var argument in Arguments)
-        {
-            instructions.AddRange(argument.Translate());
-        }
+        // Create args
+        List<string> args = Arguments.SelectMany(arg => arg.Translate()).ToList();
 
+        // Differentiate between STL and user functions
         var parameterTypes = Arguments.Aggregate(string.Empty, (current, arg) => current + TypeManager.GetJasminType(arg.Type));
-        var returnType = TypeManager.GetJasminType(Type);
-        instructions.Add($"\tinvokestatic Program/{Symbol.GetMangledName()}({parameterTypes}){returnType}");
+        if (Symbol.StlFunction is not null)
+        {
+            List<string> translated = Symbol.StlFunction.Translate(Symbol, args);
+            instructions.AddRange(translated);
+        }
+        else
+        {
+            // Push args
+            instructions.AddRange(args);
+            
+            var returnType = TypeManager.GetJasminType(Type);
+            instructions.Add($"\tinvokestatic Program/{Symbol.GetMangledName()}({parameterTypes}){returnType}");
+        }
 
         return instructions;
     }

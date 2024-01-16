@@ -21,9 +21,6 @@ public class Parser
         var errorListener = new ErrorListener();
         var symbolTable = new SymbolTable();
         
-        // Register standard library
-        PrintFunction.Register(symbolTable);
-        
         // Initialize lexer
         var inputStream = new AntlrInputStream(_code);
         var juliaLexer = new JuliaLexer(inputStream);
