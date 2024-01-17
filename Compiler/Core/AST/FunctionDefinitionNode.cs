@@ -28,7 +28,7 @@ public class FunctionDefinitionNode : INode
             $"; Function definition for '{Symbol.Name}'",
             $".method public static {Symbol.GetMangledName()}({parameterTypes}){returnType}",
             "\t.limit stack 100",
-            "\t.limit locals 100"
+            $"\t.limit locals {Symbol.VariableCount}"
         };
 
         // Method body

@@ -10,6 +10,7 @@ public class FunctionSymbol : ISymbol
     public TypeManager.DataType Type { get; }
     public List<VariableSymbol> Parameters { get; }
     public IStlFunction? StlFunction { get; private set; }
+    public int VariableCount { get; set; }
     
     public FunctionSymbol(string name, TypeManager.DataType type, List<VariableSymbol> parameters)
     {

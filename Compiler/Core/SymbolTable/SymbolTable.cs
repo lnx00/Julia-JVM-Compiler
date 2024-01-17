@@ -40,13 +40,18 @@ public class SymbolTable
 
     public void LeaveScope()
     {
+        if (_currentFunction is not null)
+        {
+            _currentFunction.VariableCount = Math.Max(_currentFunction.VariableCount, GetCurrentScope().Offset);
+        }
+        
         _variableScopes.Pop();
     }
     
     public void LeaveFunctionScope()
     {
-        _currentFunction = null;
         LeaveScope();
+        _currentFunction = null;
     }
     
     public VariableSymbol AddVariable(string name, TypeManager.DataType type)
