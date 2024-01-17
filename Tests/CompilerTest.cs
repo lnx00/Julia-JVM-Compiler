@@ -11,7 +11,7 @@ public class CompilerTest
                      end
                      """;
         
-        var compiler = new Compiler.Compiler(script);
+        var compiler = new Compiler.Compiler(script, "Test");
         compiler.Compile();
         
         Assert.True(true);

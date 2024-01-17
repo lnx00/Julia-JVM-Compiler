@@ -7,11 +7,13 @@ public class Compiler
 {
     private readonly Parser.Parser _parser;
     private readonly CodeGenerator.CodeGenerator _codeGenerator;
+    private readonly string _name;
     
-    public Compiler(string sourceCode)
+    public Compiler(string sourceCode, string name)
     {
         _parser = new Parser.Parser(sourceCode);
         _codeGenerator = new CodeGenerator.CodeGenerator();
+        _name = name;
     }
 
     private BlockNode Parse()
@@ -21,7 +23,7 @@ public class Compiler
     
     private List<string> GenerateCode(BlockNode ast)
     {
-        return _codeGenerator.Generate(ast);
+        return _codeGenerator.Generate(ast, _name);
     }
     
     public string Compile()

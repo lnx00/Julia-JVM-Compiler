@@ -15,7 +15,8 @@ if (args.Length == 2)
 
     // Initialize the compiler
     var input = File.ReadAllText(file);
-    Compiler.Compiler compiler = new(input);
+    var name = Path.GetFileNameWithoutExtension(file);
+    Compiler.Compiler compiler = new(input, name);
 
     try
     {
