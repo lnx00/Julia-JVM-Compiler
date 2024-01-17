@@ -12,6 +12,7 @@ public class SymbolTable
     private FunctionSymbol? _currentFunction; // Hacky, but we only have one scope anyways...
     
     private readonly PrintFunction _printFunction = new();
+    public int VariableCount { get; private set; } = 0;
     
     public SymbolTable()
     {
@@ -40,9 +41,11 @@ public class SymbolTable
 
     public void LeaveScope()
     {
+        // Update variable count    
         if (_currentFunction is not null)
         {
             _currentFunction.VariableCount = Math.Max(_currentFunction.VariableCount, GetCurrentScope().Offset);
+            VariableCount = Math.Max(VariableCount, _currentFunction.VariableCount);
         }
         
         _variableScopes.Pop();

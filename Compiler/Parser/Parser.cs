@@ -10,6 +10,8 @@ namespace Compiler.Parser;
 public class Parser
 {
     private readonly string _code;
+    private readonly ErrorListener _errorListener = new();
+    private readonly SymbolTable _symbolTable = new();
     
     public Parser(string input)
     {
@@ -18,9 +20,6 @@ public class Parser
     
     public BlockNode Parse()
     {
-        var errorListener = new ErrorListener();
-        var symbolTable = new SymbolTable();
-        
         // Initialize lexer
         var inputStream = new AntlrInputStream(_code);
         var juliaLexer = new JuliaLexer(inputStream);
@@ -30,15 +29,20 @@ public class Parser
         var commonTokenStream = new CommonTokenStream(juliaLexer);
         var juliaParser = new JuliaParser(commonTokenStream);
         juliaParser.RemoveErrorListeners();
-        juliaParser.AddErrorListener(errorListener);
+        juliaParser.AddErrorListener(_errorListener);
         
         // Initialize visitor
         var startContext = juliaParser.start();
         
-        var globalVisitor = new GlobalVisitor(symbolTable);
+        var globalVisitor = new GlobalVisitor(_symbolTable);
         globalVisitor.Visit(startContext);
         
-        var juliaVisitor = new JuliaVisitor(symbolTable);
+        var juliaVisitor = new JuliaVisitor(_symbolTable);
         return juliaVisitor.Visit(startContext) as BlockNode ?? throw new Exception("Error parsing code");
+    }
+    
+    public SymbolTable GetSymbolTable()
+    {
+        return _symbolTable;
     }
 }

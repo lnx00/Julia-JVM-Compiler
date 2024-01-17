@@ -38,6 +38,7 @@ public class Compiler
     
     public void LivenessAnalysis()
     {
-        throw new NotImplementedException();
+        var ast = Parse();
+        Console.WriteLine($"Registers: {_parser.GetSymbolTable().VariableCount}");
     }
 }
