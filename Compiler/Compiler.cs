@@ -24,21 +24,18 @@ public class Compiler
         return _codeGenerator.Generate(ast);
     }
     
-    public void Compile()
+    public string Compile()
     {
         var ast = Parse();
-        var code = GenerateCode(ast);
-        
-        // Print the generated code (for debugging purposes)
-        foreach (var instruction in code)
-        {
-            Console.WriteLine(instruction);
-        }
+        var instructions = GenerateCode(ast);
+        var code = string.Join("\n", instructions);
+
+        return code;
     }
     
-    public void LivenessAnalysis()
+    public int LivenessAnalysis()
     {
         var ast = Parse();
-        Console.WriteLine($"Registers: {_parser.GetSymbolTable().VariableCount}");
+        return _parser.GetSymbolTable().VariableCount;
     }
 }

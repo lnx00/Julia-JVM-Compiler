@@ -23,13 +23,16 @@ if (args.Length == 2)
         {
             case "-compile":
             {
-                compiler.Compile();
+                var code = compiler.Compile();
+                var outputFile = Path.ChangeExtension(file, ".j");
+                File.WriteAllText(outputFile, code);
                 break;
             }
         
             case "-liveness":
             {
-                compiler.LivenessAnalysis();
+                int registers = compiler.LivenessAnalysis();
+                Console.WriteLine($"Registers: {registers}");
                 break;
             }
         
