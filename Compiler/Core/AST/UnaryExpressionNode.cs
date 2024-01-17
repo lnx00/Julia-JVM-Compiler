@@ -1,4 +1,5 @@
-﻿using Compiler.Core.Common;
+﻿using Compiler.CodeGenerator;
+using Compiler.Core.Common;
 
 namespace Compiler.Core.AST;
 
@@ -21,11 +22,11 @@ public class UnaryExpressionNode : ExpressionNode
         OperationType = op;
     }
 
-    public override List<string> Translate()
+    public override List<string> Translate(TranslationContext ctx)
     {
         List<string> instructions = new();
         
-        instructions.AddRange(Expression.Translate());
+        instructions.AddRange(Expression.Translate(ctx));
         switch (OperationType)
         {
             case Operation.Not:

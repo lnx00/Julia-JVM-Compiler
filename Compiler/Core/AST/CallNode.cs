@@ -1,4 +1,5 @@
-﻿using Compiler.Core.Common;
+﻿using Compiler.CodeGenerator;
+using Compiler.Core.Common;
 using Compiler.Core.SymbolTable.Symbols;
 
 namespace Compiler.Core.AST;
@@ -16,12 +17,12 @@ public class CallNode : ExpressionNode
         Type = type;
     }
 
-    public override List<string> Translate()
+    public override List<string> Translate(TranslationContext ctx)
     {
         List<string> instructions = new();
         
         // Create args
-        List<string> args = Arguments.SelectMany(arg => arg.Translate()).ToList();
+        List<string> args = Arguments.SelectMany(arg => arg.Translate(ctx)).ToList();
 
         // Differentiate between STL and user functions
         var parameterTypes = Arguments.Aggregate(string.Empty, (current, arg) => current + TypeManager.GetJasminType(arg.Type));

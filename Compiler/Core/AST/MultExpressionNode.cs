@@ -1,4 +1,5 @@
-﻿using Compiler.Core.Common;
+﻿using Compiler.CodeGenerator;
+using Compiler.Core.Common;
 
 namespace Compiler.Core.AST;
 
@@ -24,12 +25,12 @@ public class MultExpressionNode : ExpressionNode
         OperationType = op;
     }
 
-    public override List<string> Translate()
+    public override List<string> Translate(TranslationContext ctx)
     {
         List<string> instructions = new();
         
-        instructions.AddRange(LeftExpression.Translate());
-        instructions.AddRange(RightExpression.Translate());
+        instructions.AddRange(LeftExpression.Translate(ctx));
+        instructions.AddRange(RightExpression.Translate(ctx));
 
         switch (OperationType)
         {

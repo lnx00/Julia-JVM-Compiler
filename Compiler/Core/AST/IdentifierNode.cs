@@ -1,4 +1,5 @@
-﻿using Compiler.Core.Common;
+﻿using Compiler.CodeGenerator;
+using Compiler.Core.Common;
 using Compiler.Core.SymbolTable.Symbols;
 
 namespace Compiler.Core.AST;
@@ -14,7 +15,7 @@ public class IdentifierNode : ExpressionNode
         Type = type;
     }
 
-    public override List<string> Translate()
+    public override List<string> Translate(TranslationContext ctx)
     {
         return new List<string> {$"\tiload {Symbol.Offset}"};
     }

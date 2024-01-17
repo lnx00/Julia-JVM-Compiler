@@ -1,4 +1,6 @@
-﻿namespace Compiler.Core.AST;
+﻿using Compiler.CodeGenerator;
+
+namespace Compiler.Core.AST;
 
 public class BlockNode : INode
 {
@@ -9,12 +11,12 @@ public class BlockNode : INode
         Statements = statements;
     }
 
-    public override List<string> Translate()
+    public override List<string> Translate(TranslationContext ctx)
     {
         List<string> instructions = new();
         foreach (var statement in Statements)
         {
-            instructions.AddRange(statement.Translate());
+            instructions.AddRange(statement.Translate(ctx));
         }
         
         return instructions;

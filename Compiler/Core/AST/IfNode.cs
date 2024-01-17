@@ -1,4 +1,5 @@
-﻿using Compiler.Core.Common;
+﻿using Compiler.CodeGenerator;
+using Compiler.Core.Common;
 
 namespace Compiler.Core.AST;
 
@@ -15,12 +16,12 @@ public class IfNode : INode
         ElseBody = elseBody;
     }
 
-    public override List<string> Translate()
+    public override List<string> Translate(TranslationContext ctx)
     {
         List<string> instructions = new() { "\n\t; If statement" };
 
         // Translate condition
-        instructions.AddRange(Condition.Translate());
+        instructions.AddRange(Condition.Translate(ctx));
 
         // Create labels
         string elseLabel = LabelManager.GetLabel("else");
@@ -30,7 +31,7 @@ public class IfNode : INode
         instructions.Add("\tifeq " + elseLabel);
 
         // Translate body
-        instructions.AddRange(Body.Translate());
+        instructions.AddRange(Body.Translate(ctx));
 
         // Jump to end
         instructions.Add("\tgoto " + endLabel);
@@ -41,7 +42,7 @@ public class IfNode : INode
         // Translate else body
         if (ElseBody is not null)
         {
-            instructions.AddRange(ElseBody.Translate());
+            instructions.AddRange(ElseBody.Translate(ctx));
         }
 
         // End label

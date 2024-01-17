@@ -7,6 +7,7 @@ public class CodeGenerator
     public List<string> Generate(BlockNode ast, string className)
     {
         List<string> instructions = new();
+        TranslationContext ctx = new(className);
         
         // Header | TODO: Use source file name
         instructions.AddRange(new List<string>
@@ -29,7 +30,7 @@ public class CodeGenerator
         });
         
         // Source code
-        instructions.AddRange(ast.Translate());
+        instructions.AddRange(ast.Translate(ctx));
         
         // Main method
         instructions.AddRange(new List<string>

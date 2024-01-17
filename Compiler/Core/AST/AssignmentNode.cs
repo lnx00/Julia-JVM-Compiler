@@ -1,4 +1,5 @@
-﻿using Compiler.Core.SymbolTable.Symbols;
+﻿using Compiler.CodeGenerator;
+using Compiler.Core.SymbolTable.Symbols;
 
 namespace Compiler.Core.AST;
 
@@ -13,11 +14,11 @@ public class AssignmentNode : INode
         Value = value;
     }
 
-    public override List<string> Translate()
+    public override List<string> Translate(TranslationContext ctx)
     {
         List<string> instructions = new();
 
-        instructions.AddRange(Value.Translate());
+        instructions.AddRange(Value.Translate(ctx));
         instructions.Add($"\tistore {Symbol.Offset}");
 
         return instructions;

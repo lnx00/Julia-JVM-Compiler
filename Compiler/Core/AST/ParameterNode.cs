@@ -1,4 +1,5 @@
-﻿using Compiler.Core.Common;
+﻿using Compiler.CodeGenerator;
+using Compiler.Core.Common;
 
 namespace Compiler.Core.AST;
 
@@ -10,7 +11,7 @@ public class ParameterNode : INode
     {
     }
 
-    public override List<string> Translate()
+    public override List<string> Translate(TranslationContext ctx)
     {
         throw new NotImplementedException();
     }

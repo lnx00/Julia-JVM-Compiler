@@ -1,6 +1,8 @@
-﻿namespace Compiler.Core.AST;
+﻿using Compiler.CodeGenerator;
+
+namespace Compiler.Core.AST;
 
 public abstract class INode
 {
-    public abstract List<string> Translate();
+    public abstract List<string> Translate(TranslationContext ctx);
 }

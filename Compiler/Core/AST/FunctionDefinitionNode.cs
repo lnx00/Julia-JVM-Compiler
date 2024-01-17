@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Compiler.CodeGenerator;
 using Compiler.Core.Common;
 using Compiler.Core.SymbolTable.Symbols;
 
@@ -16,7 +17,7 @@ public class FunctionDefinitionNode : INode
         Block = block;
     }
 
-    public override List<string> Translate()
+    public override List<string> Translate(TranslationContext ctx)
     {
         string returnType = TypeManager.GetJasminType(Symbol.Type);
         //string parameterTypes = Symbol.Parameters.Aggregate("", (current, parameter) => current + TypeManager.GetJasminType(parameter.Value));
@@ -32,7 +33,7 @@ public class FunctionDefinitionNode : INode
         };
 
         // Method body
-        instructions.AddRange(Block.Translate());
+        instructions.AddRange(Block.Translate(ctx));
         
         // Method end
         instructions.Add(".end method");

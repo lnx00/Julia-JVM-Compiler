@@ -1,4 +1,5 @@
-﻿using Compiler.Core.Common;
+﻿using Compiler.CodeGenerator;
+using Compiler.Core.Common;
 
 namespace Compiler.Core.AST;
 
@@ -13,7 +14,7 @@ public class BoolConstNode : ExpressionNode
         Type = TypeManager.DataType.Bool;
     }
 
-    public override List<string> Translate()
+    public override List<string> Translate(TranslationContext ctx)
     {
         var value = Value ? 1 : 0;
         

@@ -1,4 +1,5 @@
-﻿using Compiler.Core.Common;
+﻿using Compiler.CodeGenerator;
+using Compiler.Core.Common;
 
 namespace Compiler.Core.AST;
 
@@ -13,7 +14,7 @@ public class WhileNode : INode
         Body = body;
     }
 
-    public override List<string> Translate()
+    public override List<string> Translate(TranslationContext ctx)
     {
         List<string> instructions = new() { "\n\t; While statement" };
 
@@ -25,13 +26,13 @@ public class WhileNode : INode
         instructions.Add(startLabel + ":");
 
         // Translate condition
-        instructions.AddRange(Condition.Translate());
+        instructions.AddRange(Condition.Translate(ctx));
 
         // Compare condition to 0
         instructions.Add("\tifeq " + endLabel);
 
         // Translate body
-        instructions.AddRange(Body.Translate());
+        instructions.AddRange(Body.Translate(ctx));
 
         // Jump to start
         instructions.Add("\tgoto " + startLabel);

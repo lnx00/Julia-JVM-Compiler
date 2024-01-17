@@ -1,4 +1,5 @@
-﻿using Compiler.Core.Common;
+﻿using Compiler.CodeGenerator;
+using Compiler.Core.Common;
 
 namespace Compiler.Core.AST;
 
@@ -11,7 +12,7 @@ public class ReturnNode : INode
         Value = value;
     }
 
-    public override List<string> Translate()
+    public override List<string> Translate(TranslationContext ctx)
     {
         // Void
         if (Value is null)
@@ -23,7 +24,7 @@ public class ReturnNode : INode
         }
 
         // Non-void
-        List<string> instructions = Value.Translate();
+        List<string> instructions = Value.Translate(ctx);
 
         switch (Value.Type)
         {
