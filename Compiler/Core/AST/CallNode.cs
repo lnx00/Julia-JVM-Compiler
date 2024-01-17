@@ -6,7 +6,7 @@ namespace Compiler.Core.AST;
 
 public class CallNode : ExpressionNode
 {
-    public FunctionSymbol Symbol { get; set; }
+    public FunctionSymbol Symbol { get; }
     public override TypeManager.DataType Type { get; }
     public List<ExpressionNode> Arguments { get; }
     
@@ -37,7 +37,7 @@ public class CallNode : ExpressionNode
             instructions.AddRange(args);
             
             var returnType = TypeManager.GetJasminType(Type);
-            instructions.Add($"\tinvokestatic Program/{Symbol.GetMangledName()}({parameterTypes}){returnType}");
+            instructions.Add($"\tinvokestatic {ctx.Name}/{Symbol.GetMangledName()}({parameterTypes}){returnType}");
         }
 
         return instructions;

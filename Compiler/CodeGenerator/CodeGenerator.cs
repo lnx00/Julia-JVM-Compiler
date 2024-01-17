@@ -36,8 +36,8 @@ public class CodeGenerator
         instructions.AddRange(new List<string>
         {
             ".method public static main([Ljava/lang/String;)V",
-            "\t.limit stack 100",
-            "\t.limit locals 100",
+            "\t.limit stack 2",
+            "\t.limit locals 1",
             $"\tinvokestatic {className}/_main()V",
             "\treturn",
             ".end method",
