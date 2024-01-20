@@ -1,5 +1,6 @@
 ﻿using Compiler.CodeGenerator;
 using Compiler.Core.Common;
+using Compiler.Core.IntermediateCode;
 using Compiler.Core.SymbolTable.Symbols;
 
 namespace Compiler.Core.AST;
@@ -17,14 +18,6 @@ public class IdentifierNode : ExpressionNode
 
     public override TranslationResult Translate(TranslationContext ctx)
     {
-        return Symbol.Type switch
-        {
-            TypeManager.DataType.Integer => new TranslationResult(new List<string> { $"\tiload {Symbol.Offset}" }, 1),
-            TypeManager.DataType.Bool => new TranslationResult(new List<string> { $"\tiload {Symbol.Offset}" }, 1),
-            TypeManager.DataType.Float64 => new TranslationResult(new List<string> { $"\tfload {Symbol.Offset}" }, 1),
-            TypeManager.DataType.String => new TranslationResult(new List<string> { $"\taload {Symbol.Offset}" }, 1),
-            
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        return new TranslationResult(new LoadInstruction(Symbol.Offset, Type), 1);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using Compiler.CodeGenerator;
 using Compiler.Core.Common;
+using Compiler.Core.IntermediateCode;
 
 namespace Compiler.Core.AST;
 
@@ -17,7 +18,6 @@ public class FloatConstNode : ExpressionNode
 
     public override TranslationResult Translate(TranslationContext ctx)
     {
-        string value = Value.ToString("F", CultureInfo.InvariantCulture);
-        return new TranslationResult( $"\tldc {value}", 1);
+        return new TranslationResult(new ConstInstruction(Value), 1);
     }
 }

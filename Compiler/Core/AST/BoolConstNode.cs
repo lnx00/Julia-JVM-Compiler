@@ -1,5 +1,6 @@
 ﻿using Compiler.CodeGenerator;
 using Compiler.Core.Common;
+using Compiler.Core.IntermediateCode;
 
 namespace Compiler.Core.AST;
 
@@ -16,8 +17,6 @@ public class BoolConstNode : ExpressionNode
 
     public override TranslationResult Translate(TranslationContext ctx)
     {
-        var value = Value ? 1 : 0;
-        
-        return new TranslationResult($"\tldc {value}", 1);
+        return new TranslationResult(new ConstInstruction(Value), 1);
     }
 }

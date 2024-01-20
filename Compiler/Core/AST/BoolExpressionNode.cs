@@ -1,5 +1,6 @@
 ﻿using Compiler.CodeGenerator;
 using Compiler.Core.Common;
+using Compiler.Core.IntermediateCode;
 
 namespace Compiler.Core.AST;
 
@@ -26,7 +27,7 @@ public class BoolExpressionNode : ExpressionNode
 
     public override TranslationResult Translate(TranslationContext ctx)
     {
-        List<string> instructions = new();
+        List<Instruction> instructions = new();
         
         var left = LeftExpression.Translate(ctx);
         var right = RightExpression.Translate(ctx);
@@ -37,11 +38,11 @@ public class BoolExpressionNode : ExpressionNode
         switch (OperationType)
         {
             case Operation.And:
-                instructions.Add("\tiand");
+                instructions.Add(new ArithmeticInstruction(ArithmeticInstruction.Operation.And, Type));
                 break;
             
             case Operation.Or:
-                instructions.Add("\tior");
+                instructions.Add(new ArithmeticInstruction(ArithmeticInstruction.Operation.Or, Type));
                 break;
             
             default:

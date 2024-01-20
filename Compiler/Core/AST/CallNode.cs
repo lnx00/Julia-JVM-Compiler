@@ -1,5 +1,6 @@
 ﻿using Compiler.CodeGenerator;
 using Compiler.Core.Common;
+using Compiler.Core.IntermediateCode;
 using Compiler.Core.SymbolTable.Symbols;
 
 namespace Compiler.Core.AST;
@@ -19,12 +20,12 @@ public class CallNode : ExpressionNode
 
     public override TranslationResult Translate(TranslationContext ctx)
     {
-        List<string> instructions = new();
+        List<Instruction> instructions = new();
         int stackSize = 0;
         
         // Create args
         //List<string> args = Arguments.SelectMany(arg => arg.Translate(ctx)).ToList();
-        List<string> args = new();
+        List<Instruction> args = new();
         foreach (var result in Arguments.Select(arg => arg.Translate(ctx)))
         {
             args.AddRange(result.Instructions);
@@ -45,7 +46,8 @@ public class CallNode : ExpressionNode
             instructions.AddRange(args);
             
             var returnType = TypeManager.GetJasminType(Type);
-            instructions.Add($"\tinvokestatic {ctx.Name}/{Symbol.GetMangledName()}({parameterTypes}){returnType}");
+            //instructions.Add($"\tinvokestatic {ctx.Name}/{Symbol.GetMangledName()}({parameterTypes}){returnType}");
+            instructions.Add(new InvokeInstruction($"{ctx.Name}/{Symbol.GetMangledName()}({parameterTypes}){returnType}", InvokeInstruction.InvokeType.Static));
         }
 
         return new TranslationResult(instructions, stackSize);

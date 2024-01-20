@@ -1,5 +1,6 @@
 ﻿using Compiler.CodeGenerator;
 using Compiler.Core.Common;
+using Compiler.Core.IntermediateCode;
 
 namespace Compiler.Core.AST;
 
@@ -17,35 +18,14 @@ public class ReturnNode : INode
         // Void
         if (Value is null)
         {
-            return new TranslationResult("\treturn", 0);
+            return new TranslationResult(new ReturnInstruction(TypeManager.DataType.Void), 0);
         }
 
         // Non-void
         var result = Value.Translate(ctx);
-        List<string> instructions = result.Instructions;
-
-        switch (Value.Type)
-        {
-            case TypeManager.DataType.Bool:
-            case TypeManager.DataType.Integer:
-                instructions.Add("\tireturn");
-                break;
-            
-            case TypeManager.DataType.Float64:
-                instructions.Add("\tfreturn");
-                break;
-            
-            case TypeManager.DataType.String:
-                instructions.Add("\tareturn");
-                break;
-
-            case TypeManager.DataType.Void:
-                instructions.Add("\treturn");
-                break;
-                
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+        List<Instruction> instructions = result.Instructions;
+        
+        instructions.Add(new ReturnInstruction(Value.Type));
         
         return new TranslationResult(instructions, result.StackSize);
     }

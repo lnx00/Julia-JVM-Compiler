@@ -1,4 +1,5 @@
 ﻿using Compiler.Core.AST;
+using Compiler.Core.IntermediateCode;
 using Compiler.Parser.ErrorHandling;
 
 namespace Compiler;
@@ -21,7 +22,7 @@ public class Compiler
         return _parser.Parse();
     }
     
-    private List<string> GenerateCode(StartNode ast)
+    private List<Instruction> GenerateCode(StartNode ast)
     {
         return _codeGenerator.Generate(ast, _name);
     }
@@ -30,7 +31,7 @@ public class Compiler
     {
         var ast = Parse();
         var instructions = GenerateCode(ast);
-        var code = string.Join("\n", instructions);
+        var code = string.Join("\n", instructions.Select(i => i.Translate()));
 
         return code;
     }

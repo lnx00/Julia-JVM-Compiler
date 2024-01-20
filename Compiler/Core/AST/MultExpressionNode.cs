@@ -1,5 +1,6 @@
 ﻿using Compiler.CodeGenerator;
 using Compiler.Core.Common;
+using Compiler.Core.IntermediateCode;
 
 namespace Compiler.Core.AST;
 
@@ -27,7 +28,7 @@ public class MultExpressionNode : ExpressionNode
 
     public override TranslationResult Translate(TranslationContext ctx)
     {
-        List<string> instructions = new();
+        List<Instruction> instructions = new();
         
         var left = LeftExpression.Translate(ctx);
         var right = RightExpression.Translate(ctx);
@@ -38,51 +39,15 @@ public class MultExpressionNode : ExpressionNode
         switch (OperationType)
         {
             case Operation.Mult:
-                switch (Type)
-                {
-                    case TypeManager.DataType.Integer:
-                        instructions.Add("\timul");
-                        break;
-                    
-                    case TypeManager.DataType.Float64:
-                        instructions.Add("\tfmul");
-                        break;
-                    
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                instructions.Add(new ArithmeticInstruction(ArithmeticInstruction.Operation.Mul, Type));
                 break;
             
             case Operation.Div:
-                switch (Type)
-                {
-                    case TypeManager.DataType.Integer:
-                        instructions.Add("\tidiv");
-                        break;
-                    
-                    case TypeManager.DataType.Float64:
-                        instructions.Add("\tfdiv");
-                        break;
-                    
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                instructions.Add(new ArithmeticInstruction(ArithmeticInstruction.Operation.Div, Type));
                 break;
             
             case Operation.Mod:
-                switch (Type)
-                {
-                    case TypeManager.DataType.Integer:
-                        instructions.Add("\tirem");
-                        break;
-                    
-                    case TypeManager.DataType.Float64:
-                        instructions.Add("\tfrem");
-                        break;
-                    
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                instructions.Add(new ArithmeticInstruction(ArithmeticInstruction.Operation.Mod, Type));
                 break;
             
             default:

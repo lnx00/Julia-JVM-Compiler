@@ -1,5 +1,6 @@
 ﻿using Compiler.CodeGenerator;
 using Compiler.Core.Common;
+using Compiler.Core.IntermediateCode;
 
 namespace Compiler.Core.AST;
 
@@ -29,7 +30,7 @@ public class CompExpressionNode : ExpressionNode
 
     public override TranslationResult Translate(TranslationContext ctx)
     {
-        List<string> instructions = new();
+        List<Instruction> instructions = new();
         
         var left = LeftExpression.Translate(ctx);
         var right = RightExpression.Translate(ctx);
@@ -43,38 +44,38 @@ public class CompExpressionNode : ExpressionNode
         switch (OperationType)
         {
             case Operation.Equal:
-                instructions.Add("\tif_icmpeq " + trueLabel);
+                instructions.Add(new BranchInstruction(BranchInstruction.Condition.Equal, trueLabel));
                 break;
             
             case Operation.NotEqual:
-                instructions.Add("\tif_icmpne " + trueLabel);
+                instructions.Add(new BranchInstruction(BranchInstruction.Condition.NotEqual, trueLabel));
                 break;
             
             case Operation.LessThan:
-                instructions.Add("\tif_icmplt " + trueLabel);
+                instructions.Add(new BranchInstruction(BranchInstruction.Condition.LessThan, trueLabel));
                 break;
             
             case Operation.LessThanOrEqual:
-                instructions.Add("\tif_icmple " + trueLabel);
+                instructions.Add(new BranchInstruction(BranchInstruction.Condition.LessThanOrEqual, trueLabel));
                 break;
             
             case Operation.GreaterThan:
-                instructions.Add("\tif_icmpgt " + trueLabel);
+                instructions.Add(new BranchInstruction(BranchInstruction.Condition.GreaterThan, trueLabel));
                 break;
             
             case Operation.GreaterThanOrEqual:
-                instructions.Add("\tif_icmpge " + trueLabel);
+                instructions.Add(new BranchInstruction(BranchInstruction.Condition.GreaterThanOrEqual, trueLabel));
                 break;
             
             default:
                 throw new ArgumentOutOfRangeException();
         }
         
-        instructions.Add("\ticonst_0");
-        instructions.Add("\tgoto " + endLabel);
-        instructions.Add(trueLabel + ":");
-        instructions.Add("\ticonst_1");
-        instructions.Add(endLabel + ":");
+        instructions.Add(new CustomInstruction("\ticonst_0"));
+        instructions.Add(new BranchInstruction(BranchInstruction.Condition.None, endLabel));
+        instructions.Add(new LabelInstruction(trueLabel));
+        instructions.Add(new CustomInstruction("\ticonst_1"));
+        instructions.Add(new LabelInstruction(endLabel));
 
         return new TranslationResult(instructions, left.StackSize, right.StackSize);
     }

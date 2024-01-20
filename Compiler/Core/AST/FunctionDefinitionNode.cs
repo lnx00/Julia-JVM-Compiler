@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Compiler.CodeGenerator;
 using Compiler.Core.Common;
+using Compiler.Core.IntermediateCode;
 using Compiler.Core.SymbolTable.Symbols;
 
 namespace Compiler.Core.AST;
@@ -25,20 +26,21 @@ public class FunctionDefinitionNode : INode
         var result = Block.Translate(ctx);
         
         // Method prologue
-        List<string> instructions = new()
+        List<Instruction> instructions = new()
         {
-            $"; Function definition for '{Symbol.Name}'",
-            $".method public static {Symbol.GetMangledName()}({parameterTypes}){returnType}",
-            $"\t.limit stack {result.StackSize}",
-            $"\t.limit locals {Symbol.VariableCount}"
+            //$"; Function definition for '{Symbol.Name}'",
+            new CommentInstruction($"Function definition for '{Symbol.Name}'"),
+            new CustomInstruction($".method public static {Symbol.GetMangledName()}({parameterTypes}){returnType}"),
+            new CustomInstruction($"\t.limit stack {result.StackSize}"),
+            new CustomInstruction($"\t.limit locals {Symbol.VariableCount}")
         };
 
         // Method body
         instructions.AddRange(result.Instructions);
         
         // Method end
-        instructions.Add(".end method");
-        instructions.Add(string.Empty);
+        instructions.Add(new CustomInstruction(".end method"));
+        instructions.Add(new CustomInstruction("")); // TODO: Hack to add a new line
         
         return new TranslationResult(instructions, result.StackSize);
     }

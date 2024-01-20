@@ -1,5 +1,6 @@
 ﻿using Compiler.CodeGenerator;
 using Compiler.Core.Common;
+using Compiler.Core.IntermediateCode;
 
 namespace Compiler.Core.AST;
 
@@ -24,7 +25,7 @@ public class UnaryExpressionNode : ExpressionNode
 
     public override TranslationResult Translate(TranslationContext ctx)
     {
-        List<string> instructions = new();
+        List<Instruction> instructions = new();
         
         var result = Expression.Translate(ctx);
         instructions.AddRange(result.Instructions);
@@ -32,24 +33,12 @@ public class UnaryExpressionNode : ExpressionNode
         switch (OperationType)
         {
             case Operation.Not:
-                instructions.Add("\tldc 1");
-                instructions.Add("\tixor");
+                instructions.Add(new ConstInstruction(1));
+                instructions.Add(new ArithmeticInstruction(ArithmeticInstruction.Operation.Xor, Type));
                 return new TranslationResult(instructions, result.StackSize + 1);
             
             case Operation.Negate:
-                switch (Type)
-                {
-                    case TypeManager.DataType.Integer:
-                        instructions.Add("\tineg");
-                        break;
-                    
-                    case TypeManager.DataType.Float64:
-                        instructions.Add("\tfneg");
-                        break;
-                    
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                instructions.Add(new ArithmeticInstruction(ArithmeticInstruction.Operation.Neg, Type));
                 break;
             
             default:

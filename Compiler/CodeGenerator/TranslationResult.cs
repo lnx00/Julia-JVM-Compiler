@@ -1,17 +1,19 @@
-﻿namespace Compiler.CodeGenerator;
+﻿using Compiler.Core.IntermediateCode;
+
+namespace Compiler.CodeGenerator;
 
 public class TranslationResult
 {
-    public List<string> Instructions { get; }
+    public List<Instruction> Instructions { get; }
     public int StackSize { get; set; }
 
-    public TranslationResult(List<string> instructions, int stackSize)
+    public TranslationResult(List<Instruction> instructions, int stackSize)
     {
         Instructions = instructions;
         StackSize = stackSize;
     }
     
-    public TranslationResult(List<string> instructions, int leftStackSize, int rightStackSize)
+    public TranslationResult(List<Instruction> instructions, int leftStackSize, int rightStackSize)
     {
         Instructions = instructions;
         StackSize = Math.Max(leftStackSize, rightStackSize);
@@ -22,9 +24,9 @@ public class TranslationResult
         }
     }
     
-    public TranslationResult(string instruction, int stackSize)
+    public TranslationResult(Instruction instruction, int stackSize)
     {
-        Instructions = new List<string> { instruction };
+        Instructions = new List<Instruction> { instruction };
         StackSize = stackSize;
     }
 }

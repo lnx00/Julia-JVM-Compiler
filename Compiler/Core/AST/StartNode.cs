@@ -1,4 +1,5 @@
 ﻿using Compiler.CodeGenerator;
+using Compiler.Core.IntermediateCode;
 
 namespace Compiler.Core.AST;
 
@@ -13,7 +14,7 @@ public class StartNode : INode
 
     public override TranslationResult Translate(TranslationContext ctx)
     {
-        List<string> instructions = new();
+        List<Instruction> instructions = new();
         int stackSize = 0;
 
         foreach (var stmt in Statements)

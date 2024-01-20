@@ -1,5 +1,6 @@
 ﻿using Compiler.CodeGenerator;
 using Compiler.Core.Common;
+using Compiler.Core.IntermediateCode;
 
 namespace Compiler.Core.AST;
 
@@ -16,7 +17,10 @@ public class WhileNode : INode
 
     public override TranslationResult Translate(TranslationContext ctx)
     {
-        List<string> instructions = new() { "\n\t; While statement" };
+        List<Instruction> instructions = new()
+        {
+            new CommentInstruction("While loop")
+        };
         int stackSize = 0;
 
         // Create labels
@@ -24,7 +28,7 @@ public class WhileNode : INode
         string endLabel = LabelManager.GetLabel("whileEnd");
 
         // Start label
-        instructions.Add(startLabel + ":");
+        instructions.Add(new LabelInstruction(startLabel));
 
         // Translate condition
         var condResult = Condition.Translate(ctx);
@@ -32,7 +36,7 @@ public class WhileNode : INode
         stackSize = Math.Max(stackSize, condResult.StackSize);
 
         // Compare condition
-        instructions.Add("\tifeq " + endLabel);
+        instructions.Add(new BranchInstruction(BranchInstruction.Condition.Equal, endLabel));
 
         // Translate body
         var bodyResult = Body.Translate(ctx);
@@ -40,10 +44,10 @@ public class WhileNode : INode
         stackSize = Math.Max(stackSize, bodyResult.StackSize);
 
         // Jump to start
-        instructions.Add("\tgoto " + startLabel);
+        instructions.Add(new BranchInstruction(BranchInstruction.Condition.None, startLabel));
 
         // End label
-        instructions.Add(endLabel + ":");
+        instructions.Add(new LabelInstruction(endLabel));
 
         return new TranslationResult(instructions, stackSize);
     }

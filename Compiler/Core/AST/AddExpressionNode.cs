@@ -1,5 +1,6 @@
 ﻿using Compiler.CodeGenerator;
 using Compiler.Core.Common;
+using Compiler.Core.IntermediateCode;
 
 namespace Compiler.Core.AST;
 
@@ -26,7 +27,7 @@ public class AddExpressionNode : ExpressionNode
 
     public override TranslationResult Translate(TranslationContext ctx)
     {
-        List<string> instructions = new();
+        List<Instruction> instructions = new();
 
         var left = LeftExpression.Translate(ctx);
         var right = RightExpression.Translate(ctx);
@@ -37,35 +38,11 @@ public class AddExpressionNode : ExpressionNode
         switch (OperationType)
         {
             case Operation.Add:
-                switch (Type)
-                {
-                    case TypeManager.DataType.Integer:
-                        instructions.Add("\tiadd");
-                        break;
-                    
-                    case TypeManager.DataType.Float64:
-                        instructions.Add("\tfadd");
-                        break;
-                    
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                instructions.Add(new ArithmeticInstruction(ArithmeticInstruction.Operation.Add, Type));
                 break;
             
             case Operation.Subtract:
-                switch (Type)
-                {
-                    case TypeManager.DataType.Integer:
-                        instructions.Add("\tisub");
-                        break;
-                    
-                    case TypeManager.DataType.Float64:
-                        instructions.Add("\tfsub");
-                        break;
-                    
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                instructions.Add(new ArithmeticInstruction(ArithmeticInstruction.Operation.Sub, Type));
                 break;
             
             default:
