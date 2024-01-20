@@ -4,7 +4,7 @@ namespace Compiler.CodeGenerator;
 
 public class CodeGenerator
 {
-    public List<string> Generate(BlockNode ast, string className)
+    public List<string> Generate(StartNode ast, string className)
     {
         List<string> instructions = new();
         TranslationContext ctx = new(className);

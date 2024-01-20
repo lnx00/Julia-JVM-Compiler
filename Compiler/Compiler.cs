@@ -16,12 +16,12 @@ public class Compiler
         _name = name;
     }
 
-    private BlockNode Parse()
+    private StartNode Parse()
     {
         return _parser.Parse();
     }
     
-    private List<string> GenerateCode(BlockNode ast)
+    private List<string> GenerateCode(StartNode ast)
     {
         return _codeGenerator.Generate(ast, _name);
     }

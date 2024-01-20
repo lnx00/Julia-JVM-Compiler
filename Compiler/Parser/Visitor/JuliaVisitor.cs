@@ -25,7 +25,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode>
         // Visit all functions
         statements.AddRange(context.function().Select(function => Visit(function) ?? throw new NotImplementedException()));
 
-        return new BlockNode(statements);
+        return new StartNode(statements);
     }
 
     public override INode VisitDeclaration(JuliaParser.DeclarationContext context)

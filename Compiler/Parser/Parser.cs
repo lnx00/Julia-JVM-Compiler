@@ -18,7 +18,7 @@ public class Parser
         _code = input;
     }
     
-    public BlockNode Parse()
+    public StartNode Parse()
     {
         // Initialize lexer
         var inputStream = new AntlrInputStream(_code);
@@ -38,7 +38,7 @@ public class Parser
         globalVisitor.Visit(startContext);
         
         var juliaVisitor = new JuliaVisitor(_symbolTable);
-        return juliaVisitor.Visit(startContext) as BlockNode ?? throw new Exception("Error parsing code");
+        return juliaVisitor.Visit(startContext) as StartNode ?? throw new Exception("Error parsing code");
     }
     
     public SymbolTable GetSymbolTable()
