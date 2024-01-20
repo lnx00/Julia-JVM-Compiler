@@ -17,19 +17,27 @@ public class CallNode : ExpressionNode
         Type = type;
     }
 
-    public override List<string> Translate(TranslationContext ctx)
+    public override TranslationResult Translate(TranslationContext ctx)
     {
         List<string> instructions = new();
+        int stackSize = 0;
         
         // Create args
-        List<string> args = Arguments.SelectMany(arg => arg.Translate(ctx)).ToList();
+        //List<string> args = Arguments.SelectMany(arg => arg.Translate(ctx)).ToList();
+        List<string> args = new();
+        foreach (var result in Arguments.Select(arg => arg.Translate(ctx)))
+        {
+            args.AddRange(result.Instructions);
+            stackSize += result.StackSize;
+        }
 
         // Differentiate between STL and user functions
         var parameterTypes = Arguments.Aggregate(string.Empty, (current, arg) => current + TypeManager.GetJasminType(arg.Type));
         if (Symbol.StlFunction is not null)
         {
-            List<string> translated = Symbol.StlFunction.Translate(Symbol, args);
-            instructions.AddRange(translated);
+            var result = Symbol.StlFunction.Translate(Symbol, args);
+            instructions.AddRange(result.Instructions);
+            stackSize += result.StackSize;
         }
         else
         {
@@ -40,6 +48,6 @@ public class CallNode : ExpressionNode
             instructions.Add($"\tinvokestatic {ctx.Name}/{Symbol.GetMangledName()}({parameterTypes}){returnType}");
         }
 
-        return instructions;
+        return new TranslationResult(instructions, stackSize);
     }
 }

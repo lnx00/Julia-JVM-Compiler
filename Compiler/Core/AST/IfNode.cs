@@ -16,22 +16,27 @@ public class IfNode : INode
         ElseBody = elseBody;
     }
 
-    public override List<string> Translate(TranslationContext ctx)
+    public override TranslationResult Translate(TranslationContext ctx)
     {
         List<string> instructions = new() { "\n\t; If statement" };
+        int stackSize = 0;
 
         // Translate condition
-        instructions.AddRange(Condition.Translate(ctx));
+        var condResult = Condition.Translate(ctx);
+        instructions.AddRange(condResult.Instructions);
+        stackSize = Math.Max(stackSize, condResult.StackSize);
 
         // Create labels
         string elseLabel = LabelManager.GetLabel("else");
         string endLabel = LabelManager.GetLabel("end");
 
-        // Compare condition to 0
+        // Compare condition
         instructions.Add("\tifeq " + elseLabel);
 
         // Translate body
-        instructions.AddRange(Body.Translate(ctx));
+        var bodyResult = Body.Translate(ctx);
+        instructions.AddRange(bodyResult.Instructions);
+        stackSize = Math.Max(stackSize, bodyResult.StackSize);
 
         // Jump to end
         instructions.Add("\tgoto " + endLabel);
@@ -42,12 +47,14 @@ public class IfNode : INode
         // Translate else body
         if (ElseBody is not null)
         {
-            instructions.AddRange(ElseBody.Translate(ctx));
+            var elseResult = ElseBody.Translate(ctx);
+            instructions.AddRange(elseResult.Instructions);
+            stackSize = Math.Max(stackSize, elseResult.StackSize);
         }
 
         // End label
         instructions.Add(endLabel + ":");
 
-        return instructions;
+        return new TranslationResult(instructions, stackSize);
     }
 }

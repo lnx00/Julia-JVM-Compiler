@@ -25,12 +25,15 @@ public class MultExpressionNode : ExpressionNode
         OperationType = op;
     }
 
-    public override List<string> Translate(TranslationContext ctx)
+    public override TranslationResult Translate(TranslationContext ctx)
     {
         List<string> instructions = new();
         
-        instructions.AddRange(LeftExpression.Translate(ctx));
-        instructions.AddRange(RightExpression.Translate(ctx));
+        var left = LeftExpression.Translate(ctx);
+        var right = RightExpression.Translate(ctx);
+        
+        instructions.AddRange(left.Instructions);
+        instructions.AddRange(right.Instructions);
 
         switch (OperationType)
         {
@@ -86,6 +89,6 @@ public class MultExpressionNode : ExpressionNode
                 throw new ArgumentOutOfRangeException();
         }
 
-        return instructions;
+        return new TranslationResult(instructions, left.StackSize, right.StackSize);
     }
 }

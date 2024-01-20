@@ -12,19 +12,17 @@ public class ReturnNode : INode
         Value = value;
     }
 
-    public override List<string> Translate(TranslationContext ctx)
+    public override TranslationResult Translate(TranslationContext ctx)
     {
         // Void
         if (Value is null)
         {
-            return new List<string>
-            {
-                "\treturn"
-            };
+            return new TranslationResult("\treturn", 0);
         }
 
         // Non-void
-        List<string> instructions = Value.Translate(ctx);
+        var result = Value.Translate(ctx);
+        List<string> instructions = result.Instructions;
 
         switch (Value.Type)
         {
@@ -49,6 +47,6 @@ public class ReturnNode : INode
                 throw new ArgumentOutOfRangeException();
         }
         
-        return instructions;
+        return new TranslationResult(instructions, result.StackSize);
     }
 }

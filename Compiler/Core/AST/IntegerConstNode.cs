@@ -14,11 +14,8 @@ public class IntegerConstNode : ExpressionNode
         Type = TypeManager.DataType.Integer;
     }
 
-    public override List<string> Translate(TranslationContext ctx)
+    public override TranslationResult Translate(TranslationContext ctx)
     {
-        return new List<string>
-        {
-            $"\tldc {Value}"
-        };
+        return new TranslationResult($"\tldc {Value}", 1);
     }
 }

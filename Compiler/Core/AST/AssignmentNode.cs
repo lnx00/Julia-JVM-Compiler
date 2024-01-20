@@ -14,13 +14,15 @@ public class AssignmentNode : INode
         Value = value;
     }
 
-    public override List<string> Translate(TranslationContext ctx)
+    public override TranslationResult Translate(TranslationContext ctx)
     {
         List<string> instructions = new();
+        
+        var result = Value.Translate(ctx);
 
-        instructions.AddRange(Value.Translate(ctx));
+        instructions.AddRange(result.Instructions);
         instructions.Add($"\tistore {Symbol.Offset}");
 
-        return instructions;
+        return new TranslationResult(instructions, result.StackSize);
     }
 }

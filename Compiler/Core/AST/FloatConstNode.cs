@@ -15,12 +15,9 @@ public class FloatConstNode : ExpressionNode
         Type = TypeManager.DataType.Float64;
     }
 
-    public override List<string> Translate(TranslationContext ctx)
+    public override TranslationResult Translate(TranslationContext ctx)
     {
         string value = Value.ToString("F", CultureInfo.InvariantCulture);
-        return new List<string>
-        {
-            $"\tldc {value}"
-        };
+        return new TranslationResult( $"\tldc {value}", 1);
     }
 }

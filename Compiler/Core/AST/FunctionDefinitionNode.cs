@@ -17,28 +17,29 @@ public class FunctionDefinitionNode : INode
         Block = block;
     }
 
-    public override List<string> Translate(TranslationContext ctx)
+    public override TranslationResult Translate(TranslationContext ctx)
     {
         string returnType = TypeManager.GetJasminType(Symbol.Type);
         //string parameterTypes = Symbol.Parameters.Aggregate("", (current, parameter) => current + TypeManager.GetJasminType(parameter.Value));
         string parameterTypes = Symbol.Parameters.Aggregate(string.Empty, (current, param) => current + TypeManager.GetJasminType(param.Type));
-
+        var result = Block.Translate(ctx);
+        
         // Method prologue
         List<string> instructions = new()
         {
             $"; Function definition for '{Symbol.Name}'",
             $".method public static {Symbol.GetMangledName()}({parameterTypes}){returnType}",
-            "\t.limit stack 100",
+            $"\t.limit stack {result.StackSize}",
             $"\t.limit locals {Symbol.VariableCount}"
         };
 
         // Method body
-        instructions.AddRange(Block.Translate(ctx));
+        instructions.AddRange(result.Instructions);
         
         // Method end
         instructions.Add(".end method");
         instructions.Add(string.Empty);
         
-        return instructions;
+        return new TranslationResult(instructions, result.StackSize);
     }
 }

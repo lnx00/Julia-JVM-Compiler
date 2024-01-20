@@ -22,17 +22,19 @@ public class UnaryExpressionNode : ExpressionNode
         OperationType = op;
     }
 
-    public override List<string> Translate(TranslationContext ctx)
+    public override TranslationResult Translate(TranslationContext ctx)
     {
         List<string> instructions = new();
         
-        instructions.AddRange(Expression.Translate(ctx));
+        var result = Expression.Translate(ctx);
+        instructions.AddRange(result.Instructions);
+        
         switch (OperationType)
         {
             case Operation.Not:
                 instructions.Add("\tldc 1");
                 instructions.Add("\tixor");
-                break;
+                return new TranslationResult(instructions, result.StackSize + 1);
             
             case Operation.Negate:
                 switch (Type)
@@ -54,6 +56,6 @@ public class UnaryExpressionNode : ExpressionNode
                 throw new ArgumentOutOfRangeException();
         }
         
-        return instructions;
+        return new TranslationResult(instructions, result.StackSize);
     }
 }

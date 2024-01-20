@@ -27,12 +27,15 @@ public class CompExpressionNode : ExpressionNode
         OperationType = op;
     }
 
-    public override List<string> Translate(TranslationContext ctx)
+    public override TranslationResult Translate(TranslationContext ctx)
     {
         List<string> instructions = new();
+        
+        var left = LeftExpression.Translate(ctx);
+        var right = RightExpression.Translate(ctx);
 
-        instructions.AddRange(LeftExpression.Translate(ctx));
-        instructions.AddRange(RightExpression.Translate(ctx));
+        instructions.AddRange(left.Instructions);
+        instructions.AddRange(right.Instructions);
         
         string trueLabel = LabelManager.GetLabel("compTrue");
         string endLabel = LabelManager.GetLabel("compEnd");
@@ -73,6 +76,6 @@ public class CompExpressionNode : ExpressionNode
         instructions.Add("\ticonst_1");
         instructions.Add(endLabel + ":");
 
-        return instructions;
+        return new TranslationResult(instructions, left.StackSize, right.StackSize);
     }
 }

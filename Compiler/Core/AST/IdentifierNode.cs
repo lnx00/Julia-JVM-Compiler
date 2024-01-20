@@ -15,14 +15,14 @@ public class IdentifierNode : ExpressionNode
         Type = type;
     }
 
-    public override List<string> Translate(TranslationContext ctx)
+    public override TranslationResult Translate(TranslationContext ctx)
     {
         return Symbol.Type switch
         {
-            TypeManager.DataType.Integer => new List<string> { $"\tiload {Symbol.Offset}" },
-            TypeManager.DataType.Bool => new List<string> { $"\tiload {Symbol.Offset}" },
-            TypeManager.DataType.Float64 => new List<string> { $"\tfload {Symbol.Offset}" },
-            TypeManager.DataType.String => new List<string> { $"\taload {Symbol.Offset}" },
+            TypeManager.DataType.Integer => new TranslationResult(new List<string> { $"\tiload {Symbol.Offset}" }, 1),
+            TypeManager.DataType.Bool => new TranslationResult(new List<string> { $"\tiload {Symbol.Offset}" }, 1),
+            TypeManager.DataType.Float64 => new TranslationResult(new List<string> { $"\tfload {Symbol.Offset}" }, 1),
+            TypeManager.DataType.String => new TranslationResult(new List<string> { $"\taload {Symbol.Offset}" }, 1),
             
             _ => throw new ArgumentOutOfRangeException()
         };

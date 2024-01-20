@@ -14,13 +14,10 @@ public class BoolConstNode : ExpressionNode
         Type = TypeManager.DataType.Bool;
     }
 
-    public override List<string> Translate(TranslationContext ctx)
+    public override TranslationResult Translate(TranslationContext ctx)
     {
         var value = Value ? 1 : 0;
         
-        return new List<string>
-        {
-            $"\tldc {value}"
-        };
+        return new TranslationResult($"\tldc {value}", 1);
     }
 }

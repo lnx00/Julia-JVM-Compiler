@@ -11,14 +11,17 @@ public class BlockNode : INode
         Statements = statements;
     }
 
-    public override List<string> Translate(TranslationContext ctx)
+    public override TranslationResult Translate(TranslationContext ctx)
     {
         List<string> instructions = new();
-        foreach (var statement in Statements)
+        int stackSize = 0;
+        
+        foreach (var result in Statements.Select(statement => statement.Translate(ctx)))
         {
-            instructions.AddRange(statement.Translate(ctx));
+            instructions.AddRange(result.Instructions);
+            stackSize = Math.Max(stackSize, result.StackSize);
         }
         
-        return instructions;
+        return new TranslationResult(instructions, stackSize);
     }
 }

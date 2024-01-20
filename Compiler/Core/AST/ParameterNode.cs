@@ -11,7 +11,7 @@ public class ParameterNode : INode
     {
     }
 
-    public override List<string> Translate(TranslationContext ctx)
+    public override TranslationResult Translate(TranslationContext ctx)
     {
         throw new NotImplementedException();
     }

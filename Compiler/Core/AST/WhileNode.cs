@@ -14,9 +14,10 @@ public class WhileNode : INode
         Body = body;
     }
 
-    public override List<string> Translate(TranslationContext ctx)
+    public override TranslationResult Translate(TranslationContext ctx)
     {
         List<string> instructions = new() { "\n\t; While statement" };
+        int stackSize = 0;
 
         // Create labels
         string startLabel = LabelManager.GetLabel("whileStart");
@@ -26,13 +27,17 @@ public class WhileNode : INode
         instructions.Add(startLabel + ":");
 
         // Translate condition
-        instructions.AddRange(Condition.Translate(ctx));
+        var condResult = Condition.Translate(ctx);
+        instructions.AddRange(condResult.Instructions);
+        stackSize = Math.Max(stackSize, condResult.StackSize);
 
-        // Compare condition to 0
+        // Compare condition
         instructions.Add("\tifeq " + endLabel);
 
         // Translate body
-        instructions.AddRange(Body.Translate(ctx));
+        var bodyResult = Body.Translate(ctx);
+        instructions.AddRange(bodyResult.Instructions);
+        stackSize = Math.Max(stackSize, bodyResult.StackSize);
 
         // Jump to start
         instructions.Add("\tgoto " + startLabel);
@@ -40,6 +45,6 @@ public class WhileNode : INode
         // End label
         instructions.Add(endLabel + ":");
 
-        return instructions;
+        return new TranslationResult(instructions, stackSize);
     }
 }

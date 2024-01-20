@@ -30,7 +30,8 @@ public class CodeGenerator
         });
         
         // Source code
-        instructions.AddRange(ast.Translate(ctx));
+        var result = ast.Translate(ctx);
+        instructions.AddRange(result.Instructions);
         
         // Main method
         instructions.AddRange(new List<string>
