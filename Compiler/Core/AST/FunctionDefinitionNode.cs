@@ -38,6 +38,9 @@ public class FunctionDefinitionNode : INode
         // Method body
         instructions.AddRange(result.Instructions);
         
+        // Return statement
+        instructions.Add(new ReturnInstruction(Symbol.Type));
+        
         // Method end
         instructions.Add(new CustomInstruction(".end method"));
         instructions.Add(new CustomInstruction("")); // TODO: Hack to add a new line

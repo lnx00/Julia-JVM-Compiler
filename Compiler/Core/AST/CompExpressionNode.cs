@@ -37,6 +37,7 @@ public class CompExpressionNode : ExpressionNode
 
         instructions.AddRange(left.Instructions);
         instructions.AddRange(right.Instructions);
+        instructions.Add(new ArithmeticInstruction(ArithmeticInstruction.Operation.Sub, LeftExpression.Type));
         
         string trueLabel = LabelManager.GetLabel("compTrue");
         string endLabel = LabelManager.GetLabel("compEnd");

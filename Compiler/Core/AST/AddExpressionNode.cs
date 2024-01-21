@@ -49,6 +49,6 @@ public class AddExpressionNode : ExpressionNode
                 throw new ArgumentOutOfRangeException();
         }
 
-        return new TranslationResult(instructions, left.StackSize, right.StackSize);
+        return new TranslationResult(instructions, Math.Max(left.StackSize, right.StackSize) + 1);
     }
 }

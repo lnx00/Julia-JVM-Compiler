@@ -26,7 +26,7 @@ public class StartNode : INode
             instructions.AddRange(result.Instructions);
             stackSize = Math.Max(stackSize, result.StackSize);
             
-            LivenessAnalyzer.Analyze(result);
+            //LivenessAnalyzer.Analyze(result);
         }
         
         return new TranslationResult(instructions, stackSize);
