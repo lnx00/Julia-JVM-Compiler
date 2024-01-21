@@ -13,7 +13,7 @@ public class ControlFlowGraph
     
     public static ControlFlowGraph Generate(List<Instruction> instructions)
     {
-        var blocks = new List<BasicBlock>();
+        List<BasicBlock> blocks = new();
         var block = new BasicBlock(new List<Instruction>());
         
         foreach (var instruction in instructions)
@@ -24,6 +24,13 @@ public class ControlFlowGraph
             if (instruction.IsLeader)
             {
                 blocks.Add(block);
+                
+                // Add successor
+                if (instruction is BranchInstruction branch)
+                {
+                    //block.Successors.Add(branch.);
+                }
+                
                 block = new BasicBlock(new List<Instruction>());
             }
         }

@@ -5,7 +5,7 @@ namespace Compiler.Core.IntermediateCode;
 public class StoreInstruction : Instruction
 {
     public override bool IsLeader => false;
-    private int Offset { get; }
+    public int Offset { get; }
     private TypeManager.DataType Type { get; }
     
     public StoreInstruction(int offset, TypeManager.DataType type)

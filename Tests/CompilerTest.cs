@@ -11,7 +11,7 @@ public class CompilerTest
                         if true
                             println("Hello World!")
                         end
-                        y::Integer = 10
+                        y::Integer = 10 + x
                         
                         return
                      end
