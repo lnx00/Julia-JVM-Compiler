@@ -182,7 +182,7 @@ public class JuliaVisitor : JuliaBaseVisitor<INode>
 
     public override INode VisitBoolExpr(JuliaParser.BoolExprContext context)
     {
-        var op = context.boolOp().GetText();
+        var op = context.boolOp.Text;
         var left = Visit(context.expression(0)) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
         var right = Visit(context.expression(1)) as ExpressionNode ?? throw SyntaxErrorException.Create(context);
 

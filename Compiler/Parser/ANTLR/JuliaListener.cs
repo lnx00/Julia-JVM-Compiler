@@ -289,16 +289,6 @@ public interface IJuliaListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitCompOp([NotNull] JuliaParser.CompOpContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="JuliaParser.boolOp"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterBoolOp([NotNull] JuliaParser.BoolOpContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="JuliaParser.boolOp"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitBoolOp([NotNull] JuliaParser.BoolOpContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="JuliaParser.unaryOp"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

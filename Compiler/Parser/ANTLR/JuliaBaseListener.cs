@@ -342,18 +342,6 @@ public partial class JuliaBaseListener : IJuliaListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitCompOp([NotNull] JuliaParser.CompOpContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="JuliaParser.boolOp"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterBoolOp([NotNull] JuliaParser.BoolOpContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="JuliaParser.boolOp"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitBoolOp([NotNull] JuliaParser.BoolOpContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="JuliaParser.unaryOp"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

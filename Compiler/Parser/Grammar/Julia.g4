@@ -24,7 +24,8 @@ return: RETURN_T expression?; // return x
 expression: expression multOp expression # MultExpr
     | expression addOp expression # AddExpr
     | expression compOp expression # CompExpr
-    | expression boolOp expression # BoolExpr
+    | expression boolOp=AND expression # BoolExpr
+    | expression boolOp=OR expression # BoolExpr
     | unaryOp expression # UnaryExpr
     | LPAREN expression RPAREN # ParenExpr
     | call # CallExpr
@@ -36,7 +37,6 @@ expression: expression multOp expression # MultExpr
 multOp: STAR | SLASH | PERCENT;
 addOp: PLUS | MINUS;
 compOp: EQEQ | LT | GT | LTE | GTE | NEQ;
-boolOp: AND | OR;
 unaryOp: PLUS | MINUS | NOT;
 
 // Helper

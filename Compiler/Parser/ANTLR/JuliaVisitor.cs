@@ -185,12 +185,6 @@ public interface IJuliaVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitCompOp([NotNull] JuliaParser.CompOpContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="JuliaParser.boolOp"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitBoolOp([NotNull] JuliaParser.BoolOpContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="JuliaParser.unaryOp"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
