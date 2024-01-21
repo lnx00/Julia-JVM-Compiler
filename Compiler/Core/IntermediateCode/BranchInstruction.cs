@@ -13,7 +13,7 @@ public class BranchInstruction : Instruction
         LessThanOrEqual
     }
     
-    public override bool IsLeader => false;
+    public override bool IsLeader => true;
     private Condition Cond { get; }
     private string Label { get; }
     

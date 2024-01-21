@@ -6,8 +6,14 @@ public class CompilerTest
     private void Test_1()
     {
         var script = """
-                     function main()::Float64
-                        return 10.0
+                     function main()
+                        x::Integer = 10 + 5
+                        if true
+                            println("Hello World!")
+                        end
+                        y::Integer = 10
+                        
+                        return
                      end
                      """;
         

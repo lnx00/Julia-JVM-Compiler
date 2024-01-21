@@ -1,4 +1,5 @@
 ﻿using Compiler.CodeGenerator;
+using Compiler.CodeGenerator.Liveness;
 using Compiler.Core.IntermediateCode;
 
 namespace Compiler.Core.AST;
@@ -24,6 +25,8 @@ public class StartNode : INode
             var result = funcDef.Translate(ctx);
             instructions.AddRange(result.Instructions);
             stackSize = Math.Max(stackSize, result.StackSize);
+            
+            LivenessAnalyzer.Analyze(result);
         }
         
         return new TranslationResult(instructions, stackSize);
