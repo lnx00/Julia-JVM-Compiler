@@ -14,4 +14,9 @@ public class LabelInstruction : Instruction
     {
         return $"{Label}:";
     }
+
+    public override string ToString()
+    {
+        return Label;
+    }
 }

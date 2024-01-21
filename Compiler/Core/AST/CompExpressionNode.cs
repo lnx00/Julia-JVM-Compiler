@@ -39,8 +39,8 @@ public class CompExpressionNode : ExpressionNode
         instructions.AddRange(right.Instructions);
         instructions.Add(new ArithmeticInstruction(ArithmeticInstruction.Operation.Sub, LeftExpression.Type));
         
-        string trueLabel = LabelManager.GetLabel("compTrue");
-        string endLabel = LabelManager.GetLabel("compEnd");
+        var trueLabel = LabelManager.GetLabel("compTrue");
+        var endLabel = LabelManager.GetLabel("compEnd");
 
         switch (OperationType)
         {
@@ -74,9 +74,9 @@ public class CompExpressionNode : ExpressionNode
         
         instructions.Add(new CustomInstruction("\ticonst_0"));
         instructions.Add(new BranchInstruction(BranchInstruction.Condition.None, endLabel));
-        instructions.Add(new LabelInstruction(trueLabel));
+        instructions.Add(trueLabel);
         instructions.Add(new CustomInstruction("\ticonst_1"));
-        instructions.Add(new LabelInstruction(endLabel));
+        instructions.Add(endLabel);
 
         return new TranslationResult(instructions, left.StackSize, right.StackSize);
     }

@@ -1,4 +1,6 @@
-﻿namespace Compiler.Core.Common;
+﻿using Compiler.Core.IntermediateCode;
+
+namespace Compiler.Core.Common;
 
 public static class LabelManager
 {
@@ -9,8 +11,8 @@ public static class LabelManager
         return $"L{_labelCounter++}";
     }
     
-public static string GetLabel(string label)
+    public static LabelInstruction GetLabel(string label)
     {
-        return $"{label}{_labelCounter++}";
+        return new LabelInstruction($"{label}{_labelCounter++}");
     }
 }

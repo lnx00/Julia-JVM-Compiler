@@ -24,11 +24,11 @@ public class WhileNode : INode
         int stackSize = 0;
 
         // Create labels
-        string startLabel = LabelManager.GetLabel("whileStart");
-        string endLabel = LabelManager.GetLabel("whileEnd");
+        var startLabel = LabelManager.GetLabel("whileStart");
+        var endLabel = LabelManager.GetLabel("whileEnd");
 
         // Start label
-        instructions.Add(new LabelInstruction(startLabel));
+        instructions.Add(startLabel);
 
         // Translate condition
         var condResult = Condition.Translate(ctx);
@@ -47,7 +47,7 @@ public class WhileNode : INode
         instructions.Add(new BranchInstruction(BranchInstruction.Condition.None, startLabel));
 
         // End label
-        instructions.Add(new LabelInstruction(endLabel));
+        instructions.Add(endLabel);
 
         return new TranslationResult(instructions, stackSize);
     }

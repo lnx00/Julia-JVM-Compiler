@@ -31,8 +31,8 @@ public class IfNode : INode
         stackSize = Math.Max(stackSize, condResult.StackSize);
 
         // Create labels
-        string elseLabel = LabelManager.GetLabel("else");
-        string endLabel = LabelManager.GetLabel("end");
+        var elseLabel = LabelManager.GetLabel("else");
+        var endLabel = LabelManager.GetLabel("end");
 
         // Compare condition
         instructions.Add(new BranchInstruction(BranchInstruction.Condition.Equal, elseLabel));
@@ -46,7 +46,7 @@ public class IfNode : INode
         instructions.Add(new BranchInstruction(BranchInstruction.Condition.None, endLabel));
 
         // Else label
-        instructions.Add(new LabelInstruction(elseLabel));
+        instructions.Add(elseLabel);
 
         // Translate else body
         if (ElseBody is not null)
@@ -57,7 +57,7 @@ public class IfNode : INode
         }
 
         // End label
-        instructions.Add(new LabelInstruction(endLabel));
+        instructions.Add(endLabel);
 
         return new TranslationResult(instructions, stackSize);
     }

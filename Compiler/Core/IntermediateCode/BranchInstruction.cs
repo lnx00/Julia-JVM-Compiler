@@ -15,9 +15,9 @@ public class BranchInstruction : Instruction
     
     public override bool IsLeader => true;
     private Condition Cond { get; }
-    public string Label { get; }
+    public LabelInstruction Label { get; }
     
-    public BranchInstruction(Condition cond, string label)
+    public BranchInstruction(Condition cond, LabelInstruction label)
     {
         Cond = cond;
         Label = label;
