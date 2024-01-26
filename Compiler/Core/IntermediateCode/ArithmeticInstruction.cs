@@ -37,6 +37,7 @@ public class ArithmeticInstruction : Instruction
             {
                 TypeManager.DataType.Integer => "\tiadd",
                 TypeManager.DataType.Float64 => "\tfadd",
+                TypeManager.DataType.Bool => "\tiadd",
                 _ => throw new ArgumentOutOfRangeException()
             },
             
@@ -44,6 +45,7 @@ public class ArithmeticInstruction : Instruction
             {
                 TypeManager.DataType.Integer => "\tisub",
                 TypeManager.DataType.Float64 => "\tfsub",
+                TypeManager.DataType.Bool => "\tisub",
                 _ => throw new ArgumentOutOfRangeException()
             },
             
@@ -72,6 +74,7 @@ public class ArithmeticInstruction : Instruction
             {
                 TypeManager.DataType.Integer => "\tineg",
                 TypeManager.DataType.Float64 => "\tfneg",
+                TypeManager.DataType.Bool => "\tineg",
                 _ => throw new ArgumentOutOfRangeException()
             },
             

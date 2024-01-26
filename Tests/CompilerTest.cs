@@ -43,4 +43,50 @@ public class CompilerTest
         
         Assert.True(true);
     }
+    
+    [Fact]
+    private void ComplexStringExpression_DoesNotThrow()
+    {
+        var script = """
+                     function main()
+                        b::String = "World"
+                        if "Hello" == b || "Hello" == b
+                            println("Hello World")
+                        else
+                            b = "Hello"
+                        end
+                        
+                        return
+                     end
+                     """;
+        
+        var compiler = new Compiler.Compiler(script, "Test");
+        compiler.Compile();
+        
+        Assert.True(true);
+    }
+
+    [Fact]
+    private void NestedIfWhile_DoesNotThrow()
+    {
+        var script = """
+                     function main()
+                        if true
+                            x::Bool = true
+                            while x
+                                if x == x
+                                    x = false
+                                end
+                            end
+                        end
+                        
+                        return
+                     end
+                     """;
+        
+        var compiler = new Compiler.Compiler(script, "Test");
+        compiler.Compile();
+        
+        Assert.True(true);
+    }
 }
