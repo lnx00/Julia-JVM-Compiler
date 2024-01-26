@@ -24,25 +24,23 @@ public class BasicBlock
     {
         Predecessors.Add(predecessor);
     }
-
+    
     public void Analyze()
     {
+        // Initialize our Defs and Uses
         foreach (var instruction in Instructions)
         {
             switch (instruction)
             {
                 case StoreInstruction store:
                 {
-                    if (!Uses.Contains(store.Offset))
-                    {
-                        Defs.Add(store.Offset);
-                    }
+                    Defs.Add(store.Offset);
                     break;
                 }
 
                 case LoadInstruction load:
                 {
-                    if (Defs.Contains(load.Offset))
+                    if (!Defs.Contains(load.Offset))
                     {
                         Uses.Add(load.Offset);
                     }

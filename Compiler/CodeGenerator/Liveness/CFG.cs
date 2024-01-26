@@ -78,6 +78,7 @@ public class CFG
         // Exit block
         currentBlock.Successors.Add(Exit);
         Exit.Predecessors.Add(currentBlock);
+        Blocks.Add(Exit);
         
         // Link blocks
         foreach (var block in Blocks)
@@ -101,50 +102,46 @@ public class CFG
 
     public int Analyze()
     {
+        // Initialize the Defs and Uses for each block
         foreach (var block in Blocks)
         {
             block.Analyze();
         }
         
-        bool changed = true;
-        while (changed)
+        while (true)
         {
-            changed = false;
+            bool hasChanged = false;
             
-            foreach (var block in Blocks)
+            for (int i = Blocks.Count - 1; i >= 0; i--)
             {
-                // Backup liveIn and liveOut
-                var liveInBackup = new HashSet<int>(block.LiveIn);
-                var liveOutBackup = new HashSet<int>(block.LiveOut);
+                var block = Blocks[i];
                 
-                // liveOut = union of successors' liveIn
+                HashSet<int> liveOutBackup = new(block.LiveOut);
+                HashSet<int> liveInBackup = new(block.LiveIn);
+                
+                // Update liveOut
                 foreach (var successor in block.Successors)
                 {
                     block.LiveOut.UnionWith(successor.LiveIn);
                 }
                 
-                // liveIn = uses union (liveOut - defs)
-                var liveOutMinusDefs = new HashSet<int>(block.LiveOut);
-                liveOutMinusDefs.ExceptWith(block.Defs);
+                // Update liveIn
+                HashSet<int> liveOutWithoutDefs = new(block.LiveOut);
+                liveOutWithoutDefs.ExceptWith(block.Defs);
                 block.LiveIn.UnionWith(block.Uses);
-                block.LiveIn.UnionWith(liveOutMinusDefs);
+                block.LiveIn.UnionWith(liveOutWithoutDefs);
                 
                 // Check if liveIn or liveOut changed
-                if (!block.LiveIn.SetEquals(liveInBackup) || !block.LiveOut.SetEquals(liveOutBackup))
+                if (!liveOutBackup.SetEquals(block.LiveOut) || !liveInBackup.SetEquals(block.LiveIn))
                 {
-                    changed = true;
+                    hasChanged = true;
                 }
             }
+            
+            if (!hasChanged) { break; }
         }
         
-        // Cound number of variables
-        var variables = new HashSet<int>();
-        foreach (var block in Blocks)
-        {
-            variables.UnionWith(block.LiveIn);
-            variables.UnionWith(block.LiveOut);
-        }
-        
-        return variables.Count;
+        // Calculate max amount of live variables
+        return Blocks.Select(block => block.LiveIn.Count).Max();
     }
 }
