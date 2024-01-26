@@ -27,8 +27,9 @@ public class StartNode : INode
             stackSize = Math.Max(stackSize, result.StackSize);
             
             //LivenessAnalyzer.Analyze(result);
-            CFG cfg = new(result.Instructions);
-            LivenessAnalyzer.Analyze(cfg);
+            /*CFG cfg = new(result.Instructions);
+            int result2 = cfg.Analyze();
+            LivenessAnalyzer.Analyze(cfg);*/
         }
         
         return new TranslationResult(instructions, stackSize);

@@ -98,4 +98,53 @@ public class CFG
     {
         return Blocks.FirstOrDefault(b => b.Label == label);
     }
+
+    public int Analyze()
+    {
+        foreach (var block in Blocks)
+        {
+            block.Analyze();
+        }
+        
+        bool changed = true;
+        while (changed)
+        {
+            changed = false;
+            
+            foreach (var block in Blocks)
+            {
+                // Backup liveIn and liveOut
+                var liveInBackup = new HashSet<int>(block.LiveIn);
+                var liveOutBackup = new HashSet<int>(block.LiveOut);
+                
+                // liveOut = union of successors' liveIn
+                foreach (var successor in block.Successors)
+                {
+                    block.LiveOut.UnionWith(successor.LiveIn);
+                }
+                
+                // liveIn = uses union (liveOut - defs)
+                var liveOutMinusDefs = new HashSet<int>(block.LiveOut);
+                liveOutMinusDefs.ExceptWith(block.Defs);
+                block.LiveIn.UnionWith(block.Uses);
+                block.LiveIn.UnionWith(liveOutMinusDefs);
+                
+                // Check if liveIn or liveOut changed
+                if (!block.LiveIn.SetEquals(liveInBackup) || !block.LiveOut.SetEquals(liveOutBackup))
+                {
+                    changed = true;
+                }
+            }
+        }
+        
+        // Cound number of variables
+        var variables = new HashSet<int>();
+        foreach (var block in Blocks)
+        {
+            variables.UnionWith(block.LiveIn);
+            variables.UnionWith(block.LiveOut);
+        }
+        
+        return variables.Count;
+    }
 }

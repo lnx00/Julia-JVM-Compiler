@@ -8,10 +8,12 @@ public class CompilerTest
         var script = """
                      function main()
                         x::Integer = 10
-                        while true
-                            x = 0
+                        y::Integer = 20
+                        z::Integer = 30
+                        
+                        if true
+                            x = 1
                         end
-                        y::Integer = 10 + x
                         
                         return
                      end
