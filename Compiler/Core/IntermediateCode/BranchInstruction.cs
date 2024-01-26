@@ -23,6 +23,8 @@ public class BranchInstruction : Instruction
         Label = label;
     }
     
+    public bool IsUnconditional => Cond == Condition.None;
+    
     public override string Translate()
     {
         return Cond switch

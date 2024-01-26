@@ -7,9 +7,9 @@ public class CompilerTest
     {
         var script = """
                      function main()
-                        x::Integer = 10 + 5
-                        if true
-                            println("Hello World!")
+                        x::Integer = 10
+                        while true
+                            x = 0
                         end
                         y::Integer = 10 + x
                         
