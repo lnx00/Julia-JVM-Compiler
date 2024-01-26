@@ -37,39 +37,57 @@ public class CompExpressionNode : ExpressionNode
 
         instructions.AddRange(left.Instructions);
         instructions.AddRange(right.Instructions);
-        instructions.Add(new ArithmeticInstruction(ArithmeticInstruction.Operation.Sub, LeftExpression.Type));
         
         var trueLabel = LabelManager.GetLabel("compTrue");
         var endLabel = LabelManager.GetLabel("compEnd");
-
-        switch (OperationType)
+        
+        //Special case for strings
+        if (LeftExpression.Type == TypeManager.DataType.String)
         {
-            case Operation.Equal:
-                instructions.Add(new BranchInstruction(BranchInstruction.Condition.Equal, trueLabel));
-                break;
+            switch (OperationType)
+            {
+                case Operation.Equal:
+                    instructions.Add(new CustomInstruction("\tif_acmpeq " + trueLabel));
+                    break;
+                
+                case Operation.NotEqual:
+                    instructions.Add(new CustomInstruction("\tif_acmpne " + trueLabel));
+                    break;
+            }
+        }
+        else
+        {
+            instructions.Add(new ArithmeticInstruction(ArithmeticInstruction.Operation.Sub, LeftExpression.Type));
             
-            case Operation.NotEqual:
-                instructions.Add(new BranchInstruction(BranchInstruction.Condition.NotEqual, trueLabel));
-                break;
+            switch (OperationType)
+            {
+                case Operation.Equal:
+                    instructions.Add(new BranchInstruction(BranchInstruction.Condition.Equal, trueLabel));
+                    break;
             
-            case Operation.LessThan:
-                instructions.Add(new BranchInstruction(BranchInstruction.Condition.LessThan, trueLabel));
-                break;
+                case Operation.NotEqual:
+                    instructions.Add(new BranchInstruction(BranchInstruction.Condition.NotEqual, trueLabel));
+                    break;
             
-            case Operation.LessThanOrEqual:
-                instructions.Add(new BranchInstruction(BranchInstruction.Condition.LessThanOrEqual, trueLabel));
-                break;
+                case Operation.LessThan:
+                    instructions.Add(new BranchInstruction(BranchInstruction.Condition.LessThan, trueLabel));
+                    break;
             
-            case Operation.GreaterThan:
-                instructions.Add(new BranchInstruction(BranchInstruction.Condition.GreaterThan, trueLabel));
-                break;
+                case Operation.LessThanOrEqual:
+                    instructions.Add(new BranchInstruction(BranchInstruction.Condition.LessThanOrEqual, trueLabel));
+                    break;
             
-            case Operation.GreaterThanOrEqual:
-                instructions.Add(new BranchInstruction(BranchInstruction.Condition.GreaterThanOrEqual, trueLabel));
-                break;
+                case Operation.GreaterThan:
+                    instructions.Add(new BranchInstruction(BranchInstruction.Condition.GreaterThan, trueLabel));
+                    break;
             
-            default:
-                throw new ArgumentOutOfRangeException();
+                case Operation.GreaterThanOrEqual:
+                    instructions.Add(new BranchInstruction(BranchInstruction.Condition.GreaterThanOrEqual, trueLabel));
+                    break;
+            
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
         
         instructions.Add(new CustomInstruction("\ticonst_0"));
@@ -78,6 +96,6 @@ public class CompExpressionNode : ExpressionNode
         instructions.Add(new CustomInstruction("\ticonst_1"));
         instructions.Add(endLabel);
 
-        return new TranslationResult(instructions, left.StackSize, right.StackSize);
+        return new TranslationResult(instructions, Math.Max(left.StackSize, right.StackSize) + 1);
     }
 }

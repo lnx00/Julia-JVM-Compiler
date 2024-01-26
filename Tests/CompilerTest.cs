@@ -24,4 +24,23 @@ public class CompilerTest
         
         Assert.True(true);
     }
+
+    [Fact]
+    private void IfWithStringExpression_DoesNotThrow()
+    {
+        var script = """
+                     function main()
+                        if "Hello" == "World"
+                            println("Hello World")
+                        end
+                        
+                        return
+                     end
+                     """;
+        
+        var compiler = new Compiler.Compiler(script, "Test");
+        compiler.Compile();
+        
+        Assert.True(true);
+    }
 }
