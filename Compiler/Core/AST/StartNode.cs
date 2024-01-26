@@ -1,5 +1,4 @@
 ﻿using Compiler.CodeGenerator;
-using Compiler.CodeGenerator.Liveness;
 using Compiler.Core.IntermediateCode;
 
 namespace Compiler.Core.AST;
