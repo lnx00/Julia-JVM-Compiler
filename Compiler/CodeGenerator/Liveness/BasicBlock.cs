@@ -19,6 +19,11 @@ public class BasicBlock
     public HashSet<int> LiveOut { get; } = new();
     
     public BasicBlock() { }
+
+    public BasicBlock(string label)
+    {
+        Label = label;
+    }
     
     public BasicBlock(BasicBlock predecessor)
     {

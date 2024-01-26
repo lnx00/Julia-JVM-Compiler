@@ -6,8 +6,8 @@ public class CFG
 {
     public List<BasicBlock> Blocks { get; } = new();
     
-    public BasicBlock Entry { get; } = new();
-    public BasicBlock Exit { get; } = new();
+    public BasicBlock Entry { get; } = new("@entry");
+    public BasicBlock Exit { get; } = new("@exit");
 
     public CFG(List<Instruction> instructions)
     {

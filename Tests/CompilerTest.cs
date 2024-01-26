@@ -6,15 +6,18 @@ public class CompilerTest
     private void Test_1()
     {
         var script = """
-                     function main()
-                        x::Integer = 10
-                        y::Integer = 20 + x
+                     function main(n::Integer)::Integer
+                        z::Integer = 10
+                        x::Integer = 0
+                        y::Integer = 1
                         
-                        if true
-                            x = 10
+                        while x < n
+                            z = x * 2 + y
+                            x = x + 1
+                            y = x + z
                         end
                         
-                        println(y)
+                        return y
                      end
                      """;
         
