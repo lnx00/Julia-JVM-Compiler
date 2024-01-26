@@ -14,8 +14,6 @@ public class CompilerTest
                         if true
                             x = 1
                         end
-                        
-                        return
                      end
                      """;
         
@@ -33,8 +31,6 @@ public class CompilerTest
                         if "Hello" == "World"
                             println("Hello World")
                         end
-                        
-                        return
                      end
                      """;
         
@@ -55,8 +51,6 @@ public class CompilerTest
                         else
                             b = "Hello"
                         end
-                        
-                        return
                      end
                      """;
         
@@ -79,8 +73,26 @@ public class CompilerTest
                                 end
                             end
                         end
-                        
-                        return
+                     end
+                     """;
+        
+        var compiler = new Compiler.Compiler(script, "Test");
+        compiler.Compile();
+        
+        Assert.True(true);
+    }
+    
+    [Fact]
+    private void ComplexFloatExpression_DoesNotThrow()
+    {
+        var script = """
+                     function main()
+                        b::Float64 = 10.0
+                        if 10.0 == b || 10.0 == b && b > 5.0
+                            println("Hello World")
+                        else
+                            b = 10.0
+                        end
                      end
                      """;
         

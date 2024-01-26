@@ -57,7 +57,15 @@ public class CompExpressionNode : ExpressionNode
         }
         else
         {
-            instructions.Add(new ArithmeticInstruction(ArithmeticInstruction.Operation.Sub, LeftExpression.Type));
+            // Special case for floats
+            if (LeftExpression.Type == TypeManager.DataType.Float64)
+            {
+                instructions.Add(new CustomInstruction("\tfcmpl"));
+            }
+            else
+            {
+                instructions.Add(new ArithmeticInstruction(ArithmeticInstruction.Operation.Sub, LeftExpression.Type));
+            }
             
             switch (OperationType)
             {
