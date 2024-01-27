@@ -25,9 +25,6 @@ public class StartNode : INode
             var result = funcDef.Translate(ctx);
             instructions.AddRange(result.Instructions);
             stackSize = Math.Max(stackSize, result.StackSize);
-
-            CFG cfg = new CFG(result.Instructions);
-            int cfgResult = cfg.Analyze();
         }
         
         return new TranslationResult(instructions, stackSize);

@@ -105,10 +105,8 @@ public class CFG
         {
             foreach (var def in node.Defs)
             {
-                foreach (var liveOut in node.LiveOut)
+                foreach (var liveOut in node.LiveOut.Where(liveOut => def != liveOut))
                 {
-                    if (def == liveOut) continue;
-                    
                     graph[def].AdjacentNodes.Add(graph[liveOut]);
                     graph[liveOut].AdjacentNodes.Add(graph[def]);
                 }

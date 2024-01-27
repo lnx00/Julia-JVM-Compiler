@@ -1,4 +1,5 @@
-﻿using Compiler.Core.AST;
+﻿using Compiler.CodeGenerator;
+using Compiler.Core.AST;
 using Compiler.Core.IntermediateCode;
 using Compiler.Parser.ErrorHandling;
 
@@ -38,7 +39,12 @@ public class Compiler
     
     public int LivenessAnalysis()
     {
+        /*var ast = Parse();
+        return _parser.GetSymbolTable().VariableCount;*/
+        
         var ast = Parse();
-        return _parser.GetSymbolTable().VariableCount;
+        var registers = LivenessAnalyzer.Analyze(ast);
+        
+        return registers;
     }
 }
