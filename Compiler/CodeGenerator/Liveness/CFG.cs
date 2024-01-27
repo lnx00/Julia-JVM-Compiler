@@ -51,6 +51,7 @@ public class CFG
 
     public int Analyze()
     {
+        // Calculate liveIn and liveOut
         while (true)
         {
             bool hasChanged = false;
@@ -83,8 +84,66 @@ public class CFG
             
             if (!hasChanged) { break; }
         }
+
+        // Build interference graph
+        Dictionary<int, GraphNode> graph = new();
         
-        // Calculate max amount of live variables
-        return Nodes.Select(block => block.LiveIn.Count).Max();
+        // Add nodes for each variable
+        foreach (var node in Nodes)
+        {
+            foreach (var def in node.Defs)
+            {
+                if (!graph.ContainsKey(def))
+                {
+                    graph.Add(def, new GraphNode());
+                }
+            }
+        }
+        
+        // Add edges
+        foreach (var node in Nodes)
+        {
+            foreach (var def in node.Defs)
+            {
+                foreach (var liveOut in node.LiveOut)
+                {
+                    if (def == liveOut) continue;
+                    
+                    graph[def].AdjacentNodes.Add(graph[liveOut]);
+                    graph[liveOut].AdjacentNodes.Add(graph[def]);
+                }
+            }
+        }
+        
+        // Color graph
+        int colorCount = 0;
+        foreach (var node in graph.Values)
+        {
+            HashSet<int> usedColors = new();
+            foreach (var adjacentNode in node.AdjacentNodes)
+            {
+                if (adjacentNode.Color != -1)
+                {
+                    usedColors.Add(adjacentNode.Color);
+                }
+            }
+
+            for (int i = 0; i < colorCount; i++)
+            {
+                if (!usedColors.Contains(i))
+                {
+                    node.Color = i;
+                    break;
+                }
+            }
+
+            if (node.Color == -1)
+            {
+                node.Color = colorCount;
+                colorCount++;
+            }
+        }
+        
+        return colorCount;
     }
 }

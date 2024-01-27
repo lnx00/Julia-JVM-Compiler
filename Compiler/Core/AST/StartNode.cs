@@ -32,4 +32,22 @@ public class StartNode : INode
         
         return new TranslationResult(instructions, stackSize);
     }
+    
+    public int LivenessAnalysis(TranslationContext ctx)
+    {
+        int registers = 0;
+
+        foreach (var stmt in Statements)
+        {
+            if (stmt is not FunctionDefinitionNode funcDef) { continue; }
+            
+            var result = funcDef.Translate(ctx);
+
+            CFG cfg = new CFG(result.Instructions);
+            int cfgResult = cfg.Analyze();
+            registers = Math.Max(registers, cfgResult);
+        }
+
+        return registers;
+    }
 }

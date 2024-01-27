@@ -6,13 +6,16 @@ public class CompilerTest
     private void Test_1()
     {
         var script = """
-                     function main()::Integer
+                     function main()
                         z::Integer = 10
                         x::Integer = 0
                         y::Integer = 1
                         
                         while x < 10
                             z = x * 2 + y
+                            x = x + 1
+                            x = 5
+                            x = 1
                             # x = x + 1
                             # y = x + z
                         end
@@ -21,14 +24,14 @@ public class CompilerTest
                             x2::Integer = 0
                         end
                         
-                        d0::Integer = 0
+                        d0::Integer = z
                         d1::Integer = 1 + d0
                         d2::Integer = 2 + d1
-                        d3::Integer = 3 + d2
+                        d3::Integer = 3 + d2 + x
+                        d4::Integer = 4 + d3 + d2 + d1 + d0
                         
-                        d3 = 10
-                        
-                        return d3
+                        #println(d3)
+                        #println(x)
                      end
                      """;
         
