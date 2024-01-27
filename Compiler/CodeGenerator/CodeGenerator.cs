@@ -4,9 +4,9 @@ using Compiler.Core.IntermediateCode;
 
 namespace Compiler.CodeGenerator;
 
-public class CodeGenerator
+public static class CodeGenerator
 {
-    public List<Instruction> Generate(StartNode ast, string className)
+    public static List<Instruction> Generate(StartNode ast, string className)
     {
         List<Instruction> instructions = new();
         TranslationContext ctx = new(className);

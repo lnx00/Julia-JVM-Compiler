@@ -52,6 +52,19 @@ public class CFG
     public int Analyze()
     {
         // Calculate liveIn and liveOut
+        PerformLiveness();
+
+        // Build interference graph
+        Dictionary<int, GraphNode> graph = BuildInterferenceGraph();
+
+        // Color graph
+        var colorCount = ColorGraph(graph);
+
+        return colorCount;
+    }
+
+    private void PerformLiveness()
+    {
         while (true)
         {
             bool hasChanged = false;
@@ -84,8 +97,10 @@ public class CFG
             
             if (!hasChanged) { break; }
         }
+    }
 
-        // Build interference graph
+    private Dictionary<int, GraphNode> BuildInterferenceGraph()
+    {
         Dictionary<int, GraphNode> graph = new();
         
         // Add nodes for each variable
@@ -112,8 +127,12 @@ public class CFG
                 }
             }
         }
-        
-        // Color graph
+
+        return graph;
+    }
+
+    private static int ColorGraph(Dictionary<int, GraphNode> graph)
+    {
         int colorCount = 0;
         foreach (var node in graph.Values)
         {
@@ -141,7 +160,7 @@ public class CFG
                 colorCount++;
             }
         }
-        
+
         return colorCount;
     }
 }

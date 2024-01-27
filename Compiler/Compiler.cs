@@ -8,13 +8,11 @@ namespace Compiler;
 public class Compiler
 {
     private readonly Parser.Parser _parser;
-    private readonly CodeGenerator.CodeGenerator _codeGenerator;
     private readonly string _name;
     
     public Compiler(string sourceCode, string name)
     {
         _parser = new Parser.Parser(sourceCode);
-        _codeGenerator = new CodeGenerator.CodeGenerator();
         _name = name;
     }
 
@@ -23,15 +21,10 @@ public class Compiler
         return _parser.Parse();
     }
     
-    private List<Instruction> GenerateCode(StartNode ast)
-    {
-        return _codeGenerator.Generate(ast, _name);
-    }
-    
     public string Compile()
     {
         var ast = Parse();
-        var instructions = GenerateCode(ast);
+        List<Instruction> instructions = CodeGenerator.CodeGenerator.Generate(ast, _name);
         var code = string.Join("\n", instructions.Select(i => i.Translate()));
 
         return code;
