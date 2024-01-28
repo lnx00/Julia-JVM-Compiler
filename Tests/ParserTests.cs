@@ -517,7 +517,7 @@ public class ParserTests
     }
     
     [Fact]
-    public void WrongComplexWhileLoop_ThowsTypeMismatch()
+    public void WrongComplexWhileLoop_ThowsOperatorException()
     {
         // Arange
         var script = """
@@ -534,7 +534,7 @@ public class ParserTests
         var parser = new Parser(script);
         
         // Assert
-        Assert.Throws<TypeMismatchException>(() => parser.Parse());
+        Assert.Throws<InvalidOperatorException>(() => parser.Parse());
     }
     
     [Fact]
