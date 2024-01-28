@@ -1284,7 +1284,7 @@ public partial class JuliaParser : Parser {
 				State = 140;
 				unaryOp();
 				State = 141;
-				expression(5);
+				expression(10);
 				}
 				break;
 			case 2:
@@ -1346,11 +1346,11 @@ public partial class JuliaParser : Parser {
 						_localctx = new MultExprContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
 						State = 152;
-						if (!(Precpred(Context, 10))) throw new FailedPredicateException(this, "Precpred(Context, 10)");
+						if (!(Precpred(Context, 9))) throw new FailedPredicateException(this, "Precpred(Context, 9)");
 						State = 153;
 						multOp();
 						State = 154;
-						expression(11);
+						expression(10);
 						}
 						break;
 					case 2:
@@ -1358,11 +1358,11 @@ public partial class JuliaParser : Parser {
 						_localctx = new AddExprContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
 						State = 156;
-						if (!(Precpred(Context, 9))) throw new FailedPredicateException(this, "Precpred(Context, 9)");
+						if (!(Precpred(Context, 8))) throw new FailedPredicateException(this, "Precpred(Context, 8)");
 						State = 157;
 						addOp();
 						State = 158;
-						expression(10);
+						expression(9);
 						}
 						break;
 					case 3:
@@ -1370,11 +1370,11 @@ public partial class JuliaParser : Parser {
 						_localctx = new CompExprContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
 						State = 160;
-						if (!(Precpred(Context, 8))) throw new FailedPredicateException(this, "Precpred(Context, 8)");
+						if (!(Precpred(Context, 7))) throw new FailedPredicateException(this, "Precpred(Context, 7)");
 						State = 161;
 						compOp();
 						State = 162;
-						expression(9);
+						expression(8);
 						}
 						break;
 					case 4:
@@ -1382,11 +1382,11 @@ public partial class JuliaParser : Parser {
 						_localctx = new BoolExprContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
 						State = 164;
-						if (!(Precpred(Context, 7))) throw new FailedPredicateException(this, "Precpred(Context, 7)");
+						if (!(Precpred(Context, 6))) throw new FailedPredicateException(this, "Precpred(Context, 6)");
 						State = 165;
 						((BoolExprContext)_localctx).boolOp = Match(AND);
 						State = 166;
-						expression(8);
+						expression(7);
 						}
 						break;
 					case 5:
@@ -1394,11 +1394,11 @@ public partial class JuliaParser : Parser {
 						_localctx = new BoolExprContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
 						State = 167;
-						if (!(Precpred(Context, 6))) throw new FailedPredicateException(this, "Precpred(Context, 6)");
+						if (!(Precpred(Context, 5))) throw new FailedPredicateException(this, "Precpred(Context, 5)");
 						State = 168;
 						((BoolExprContext)_localctx).boolOp = Match(OR);
 						State = 169;
-						expression(7);
+						expression(6);
 						}
 						break;
 					}
@@ -1932,11 +1932,11 @@ public partial class JuliaParser : Parser {
 	}
 	private bool expression_sempred(ExpressionContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 0: return Precpred(Context, 10);
-		case 1: return Precpred(Context, 9);
-		case 2: return Precpred(Context, 8);
-		case 3: return Precpred(Context, 7);
-		case 4: return Precpred(Context, 6);
+		case 0: return Precpred(Context, 9);
+		case 1: return Precpred(Context, 8);
+		case 2: return Precpred(Context, 7);
+		case 3: return Precpred(Context, 6);
+		case 4: return Precpred(Context, 5);
 		}
 		return true;
 	}
@@ -1987,15 +1987,15 @@ public partial class JuliaParser : Parser {
 		1,0,0,0,130,128,1,0,0,0,131,123,1,0,0,0,131,132,1,0,0,0,132,133,1,0,0,
 		0,133,134,5,15,0,0,134,21,1,0,0,0,135,137,5,2,0,0,136,138,3,24,12,0,137,
 		136,1,0,0,0,137,138,1,0,0,0,138,23,1,0,0,0,139,140,6,12,-1,0,140,141,3,
-		32,16,0,141,142,3,24,12,5,142,151,1,0,0,0,143,144,5,14,0,0,144,145,3,24,
-		12,0,145,146,5,15,0,0,146,151,1,0,0,0,147,151,3,20,10,0,148,151,3,34,17,
-		0,149,151,5,44,0,0,150,139,1,0,0,0,150,143,1,0,0,0,150,147,1,0,0,0,150,
-		148,1,0,0,0,150,149,1,0,0,0,151,172,1,0,0,0,152,153,10,10,0,0,153,154,
-		3,26,13,0,154,155,3,24,12,11,155,171,1,0,0,0,156,157,10,9,0,0,157,158,
-		3,28,14,0,158,159,3,24,12,10,159,171,1,0,0,0,160,161,10,8,0,0,161,162,
-		3,30,15,0,162,163,3,24,12,9,163,171,1,0,0,0,164,165,10,7,0,0,165,166,5,
-		31,0,0,166,171,3,24,12,8,167,168,10,6,0,0,168,169,5,32,0,0,169,171,3,24,
-		12,7,170,152,1,0,0,0,170,156,1,0,0,0,170,160,1,0,0,0,170,164,1,0,0,0,170,
+		32,16,0,141,142,3,24,12,10,142,151,1,0,0,0,143,144,5,14,0,0,144,145,3,
+		24,12,0,145,146,5,15,0,0,146,151,1,0,0,0,147,151,3,20,10,0,148,151,3,34,
+		17,0,149,151,5,44,0,0,150,139,1,0,0,0,150,143,1,0,0,0,150,147,1,0,0,0,
+		150,148,1,0,0,0,150,149,1,0,0,0,151,172,1,0,0,0,152,153,10,9,0,0,153,154,
+		3,26,13,0,154,155,3,24,12,10,155,171,1,0,0,0,156,157,10,8,0,0,157,158,
+		3,28,14,0,158,159,3,24,12,9,159,171,1,0,0,0,160,161,10,7,0,0,161,162,3,
+		30,15,0,162,163,3,24,12,8,163,171,1,0,0,0,164,165,10,6,0,0,165,166,5,31,
+		0,0,166,171,3,24,12,7,167,168,10,5,0,0,168,169,5,32,0,0,169,171,3,24,12,
+		6,170,152,1,0,0,0,170,156,1,0,0,0,170,160,1,0,0,0,170,164,1,0,0,0,170,
 		167,1,0,0,0,171,174,1,0,0,0,172,170,1,0,0,0,172,173,1,0,0,0,173,25,1,0,
 		0,0,174,172,1,0,0,0,175,176,7,0,0,0,176,27,1,0,0,0,177,178,7,1,0,0,178,
 		29,1,0,0,0,179,180,7,2,0,0,180,31,1,0,0,0,181,182,7,3,0,0,182,33,1,0,0,

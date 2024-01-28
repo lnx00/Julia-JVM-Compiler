@@ -21,12 +21,12 @@ call: IDENTIFIER LPAREN (expression (COMMA expression)*)? RPAREN; // f(x, y)
 return: RETURN_T expression?; // return x
 
 // Expressions
-expression: expression multOp expression # MultExpr
+expression: unaryOp expression # UnaryExpr
+    | expression multOp expression # MultExpr
     | expression addOp expression # AddExpr
     | expression compOp expression # CompExpr
     | expression boolOp=AND expression # BoolExpr
     | expression boolOp=OR expression # BoolExpr
-    | unaryOp expression # UnaryExpr
     | LPAREN expression RPAREN # ParenExpr
     | call # CallExpr
     | const # ConstExpr
